@@ -47,7 +47,11 @@ public class GameController : MonoBehaviour
         return playerControl.PlayerPos();
     }
 
-    public void PlayerBulletHitOn(GameObject obj) {
+    public GameObject PlayerBulletHitOn() {
+        return _PlayerBulletHitObj;
+    }
+
+    public void _PlayerBulletHitOn(GameObject obj) {
         _PlayerBulletHitObj = obj;
     }
 }

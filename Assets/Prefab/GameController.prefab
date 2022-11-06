@@ -44,4 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 070f6a406c5d86e47bef8289084c28eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerControl: {fileID: 0}
+  Player: {fileID: 9140134329431929272, guid: 2603c0ae90d672244b75149af744b491, type: 3}
+  PlayerInitHP: 100
+  PlayerBulletDamage: -20

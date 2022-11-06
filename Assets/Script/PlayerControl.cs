@@ -59,7 +59,7 @@ public class PlayerControl : MonoBehaviour
 
     void LocateDestination() {
         if (Input.GetMouseButtonDown(1)) {
-            Ray ray = PlayerCamera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit)) {
                 if (hit.collider.CompareTag("Ground")) {
                     m_naviAgent.SetDestination(hit.point);

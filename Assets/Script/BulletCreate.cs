@@ -29,7 +29,7 @@ public class BulletCreate : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 3f)) {
             if (hit.collider.CompareTag("Enemy")) {
-                gameController.PlayerBulletHitOn(hit.collider.gameObject);
+                gameController._PlayerBulletHitOn(hit.collider.gameObject);
             }
         }
     }

@@ -1710,7 +1710,8 @@ MonoBehaviour:
   rightGun: {fileID: 100000, guid: d992a232642f7574b80a75c2ca4b4cb8, type: 3}
   Bullet: {fileID: 6979664864227324555, guid: 24fadc67dfeb07548a33f2d3ccd4826a, type: 3}
   ShooterPoint: {fileID: 9140134329898403230}
-  Gam: {fileID: 0}
+  Gam: {fileID: 5740922170830594228, guid: cf5cdc43f2e68c04c82ff43ba23e8b73, type: 3}
+  SpawnPoint: {x: 0, y: 0, z: 0}
   RotationSlerp: 10
   ReloadSpeed: 0.8
   ShootForce: 200
