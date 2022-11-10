@@ -131,7 +131,7 @@ public class PlayerControl : MonoBehaviour
     IEnumerator ShootBullet(Vector3 Target) {
         yield return new WaitForSeconds(ShootWaitingTime);
         Vector3 ShootDir = Target - ShooterPoint.position;
-        // ShootDir = new Vector3(ShootDir.x, 0f, ShootDir.z).normalized;
+        ShootDir = new Vector3(ShootDir.x, 0f, ShootDir.z).normalized;
         BulletPrefab = Instantiate(Bullet, ShooterPoint.position, Quaternion.identity);
         BulletPrefab.GetComponent<Rigidbody>().AddForce(ShootDir * ShootForce);
     }
@@ -139,7 +139,7 @@ public class PlayerControl : MonoBehaviour
     IEnumerator ShootBullet2(Vector3 Target) {
         yield return new WaitForSeconds(Shoot2WaitingTime);
         Vector3 ShootDir = Target - ShooterPoint.position;
-        // ShootDir = new Vector3(ShootDir.x, 0f, ShootDir.z).normalized;
+        ShootDir = new Vector3(ShootDir.x, 0f, ShootDir.z).normalized;
         BulletPrefab = Instantiate(Bullet, ShooterPoint.position, Quaternion.identity);
         BulletPrefab.GetComponent<Rigidbody>().AddForce(ShootDir * ShootForce);
     }
