@@ -16,7 +16,7 @@ public class DebugPlayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlayerPrefab = Instantiate(Player);
+        PlayerPrefab = Instantiate(Player, new Vector3(0, 0, 0), Quaternion.identity);
         GameControllerPrefab = Instantiate(GameController);
     }
 

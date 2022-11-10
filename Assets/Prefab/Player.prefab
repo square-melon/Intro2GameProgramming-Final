@@ -1649,7 +1649,7 @@ GameObject:
   - component: {fileID: 9140134329431963316}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1686,7 +1686,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 26e07401bcfe4c74a8adb7f0936af804, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -1713,10 +1713,13 @@ MonoBehaviour:
   Gam: {fileID: 5740922170830594228, guid: cf5cdc43f2e68c04c82ff43ba23e8b73, type: 3}
   SpawnPoint: {x: 0, y: 0, z: 0}
   RotationSlerp: 10
-  ReloadSpeed: 0.8
-  ShootForce: 200
-  ShootWaitingTime: 0.4
+  ReloadSpeed: 0.6
+  ShootForce: 150
+  ShootWaitingTime: 0.3
   Shoot2WaitingTime: 0.5
+  DashCooldown: 3
+  DashDistance: 1.5
+  DashSpeed: 6
 --- !u!54 &9140134329431963323
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -27,15 +27,17 @@ public class BulletCreate : MonoBehaviour
     void DetectShootOn() {
         Ray ray = new Ray(transform.position, GetComponent<Rigidbody>().velocity);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 3f)) {
+        if (Physics.Raycast(ray, out hit, 0.1f)) {
             if (hit.collider.CompareTag("Enemy")) {
                 gameController._PlayerBulletHitOn(hit.collider.gameObject);
+                Destroy(gameObject);
             }
         }
     }
 
     void OnCollisionEnter(Collision other) {
-        if (!other.collider.CompareTag("Player"))
+        if (!other.collider.CompareTag("Player")) {
             Destroy(gameObject);
+        }
     }
 }

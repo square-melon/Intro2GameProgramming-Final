@@ -380,7 +380,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 0.01
-    rootMotionBoneName: RigAss
+    rootMotionBoneName: Rig
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 0
