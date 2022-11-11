@@ -1,5 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/LowpolyStreetPack.meta
+guid: 2feaa952c893f62499424c51a9e02cca
+folderAsset: yes
+========
 guid: 5abefcd02c2b6224c95f1a716da4c675
+>>>>>>>> minfan3:Assets/Scenes/Scene2.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
