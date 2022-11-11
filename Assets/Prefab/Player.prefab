@@ -16251,6 +16251,7 @@ MonoBehaviour:
   DashCooldown: 3
   DashDistance: 1.5
   DashSpeed: 7
+  MedkitHealHP: 50
 --- !u!54 &9140134329431963323
 Rigidbody:
   m_ObjectHideFlags: 0

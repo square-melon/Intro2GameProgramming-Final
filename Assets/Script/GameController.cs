@@ -54,4 +54,8 @@ public class GameController : MonoBehaviour
     public void _PlayerBulletHitOn(GameObject obj) {
         _PlayerBulletHitObj = obj;
     }
+
+    public void HealPlayer(float hp) {
+        playerControl.Heal(hp);
+    }
 }

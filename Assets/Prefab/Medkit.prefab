@@ -5209,9 +5209,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6149940652012051803}
+  - component: {fileID: -829106279986117203}
   m_Layer: 0
   m_Name: Medkit
-  m_TagString: Untagged
+  m_TagString: Medkit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5238,6 +5239,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-829106279986117203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6149940652012051804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b08397246eda1ac4f8560e15f74b50a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameController: {fileID: 5740922170830594228, guid: cf5cdc43f2e68c04c82ff43ba23e8b73, type: 3}
+  RotationSpeed: 0.25
+  MovingSpeed: 0.003
+  UpLimit: 1
+  DownLimit: 0.6
 --- !u!1 &6149940652036536406
 GameObject:
   m_ObjectHideFlags: 0

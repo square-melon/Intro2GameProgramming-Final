@@ -24,6 +24,7 @@ public class PlayerControl : MonoBehaviour
     public float DashCooldown;
     public float DashDistance;
     public float DashSpeed;
+    public float MedkitHealHP;
 
     private UnityEngine.AI.NavMeshAgent m_naviAgent;
     private RaycastHit hit;
@@ -36,6 +37,7 @@ public class PlayerControl : MonoBehaviour
     private GameController gam;
     private bool Dashing;
     private bool Doing;
+    private bool MedkitHealCD;
 
     // Start is called before the first frame update
     void Start()
@@ -63,6 +65,7 @@ public class PlayerControl : MonoBehaviour
         Doing = false;
         transform.position = SpawnPoint;
         DashEffect.SetActive(false);
+        MedkitHealCD = true;
     }
 
     void LocateDestination() {
@@ -221,6 +224,25 @@ public class PlayerControl : MonoBehaviour
 
     void ResetDashing() {
         Dashing = false;
+    }
+
+    public void Heal(float HealHP) {
+        _HP += HealHP;
+    }
+
+    void OnTriggerEnter(Collider other) {
+        if (other.gameObject.CompareTag("Medkit")) {
+            Destroy(other.gameObject.transform.parent.gameObject);
+            if (MedkitHealCD) {
+                MedkitHealCD = false;
+                Heal(MedkitHealHP);
+                Invoke("ResetMedkitHealCD", 0.2f);
+            }
+        }
+    }
+
+    void ResetMedkitHealCD() {
+        MedkitHealCD = true;
     }
 
 }
