@@ -12,6 +12,7 @@ public class PlayerControl : MonoBehaviour
     public GameObject Bullet;
     public Transform ShooterPoint;
     public GameObject Gam;
+    public GameObject DashEffect;
 
     [Header("Settings")]
     public Vector3 SpawnPoint;
@@ -23,19 +24,20 @@ public class PlayerControl : MonoBehaviour
     public float DashCooldown;
     public float DashDistance;
     public float DashSpeed;
+    public float MedkitHealHP;
 
     private UnityEngine.AI.NavMeshAgent m_naviAgent;
     private RaycastHit hit;
     private Animator PlayerAnim;
     private Rigidbody PlayerRb;
     private bool Firing;
-    private bool ResetRotation;
     private GameObject BulletPrefab;
     private Vector3 FacingTarget;
     private float _HP;
     private GameController gam;
     private bool Dashing;
     private bool Doing;
+    private bool MedkitHealCD;
 
     // Start is called before the first frame update
     void Start()
@@ -58,11 +60,12 @@ public class PlayerControl : MonoBehaviour
 
     void Init() {
         Firing = false;
-        ResetRotation = true;
         _HP = gam.PlayerInitHP;
         Dashing = false;
         Doing = false;
         transform.position = SpawnPoint;
+        DashEffect.SetActive(false);
+        MedkitHealCD = true;
     }
 
     void LocateDestination() {
@@ -87,7 +90,7 @@ public class PlayerControl : MonoBehaviour
         if (m_naviAgent.velocity != Vector3.zero && !m_naviAgent.isStopped) {
             transform.eulerAngles = new Vector3(0, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(m_naviAgent.velocity - Vector3.zero), Time.deltaTime * RotationSlerp).eulerAngles.y, 0);
         } else if (m_naviAgent.isStopped) {
-            transform.eulerAngles = new Vector3(0, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(FacingTarget - transform.position), Time.deltaTime * RotationSlerp * 2).eulerAngles.y, 0);
+            transform.eulerAngles = new Vector3(0, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(FacingTarget), Time.deltaTime * RotationSlerp * 2).eulerAngles.y, 0);
         }
     }
 
@@ -114,7 +117,7 @@ public class PlayerControl : MonoBehaviour
             else
                 PlayerAnim.SetInteger("NextStateAfterFire", 1);
             Firing = true;
-            FacingTarget = Target;
+            FacingTarget = Target - transform.position;
             ToggleNavi();
             IEnumerator shoot = ShootBullet(Target);
             // IEnumerator shoot2 = ShootBullet2(Target);
@@ -184,6 +187,7 @@ public class PlayerControl : MonoBehaviour
     void Dash() {
         if (Input.GetKey(KeyCode.Q) && !Dashing) {
             Dashing = true;
+            DashEffect.SetActive(true);
             PlayerAnim.SetBool("Dash", true);
             ToggleNavi();
             Vector3 dir = GetMousePos() - transform.position;
@@ -211,6 +215,7 @@ public class PlayerControl : MonoBehaviour
         ResetAnimDash();
         ResetDoing();
         ToggleNavi();
+        DashEffect.SetActive(false);
     }
 
     void ResetAnimDash() {
@@ -219,6 +224,25 @@ public class PlayerControl : MonoBehaviour
 
     void ResetDashing() {
         Dashing = false;
+    }
+
+    public void Heal(float HealHP) {
+        _HP += HealHP;
+    }
+
+    void OnTriggerEnter(Collider other) {
+        if (other.gameObject.CompareTag("Medkit")) {
+            Destroy(other.gameObject.transform.parent.gameObject);
+            if (MedkitHealCD) {
+                MedkitHealCD = false;
+                Heal(MedkitHealHP);
+                Invoke("ResetMedkitHealCD", 0.2f);
+            }
+        }
+    }
+
+    void ResetMedkitHealCD() {
+        MedkitHealCD = true;
     }
 
 }
