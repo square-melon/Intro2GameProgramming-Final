@@ -8,20 +8,18 @@ public class GameController : MonoBehaviour
     public GameObject Player;
 
     [Header("Settings")]
-    public float PlayerInitHP;
+    public float PlayerMaxHP;
     public float PlayerBulletDamage;
 
     private GameObject _PlayerBulletHitObj;
     private PlayerControl playerControl;
 
-    // Start is called before the first frame update
     void Start()
     {
         playerControl = Player.GetComponent<PlayerControl>();
         Init();
     }
 
-    // Update is called once per frame
     void Update()
     {
         
@@ -57,5 +55,13 @@ public class GameController : MonoBehaviour
 
     public void HealPlayer(float hp) {
         playerControl.Heal(hp);
+    }
+
+    public float CurDashCD() {
+        return playerControl.DashCD();
+    }
+
+    public float DashCD() {
+        return playerControl.DashCooldown;
     }
 }

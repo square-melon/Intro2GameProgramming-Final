@@ -38,8 +38,9 @@ public class PlayerControl : MonoBehaviour
     private bool Dashing;
     private bool Doing;
     private bool MedkitHealCD;
+    private float MaxHP;
+    private float _DashCD;
 
-    // Start is called before the first frame update
     void Start()
     {
         gam = Gam.GetComponent<GameController>();
@@ -50,7 +51,6 @@ public class PlayerControl : MonoBehaviour
         Init();
     }
 
-    // Update is called once per frame
     void Update()
     {
         LocateDestination();
@@ -60,7 +60,8 @@ public class PlayerControl : MonoBehaviour
 
     void Init() {
         Firing = false;
-        _HP = gam.PlayerInitHP;
+        _HP = gam.PlayerMaxHP;
+        MaxHP = gam.PlayerMaxHP;
         Dashing = false;
         Doing = false;
         transform.position = SpawnPoint;
@@ -112,10 +113,6 @@ public class PlayerControl : MonoBehaviour
     void Attack(Vector3 Target) {
         if (!Firing) {
             PlayerAnim.SetBool("Fire", true);
-            if (m_naviAgent.velocity.magnitude > 0)
-                PlayerAnim.SetInteger("NextStateAfterFire", 0);
-            else
-                PlayerAnim.SetInteger("NextStateAfterFire", 1);
             Firing = true;
             FacingTarget = Target - transform.position;
             ToggleNavi();
@@ -197,6 +194,7 @@ public class PlayerControl : MonoBehaviour
             Doing = true;
             IEnumerator dashMoving = DashMoving(dir);
             StartCoroutine(dashMoving);
+            StartCoroutine(CalDashCD());
             Invoke("ResetDashing", DashCooldown);
         }
     }
@@ -228,6 +226,8 @@ public class PlayerControl : MonoBehaviour
 
     public void Heal(float HealHP) {
         _HP += HealHP;
+        if (_HP > MaxHP)
+            _HP = MaxHP;
     }
 
     void OnTriggerEnter(Collider other) {
@@ -243,6 +243,19 @@ public class PlayerControl : MonoBehaviour
 
     void ResetMedkitHealCD() {
         MedkitHealCD = true;
+    }
+
+    IEnumerator CalDashCD() {
+        _DashCD = DashCooldown;
+        while (_DashCD > 0) {
+            _DashCD -= Time.deltaTime;
+            yield return null;
+        }
+        _DashCD = 0;
+    }
+
+    public float DashCD() {
+        return _DashCD;
     }
 
 }

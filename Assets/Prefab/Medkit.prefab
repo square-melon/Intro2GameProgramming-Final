@@ -5252,8 +5252,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameController: {fileID: 5740922170830594228, guid: cf5cdc43f2e68c04c82ff43ba23e8b73, type: 3}
-  RotationSpeed: 0.25
-  MovingSpeed: 0.003
+  RotationSpeed: 0.18
+  MovingSpeed: 0.002
   UpLimit: 1
   DownLimit: 0.6
 --- !u!1 &6149940652036536406
