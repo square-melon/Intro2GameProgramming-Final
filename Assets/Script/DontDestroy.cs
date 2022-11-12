@@ -7,18 +7,18 @@ using UnityEngine.SceneManagement;
 public class DontDestroy : MonoBehaviour
 {
     // Start is called before the first frame update
-    void Awake()
-    {
-        GameObject[] objs = GameObject.FindGameObjectsWithTag("Score");
+    // void Awake()
+    // {
+    //     GameObject[] objs = GameObject.FindGameObjectsWithTag("Score");
 
-        if (objs.Length > 1)
-        {
+    //     if (objs.Length > 1)
+    //     {
             
-            Destroy(this.gameObject);
-        }
+    //         Destroy(this.gameObject);
+    //     }
 
-        DontDestroyOnLoad(this.gameObject);
-    }
+    //     DontDestroyOnLoad(this.gameObject);
+    // }
     private TextMeshProUGUI MyScoreText;
     //private int score = 0;
     void Start()
