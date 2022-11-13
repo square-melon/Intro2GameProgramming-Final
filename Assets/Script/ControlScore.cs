@@ -32,7 +32,7 @@ public class ControlScore : MonoBehaviour
 
         Scene scene = SceneManager.GetActiveScene();
         
-        if (scene.name == "Scene1")
+        if (scene.name == "Scenetest")
         {
             //Show a button to allow scene2 to be switched to.
             if (GUI.Button(new Rect(xCenter - width / 2, yCenter - height / 2, width, height), "Load second scene", fontSize))
@@ -56,6 +56,6 @@ public class ControlScore : MonoBehaviour
         
     }
     public void LoadtoNextScene() {
-        SceneManager.LoadScene("Scene1");
+        SceneManager.LoadScene("Scenetest");
     }
 }
