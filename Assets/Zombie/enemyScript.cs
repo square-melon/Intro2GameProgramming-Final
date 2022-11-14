@@ -47,9 +47,8 @@ public class enemyScript : MonoBehaviour
     void ResetAnimAttack(){
         ZombieAnim.SetBool("Attack",false);
     }
-    void OnCollisionEnter(Collision col){
-        if(col.gameObject.tag=="Bullet"){
-            hp--;
-        }
+
+    public void Damage() {
+        hp--;
     }
 }
