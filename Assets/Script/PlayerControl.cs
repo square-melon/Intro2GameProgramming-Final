@@ -13,6 +13,7 @@ public class PlayerControl : MonoBehaviour
     public Transform ShooterPoint;
     public GameObject Gam;
     public GameObject DashEffect;
+    public GameObject FireEffect;
 
     [Header("Settings")]
     public Vector3 SpawnPoint;
@@ -26,6 +27,7 @@ public class PlayerControl : MonoBehaviour
     public float DashSpeed;
     public float MedkitHealHP;
     public float MAXHP;
+    public float FireEffectStop;
 
     private UnityEngine.AI.NavMeshAgent m_naviAgent;
     private RaycastHit hit;
@@ -67,6 +69,7 @@ public class PlayerControl : MonoBehaviour
         MedkitHealCD = true;
         DataManager.Instance.SetPlayerHP(MAXHP);
         DataManager.Instance.SetMAXHP(MAXHP);
+        FireEffect.SetActive(false);
     }
 
     void LocateDestination() {
@@ -115,9 +118,8 @@ public class PlayerControl : MonoBehaviour
             if (Physics.Raycast(ray, out hit)) {
                 Target = hit.point;
             }
-            PlayerAnim.SetBool("Fire", true);
+            PlayerAnim.SetInteger("Doing", 1);
             Firing = true;
-            Doing = true;
             FacingTarget = Target - transform.position;
             ToggleNavi();
             IEnumerator shoot = ShootBullet(Target);
@@ -125,20 +127,26 @@ public class PlayerControl : MonoBehaviour
             StartCoroutine(shoot);
             // StartCoroutine(shoot2);
             // Invoke("ToggleNavi", Shoot2WaitingTime + 0.11f);
-            Invoke("ResetDoing", ShootWaitingTime);
             Invoke("ToggleNavi", ShootWaitingTime + 0.1f);
-            Invoke("ResetAnimFire", 0.05f);
+            Invoke("ResetAnimDoing", 0.05f);
             // Invoke("ResetFiring", Shoot2WaitingTime + ReloadSpeed);
             Invoke("ResetFiring", ReloadSpeed);
+            Invoke("DisableFireEffect", FireEffectStop);
         }
+    }
+
+    void DisableFireEffect() {
+        FireEffect.SetActive(false);
     }
 
     IEnumerator ShootBullet(Vector3 Target) {
         yield return new WaitForSeconds(ShootWaitingTime);
         Vector3 ShootDir = Target - ShooterPoint.position;
         ShootDir = new Vector3(ShootDir.x, 0f, ShootDir.z).normalized;
+        FireEffect.SetActive(true);
         BulletPrefab = Instantiate(Bullet, ShooterPoint.position, Quaternion.identity);
         BulletPrefab.GetComponent<Rigidbody>().AddForce(ShootDir * ShootForce);
+        Invoke("DisableFireEffect", FireEffectStop);
     }
 
     IEnumerator ShootBullet2(Vector3 Target) {
@@ -158,8 +166,8 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    void ResetAnimFire() {
-        PlayerAnim.SetBool("Fire", false);
+    void ResetAnimDoing() {
+        PlayerAnim.SetInteger("Doing", 0);
     }
 
     void ResetFiring() {
@@ -178,7 +186,7 @@ public class PlayerControl : MonoBehaviour
         if (Input.GetKey(KeyCode.Q) && !Dashing) {
             Dashing = true;
             DashEffect.SetActive(true);
-            PlayerAnim.SetBool("Dash", true);
+            PlayerAnim.SetInteger("Doing", 2);
             ToggleNavi();
             Vector3 dir = GetMousePos() - transform.position;
             dir = new Vector3(dir.x, 0f, dir.z);
@@ -203,14 +211,10 @@ public class PlayerControl : MonoBehaviour
             DashAmount += Time.deltaTime * DashSpeed;
             yield return null;
         }
-        ResetAnimDash();
+        ResetAnimDoing();
         ResetDoing();
         ToggleNavi();
         DashEffect.SetActive(false);
-    }
-
-    void ResetAnimDash() {
-        PlayerAnim.SetBool("Dash", false);
     }
 
     void ResetDashing() {

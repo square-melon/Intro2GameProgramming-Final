@@ -8,6 +8,7 @@ public class BulletCreate : MonoBehaviour
     [Header("Settings")]
     public float ExistTime;
     public GameObject GameControllerObj;
+    public GameObject ExplodeEffect;
 
     private GameController gameController;
 
@@ -31,6 +32,7 @@ public class BulletCreate : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 0.5f)) {
             if (hit.collider.CompareTag("Enemy")) {
                 gameController._PlayerBulletHitOn(hit.collider.gameObject);
+                Instantiate(ExplodeEffect, hit.point, Quaternion.identity);
                 //print("yes" + i);
                 Debug.Log(hit.collider.name);
                 takedamage(hit.transform);
@@ -49,8 +51,10 @@ public class BulletCreate : MonoBehaviour
     }
     void OnCollisionEnter(Collision other) {
         if (!other.collider.CompareTag("Player")) {
-            if (other.collider.CompareTag("Enemy"))
+            if (other.collider.CompareTag("Enemy")) {
+                Instantiate(ExplodeEffect, other.contacts[0].point, Quaternion.identity);
                 takedamage(other.collider.transform);
+            }
             Destroy(gameObject);
         }
         // if(other.gameObject == "Enemy") {
