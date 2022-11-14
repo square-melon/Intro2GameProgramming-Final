@@ -19,6 +19,7 @@ public class BulletCreate : MonoBehaviour
     }
 
     // Update is called once per frame
+    
     void Update()
     {
         DetectShootOn();
@@ -27,17 +28,30 @@ public class BulletCreate : MonoBehaviour
     void DetectShootOn() {
         Ray ray = new Ray(transform.position, GetComponent<Rigidbody>().velocity);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 0.1f)) {
+        if (Physics.Raycast(ray, out hit, 0.3f)) {
             if (hit.collider.CompareTag("Enemy")) {
                 gameController._PlayerBulletHitOn(hit.collider.gameObject);
+                //print("yes" + i);
+                takedamage(hit.transform);
+                Debug.Log(hit.collider.name);
+                //i++;
                 Destroy(gameObject);
+                
+                
+                
             }
         }
     }
-
+    void takedamage(Transform enemy) {
+        Scene2Enemy e = enemy.GetComponent<Scene2Enemy>();
+        e.Damage();
+    }
     void OnCollisionEnter(Collision other) {
         if (!other.collider.CompareTag("Player")) {
             Destroy(gameObject);
         }
+        // if(other.gameObject == "Enemy") {
+        //     takedamage(other.transform);
+        // }
     }
 }
