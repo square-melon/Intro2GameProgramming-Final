@@ -8,6 +8,8 @@ TagManager:
   - Collide
   - Enemy
   - Bullet
+  - Medkit
+  - Zombie
   layers:
   - Default
   - TransparentFX

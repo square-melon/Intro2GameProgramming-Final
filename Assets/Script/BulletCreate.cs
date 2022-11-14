@@ -28,26 +28,29 @@ public class BulletCreate : MonoBehaviour
     void DetectShootOn() {
         Ray ray = new Ray(transform.position, GetComponent<Rigidbody>().velocity);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 0.3f)) {
+        if (Physics.Raycast(ray, out hit, 0.5f)) {
             if (hit.collider.CompareTag("Enemy")) {
                 gameController._PlayerBulletHitOn(hit.collider.gameObject);
                 //print("yes" + i);
-                takedamage(hit.transform);
                 Debug.Log(hit.collider.name);
+                takedamage(hit.transform);
                 //i++;
                 Destroy(gameObject);
-                
-                
-                
             }
         }
     }
     void takedamage(Transform enemy) {
-        Scene2Enemy e = enemy.GetComponent<Scene2Enemy>();
-        e.Damage();
+        Scene2Enemy e1 = enemy.GetComponent<Scene2Enemy>();
+        enemyScript e2 = enemy.GetComponent<enemyScript>();
+        if (e1)
+            e1.Damage();
+        else if (e2)
+            e2.Damage();
     }
     void OnCollisionEnter(Collision other) {
         if (!other.collider.CompareTag("Player")) {
+            if (other.collider.CompareTag("Enemy"))
+                takedamage(other.collider.transform);
             Destroy(gameObject);
         }
         // if(other.gameObject == "Enemy") {
