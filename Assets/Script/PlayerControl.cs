@@ -12,6 +12,7 @@ public class PlayerControl : MonoBehaviour
     public GameObject Bullet;
     public Transform ShooterPoint;
     public GameObject Gam;
+    public GameObject DashEffect;
 
     [Header("Settings")]
     public Vector3 SpawnPoint;
@@ -20,19 +21,26 @@ public class PlayerControl : MonoBehaviour
     public float ShootForce;
     public float ShootWaitingTime;
     public float Shoot2WaitingTime;
+    public float DashCooldown;
+    public float DashDistance;
+    public float DashSpeed;
+    public float MedkitHealHP;
 
     private UnityEngine.AI.NavMeshAgent m_naviAgent;
     private RaycastHit hit;
     private Animator PlayerAnim;
     private Rigidbody PlayerRb;
     private bool Firing;
-    private bool ResetRotation;
     private GameObject BulletPrefab;
-    private Vector3 ShootingTarget;
+    private Vector3 FacingTarget;
     private float _HP;
     private GameController gam;
+    private bool Dashing;
+    private bool Doing;
+    private bool MedkitHealCD;
+    private float MaxHP;
+    private float _DashCD;
 
-    // Start is called before the first frame update
     void Start()
     {
         gam = Gam.GetComponent<GameController>();
@@ -43,21 +51,27 @@ public class PlayerControl : MonoBehaviour
         Init();
     }
 
-    // Update is called once per frame
     void Update()
     {
         LocateDestination();
         FaceTarget();
+        Dash();
     }
 
     void Init() {
-        transform.position = SpawnPoint;
         Firing = false;
-        ResetRotation = true;
-        _HP = gam.PlayerInitHP;
+        _HP = gam.PlayerMaxHP;
+        MaxHP = gam.PlayerMaxHP;
+        Dashing = false;
+        Doing = false;
+        transform.position = SpawnPoint;
+        DashEffect.SetActive(false);
+        MedkitHealCD = true;
     }
 
     void LocateDestination() {
+        if (Doing)
+            return;
         if (Input.GetMouseButtonDown(1)) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit)) {
@@ -74,10 +88,10 @@ public class PlayerControl : MonoBehaviour
     }
 
     void FaceTarget() {
-        if (m_naviAgent.velocity != Vector3.zero && ResetRotation) {
+        if (m_naviAgent.velocity != Vector3.zero && !m_naviAgent.isStopped) {
             transform.eulerAngles = new Vector3(0, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(m_naviAgent.velocity - Vector3.zero), Time.deltaTime * RotationSlerp).eulerAngles.y, 0);
-        } else if (!ResetRotation) {
-            transform.eulerAngles = new Vector3(0, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(ShootingTarget - transform.position), Time.deltaTime * RotationSlerp).eulerAngles.y, 0);
+        } else if (m_naviAgent.isStopped) {
+            transform.eulerAngles = new Vector3(0, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(FacingTarget), Time.deltaTime * RotationSlerp * 2).eulerAngles.y, 0);
         }
     }
 
@@ -100,22 +114,24 @@ public class PlayerControl : MonoBehaviour
         if (!Firing) {
             PlayerAnim.SetBool("Fire", true);
             Firing = true;
-            ResetRotation = false;
-            ShootingTarget = Target;
+            FacingTarget = Target - transform.position;
+            ToggleNavi();
             IEnumerator shoot = ShootBullet(Target);
-            IEnumerator shoot2 = ShootBullet2(Target);
+            // IEnumerator shoot2 = ShootBullet2(Target);
             StartCoroutine(shoot);
-            StartCoroutine(shoot2);
-            m_naviAgent.isStopped = true;
-            Invoke("ResetNaviAnim", Shoot2WaitingTime + 0.11f);
-            Invoke("ResetFiring", Shoot2WaitingTime + ReloadSpeed);
+            // StartCoroutine(shoot2);
+            // Invoke("ToggleNavi", Shoot2WaitingTime + 0.11f);
+            Invoke("ToggleNavi", ShootWaitingTime + 0.1f);
+            Invoke("ResetAnimFire", 0.05f);
+            // Invoke("ResetFiring", Shoot2WaitingTime + ReloadSpeed);
+            Invoke("ResetFiring", ReloadSpeed);
         }
     }
 
     IEnumerator ShootBullet(Vector3 Target) {
         yield return new WaitForSeconds(ShootWaitingTime);
         Vector3 ShootDir = Target - ShooterPoint.position;
-        // ShootDir = new Vector3(ShootDir.x, 0f, ShootDir.z).normalized;
+        ShootDir = new Vector3(ShootDir.x, 0f, ShootDir.z).normalized;
         BulletPrefab = Instantiate(Bullet, ShooterPoint.position, Quaternion.identity);
         BulletPrefab.GetComponent<Rigidbody>().AddForce(ShootDir * ShootForce);
     }
@@ -123,15 +139,22 @@ public class PlayerControl : MonoBehaviour
     IEnumerator ShootBullet2(Vector3 Target) {
         yield return new WaitForSeconds(Shoot2WaitingTime);
         Vector3 ShootDir = Target - ShooterPoint.position;
-        // ShootDir = new Vector3(ShootDir.x, 0f, ShootDir.z).normalized;
+        ShootDir = new Vector3(ShootDir.x, 0f, ShootDir.z).normalized;
         BulletPrefab = Instantiate(Bullet, ShooterPoint.position, Quaternion.identity);
         BulletPrefab.GetComponent<Rigidbody>().AddForce(ShootDir * ShootForce);
     }
-    
-    void ResetNaviAnim() {
-        m_naviAgent.isStopped = false;
+
+    void ToggleNavi() {
+        if (m_naviAgent.isStopped == true) {
+            m_naviAgent.isStopped = false;
+        } else {
+            m_naviAgent.ResetPath();
+            m_naviAgent.isStopped = true;
+        }
+    }
+
+    void ResetAnimFire() {
         PlayerAnim.SetBool("Fire", false);
-        ResetRotation = true;
     }
 
     void ResetFiring() {
@@ -149,4 +172,90 @@ public class PlayerControl : MonoBehaviour
     public float GetHP() {
         return _HP;
     }
+
+    Vector3 GetMousePos() {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit)) {
+            return hit.point;
+        }
+        return new Vector3(0, 0, 0);
+    }
+
+    void Dash() {
+        if (Input.GetKey(KeyCode.Q) && !Dashing) {
+            Dashing = true;
+            DashEffect.SetActive(true);
+            PlayerAnim.SetBool("Dash", true);
+            ToggleNavi();
+            Vector3 dir = GetMousePos() - transform.position;
+            dir = new Vector3(dir.x, 0f, dir.z);
+            dir = dir.normalized;
+            FacingTarget = dir;
+            Doing = true;
+            IEnumerator dashMoving = DashMoving(dir);
+            StartCoroutine(dashMoving);
+            StartCoroutine(CalDashCD());
+            Invoke("ResetDashing", DashCooldown);
+        }
+    }
+
+    void ResetDoing() {
+        Doing = false;
+    }
+
+    IEnumerator DashMoving(Vector3 dir) {
+        float DashAmount = 0f;
+        while (DashAmount < DashDistance) {
+            transform.position += Time.deltaTime * DashSpeed * dir;
+            DashAmount += Time.deltaTime * DashSpeed;
+            yield return null;
+        }
+        ResetAnimDash();
+        ResetDoing();
+        ToggleNavi();
+        DashEffect.SetActive(false);
+    }
+
+    void ResetAnimDash() {
+        PlayerAnim.SetBool("Dash", false);
+    }
+
+    void ResetDashing() {
+        Dashing = false;
+    }
+
+    public void Heal(float HealHP) {
+        _HP += HealHP;
+        if (_HP > MaxHP)
+            _HP = MaxHP;
+    }
+
+    void OnTriggerEnter(Collider other) {
+        if (other.gameObject.CompareTag("Medkit")) {
+            Destroy(other.gameObject.transform.parent.gameObject);
+            if (MedkitHealCD) {
+                MedkitHealCD = false;
+                Heal(MedkitHealHP);
+                Invoke("ResetMedkitHealCD", 0.2f);
+            }
+        }
+    }
+
+    void ResetMedkitHealCD() {
+        MedkitHealCD = true;
+    }
+
+    IEnumerator CalDashCD() {
+        _DashCD = DashCooldown;
+        while (_DashCD > 0) {
+            _DashCD -= Time.deltaTime;
+            yield return null;
+        }
+        _DashCD = 0;
+    }
+
+    public float DashCD() {
+        return _DashCD;
+    }
+
 }
