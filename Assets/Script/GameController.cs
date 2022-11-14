@@ -29,18 +29,6 @@ public class GameController : MonoBehaviour
 
     }
 
-    public void PlayerOnHit(float damage) {
-        playerControl.OnHit(damage);
-    }
-
-    public void SetPlayerHP(float hp) {
-        playerControl.SetPlayerHP(hp);
-    }
-
-    public float PlayerHP() {
-        return playerControl.GetHP();
-    }
-
     public Vector3 PlayerPos() {
         return playerControl.PlayerPos();
     }
@@ -52,11 +40,7 @@ public class GameController : MonoBehaviour
     public void _PlayerBulletHitOn(GameObject obj) {
         _PlayerBulletHitObj = obj;
     }
-
-    public void HealPlayer(float hp) {
-        playerControl.Heal(hp);
-    }
-
+    
     public float CurDashCD() {
         return playerControl.DashCD();
     }

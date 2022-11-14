@@ -25,7 +25,7 @@ public class DontDestroy : MonoBehaviour
     {
         MyScoreText = FindObjectOfType<TextMeshProUGUI>();
         //print(MyScoreText);
-        MyScoreText.SetText("Score: " + ScoreManager.Instance.Score);
+        // MyScoreText.SetText("Score: " + ScoreManager.Instance.Score);
     }
 
     // Update is called once per frame
@@ -33,7 +33,7 @@ public class DontDestroy : MonoBehaviour
     {
         MyScoreText = FindObjectOfType<TextMeshProUGUI>();
         //print(MyScoreText);
-        MyScoreText.SetText("Score: " + ScoreManager.Instance.Score);
+        // MyScoreText.SetText("Score: " + ScoreManager.Instance.Score);
     }
 }
 
