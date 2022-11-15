@@ -72,11 +72,16 @@ public class Scene2Enemy : MonoBehaviour
             animator.SetTrigger("Death");
     }
     public void CreateArrow() {
-        
+        Face = player.transform.position - enemy.transform.position;
+        Face = new Vector3(Face.x, 0f, Face.z).normalized;
+        //Quaternion rotation = Quaternion.LookRotation(Face, Vector3.up);
         ArrowPrefab = Instantiate(Arrow, enemy.transform.position, Quaternion.identity);
         //ArrowPrefab.transform.rotation = rotation;
-        ArrowPrefab.transform.eulerAngles = new Vector3(0, Quaternion.LookRotation(Face, Vector3.up).eulerAngles.y, 0);
-        ArrowPrefab.GetComponent<Rigidbody>().AddForce(Face * 300.0f);
+        
+        ArrowPrefab.transform.LookAt(Face);
+        ArrowPrefab.transform.localEulerAngles += new Vector3(0, 0, 90);
+        
+        ArrowPrefab.GetComponent<Rigidbody>().AddForce(Face * 200.0f);
          
        
     }
