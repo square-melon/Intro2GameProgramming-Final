@@ -85,14 +85,14 @@ public class Scene2Boss : MonoBehaviour
        
     }
     public void CreateBig() {
-        Face = player.transform.position - boss.transform.position;
+        Face = player.transform.position - new Vector3(boss.transform.position.x, boss.transform.position.y + 3, boss.transform.position.z);
         
-        Face = new Vector3(Face.x, 0, Face.z).normalized;
+        //Face = new Vector3(Face.x, 0, Face.z).normalized;
         //Quaternion rotation = Quaternion.LookRotation(Face, Vector3.up);
 
         ArrowPrefab = Instantiate(Arrow, new Vector3(boss.transform.position.x, boss.transform.position.y + 3, boss.transform.position.z), Quaternion.LookRotation(Face) * Quaternion.Euler(90, 0, 0));
         
-        ArrowPrefab.GetComponent<Rigidbody>().AddForce(Face * 300.0f);
+        ArrowPrefab.GetComponent<Rigidbody>().AddForce(Face * 100.0f);
     }
 
 }
