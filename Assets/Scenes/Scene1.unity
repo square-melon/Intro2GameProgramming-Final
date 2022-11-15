@@ -11392,8 +11392,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d47469631b959645bc73782c76366f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioPlayer: {fileID: 481507208}
-  hurtSE: {fileID: 8300000, guid: aad4338833a3bc646ba6824e8d809cbd, type: 3}
 --- !u!4 &893082365
 Transform:
   m_ObjectHideFlags: 0
@@ -15181,6 +15179,12 @@ Transform:
   m_Father: {fileID: 375527360}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1221680451 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7845870445304628517, guid: deaaf31384eecbe4198bba94eaef07a4,
+    type: 3}
+  m_PrefabInstance: {fileID: 228223512}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1223850136
 GameObject:
   m_ObjectHideFlags: 0
@@ -40642,14 +40646,15 @@ MonoBehaviour:
   DashEffect: {fileID: 837161725019617277}
   FireEffect: {fileID: 7059880746496885176}
   HealEffect: {fileID: 6055924541495834171}
+  DamagedEffect: {fileID: 4719135891236240383, guid: 5c770ecfad3352442b9db59ef820be4f,
+    type: 3}
   audioPlayer: {fileID: 481507208}
   shootSE: {fileID: 8300000, guid: 7575dc366f03a8046850f97855376936, type: 3}
   walkSE: {fileID: 8300000, guid: 450f20958c8db4541a8a2c24d89b58cd, type: 3}
   healSE: {fileID: 8300000, guid: d3631271d9479f64c804a99a2f2b86ba, type: 3}
   dashSE: {fileID: 8300000, guid: ac0bd361f4c7bd0449c84f45bc815aef, type: 3}
   deadSE: {fileID: 8300000, guid: 0498ad96395514e4a8017aac5d17fb67, type: 3}
-  DamagedEffect: {fileID: 4719135891236240383, guid: 5c770ecfad3352442b9db59ef820be4f,
-    type: 3}
+  hurtSE: {fileID: 0}
   SpawnPoint: {x: 0, y: 0, z: 0}
   RotationSlerp: 10
   ReloadSpeed: 0.7
@@ -43074,7 +43079,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8569837952849319289}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.29, y: 0.03, z: 108.25}
+  m_LocalPosition: {x: 2.5, y: 0.03, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -83751,6 +83756,7 @@ MonoBehaviour:
   ZombieDead: {fileID: 8300000, guid: 023e6911fd90d1a4cb8eff25f3ee5ed8, type: 3}
   GameControllerObj: {fileID: 3233271802692098204}
   player: {fileID: 2419518567746173275}
+  animator: {fileID: 1221680451}
 --- !u!65 &8569837952849319291
 BoxCollider:
   m_ObjectHideFlags: 0
