@@ -72,7 +72,7 @@ public class DataManager : MonoBehaviour
         return PreviousScene;
     }
 
-    public bool SetSceneState(bool state) {
+    public void SetSceneState(bool state) {
         SceneWin = state;
     }
 }
