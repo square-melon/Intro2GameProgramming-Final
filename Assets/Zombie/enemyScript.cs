@@ -35,7 +35,7 @@ public class enemyScript : MonoBehaviour
             transform.LookAt(player.transform);
             ZombieAnim.SetFloat("Speed", 0.0f);
             ZombieAnim.SetBool("Attack",true);
-            Invoke("ResetAnimAttack",1.0f);
+             Invoke("ResetAnimAttack",1.0f);
         }
         if(hp<=0){
             ZombieAnim.SetBool("Dead",true);
@@ -47,8 +47,12 @@ public class enemyScript : MonoBehaviour
     void ResetAnimAttack(){
         ZombieAnim.SetBool("Attack",false);
     }
-
     public void Damage() {
         hp--;
+    } 
+
+    public void DamagePlayer() {
+        DataManager.Instance.PlayerOnHit(1.0f);
+        print(DataManager.Instance._HP);
     }
 }
