@@ -11,15 +11,12 @@ public class BulletCreate : MonoBehaviour
     public GameObject ExplodeEffect;
 
     private GameController gameController;
-
-    // Start is called before the first frame update
+    
     void Start()
     {
         Destroy(gameObject, ExistTime);
         gameController = GameControllerObj.GetComponent<GameController>();
     }
-
-    // Update is called once per frame
     
     void Update()
     {
@@ -33,17 +30,17 @@ public class BulletCreate : MonoBehaviour
             if (hit.collider.CompareTag("Enemy")) {
                 gameController._PlayerBulletHitOn(hit.collider.gameObject);
                 Instantiate(ExplodeEffect, hit.point, Quaternion.identity);
-                //print("yes" + i);
                 Debug.Log(hit.collider.name);
                 takedamage(hit.transform);
-                //i++;
                 Destroy(gameObject);
             }
         }
     }
+
     void takedamage(Transform enemy) {
         Scene2Enemy e1 = enemy.GetComponent<Scene2Enemy>();
         enemyScript e2 = enemy.GetComponent<enemyScript>();
+        Zombie3script ee2 = enemy.GetComponent<Zombie3script>();
         Wizard e3 = enemy.GetComponent<Wizard>();
         Scene2Boss ee = enemy.GetComponent<Scene2Boss>();
         if (e1)
@@ -54,7 +51,10 @@ public class BulletCreate : MonoBehaviour
             e3.Damage();
         else if (ee)
             ee.Damage();
+        else if (ee2)
+            ee2.Damage();
     }
+
     void OnCollisionEnter(Collision other) {
         if (!other.collider.CompareTag("Player")) {
             if (other.collider.CompareTag("Enemy")) {
@@ -63,8 +63,5 @@ public class BulletCreate : MonoBehaviour
             }
             Destroy(gameObject);
         }
-        // if(other.gameObject == "Enemy") {
-        //     takedamage(other.transform);
-        // }
     }
 }

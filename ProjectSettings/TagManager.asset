@@ -5,10 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Shootable
+  - Enemy
   - Medkit
   - Ground
-  - Bullet
-  - Enemy
   layers:
   - Default
   - TransparentFX
