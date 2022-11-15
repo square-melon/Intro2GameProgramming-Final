@@ -40,6 +40,7 @@ public class BulletCreate : MonoBehaviour
     void takedamage(Transform enemy) {
         Scene2Enemy e1 = enemy.GetComponent<Scene2Enemy>();
         enemyScript e2 = enemy.GetComponent<enemyScript>();
+        Zombie3script ee2 = enemy.GetComponent<Zombie3script>();
         Wizard e3 = enemy.GetComponent<Wizard>();
         Scene2Boss ee = enemy.GetComponent<Scene2Boss>();
         if (e1)
@@ -50,6 +51,8 @@ public class BulletCreate : MonoBehaviour
             e3.Damage();
         else if (ee)
             ee.Damage();
+        else if (ee2)
+            ee2.Damage();
     }
 
     void OnCollisionEnter(Collision other) {
