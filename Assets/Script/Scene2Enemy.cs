@@ -32,7 +32,7 @@ public class Scene2Enemy : MonoBehaviour
         Face = player.transform.position - enemy.transform.position;
         dis = Vector3.Distance(player.transform.position, enemy.transform.position);
         
-        if(dis < 8.0f) {
+        if(dis < 12.0f) {
             Quaternion rotation = Quaternion.LookRotation(Face, Vector3.up);
             transform.rotation = rotation;
             
@@ -74,12 +74,12 @@ public class Scene2Enemy : MonoBehaviour
     }
     public void CreateArrow() {
         Face = player.transform.position - enemy.transform.position;
-        Face = new Vector3(Face.x, 0f, Face.z).normalized;
+        //Face = new Vector3(Face.x, 0f, Face.z).normalized;
         //Quaternion rotation = Quaternion.LookRotation(Face, Vector3.up);
 
-        ArrowPrefab = Instantiate(Arrow, enemy.transform.position, Quaternion.LookRotation(Face) * Quaternion.Euler(90, 0, 0));
+        ArrowPrefab = Instantiate(Arrow, new Vector3(enemy.transform.position.x, enemy.transform.position.y + 1, enemy.transform.position.z), Quaternion.LookRotation(Face) * Quaternion.Euler(90, 0, 0));
         
-        ArrowPrefab.GetComponent<Rigidbody>().AddForce(Face * 300.0f);
+        ArrowPrefab.GetComponent<Rigidbody>().AddForce(Face * 200.0f);
          
        
     }
