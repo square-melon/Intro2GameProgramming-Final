@@ -11,6 +11,8 @@ public class DataManager : MonoBehaviour
     public bool IsPlayerDead { get; private set; }
     public float MAXDashCD { get; private set; }
     public float CurDashCD { get; private set; }
+    public AudioSource audioPlayer;
+    public AudioClip hurtSE;
     private void Awake() 
     {   
         Instance = this; 
@@ -32,6 +34,7 @@ public class DataManager : MonoBehaviour
     }
 
     public void PlayerOnHit(float damage) {
+        audioPlayer.PlayOneShot(hurtSE);
         _HP -= damage;
     }
 
