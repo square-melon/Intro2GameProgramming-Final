@@ -44,10 +44,13 @@ public class BulletCreate : MonoBehaviour
     void takedamage(Transform enemy) {
         Scene2Enemy e1 = enemy.GetComponent<Scene2Enemy>();
         enemyScript e2 = enemy.GetComponent<enemyScript>();
+        Wizard e3 = enemy.GetComponent<Wizard>();
         if (e1)
             e1.Damage();
         else if (e2)
             e2.Damage();
+        else if (e3)
+            e3.Damage();
     }
     void OnCollisionEnter(Collision other) {
         if (!other.collider.CompareTag("Player")) {

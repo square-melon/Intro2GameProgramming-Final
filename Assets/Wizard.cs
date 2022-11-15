@@ -22,6 +22,8 @@ public class Wizard : MonoBehaviour
 
     private Vector3 direction;
 
+    private int hp = 3;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,7 +44,10 @@ public class Wizard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if(hp == 0) {
+            animator.SetBool("Dead", true);
+            Fire.SetActive(false);
+        }
     }
 
     void FixedUpdate()
@@ -72,25 +77,11 @@ public class Wizard : MonoBehaviour
         }
     }
 
-    // void OnCollisionEnter(Collision collision)
-    // {
-    //     if(collision.gameObject.name == "Player")
-    //     {
-    //         print("Hit");
-    //         // playerControl.PlayerOnHit(40);
-    //     }
-    //     else if(collision.gameObject.layer == 6)
-    //     {
-    //         animator.SetBool("HitWall", true);
-    //         animator.SetBool("Attack", false);
-    //     }
-    // }
-
     void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.name == "Player")
         {
-            print("Hit");
+            DataManager.Instance.PlayerOnHit(90);
             // playerControl.PlayerOnHit(40);
         }
         if(other.gameObject.layer == 6)
@@ -98,5 +89,9 @@ public class Wizard : MonoBehaviour
             animator.SetBool("HitWall", true);
             animator.SetBool("Attack", false);
         }
+    }
+
+    public void Damage() {
+        hp--;
     }
 }
