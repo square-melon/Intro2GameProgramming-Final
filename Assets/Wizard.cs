@@ -7,6 +7,9 @@ public class Wizard : MonoBehaviour
     public GameObject player;
     public GameObject Fire;
 
+    public AudioSource audioPlayer;
+    public AudioClip attackSE;
+
     public float hitRange = 5f;
     public float speed = 5f;
 
@@ -67,6 +70,7 @@ public class Wizard : MonoBehaviour
         else if(state.fullPathHash == AttackStartState)
         {
             Fire.SetActive(true);
+            // audioPlayer.PlayOneShot(attackSE);
         }
         else if(state.fullPathHash == AttackDashState)
         {

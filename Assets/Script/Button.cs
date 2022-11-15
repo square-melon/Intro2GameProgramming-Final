@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
 public class Button : MonoBehaviour
 {
     // Start is called before the first frame update
     int flag = 0;
     public Animator animator;
     public Image image;
+    public AudioSource audioPlayer;
+    public AudioClip hover;
+    public AudioClip click;
+
     void Start()
     {
         image.enabled = false;
@@ -41,5 +47,13 @@ public class Button : MonoBehaviour
 
             flag = 0;
         }
+    }
+
+    public void OnPointerEnter() {
+        audioPlayer.PlayOneShot(hover);
+    }
+
+    public void OnPointerClick() {
+        audioPlayer.PlayOneShot(click);
     }
 }
