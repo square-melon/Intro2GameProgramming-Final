@@ -23,7 +23,11 @@ public class SceneTransition : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(W1.GetHp() <= 0 && W2.GetHp() <= 0 && W3.GetHp() <= 0 && W4.GetHp() <= 0 && W5.GetHp() <= 0) {
+        // if(W1.GetHp() <= 0 && W2.GetHp() <= 0 && W3.GetHp() <= 0 && W4.GetHp() <= 0 && W5.GetHp() <= 0) {
+        //     animator.SetTrigger("FadeOut");
+        //     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
+        // }
+        if(W1.GetHp() <= 0) {
             animator.SetTrigger("FadeOut");
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
         }
