@@ -17,6 +17,11 @@ public class Scene2Enemy : MonoBehaviour
     private float dis;
     private Vector3 Face;
     private float hp = 2;
+    public AudioSource audioPlayer;
+    public AudioSource deadPlayer;
+    public AudioClip attackSE;
+    public AudioClip deadSE;
+
     void Start()
     {
         m_naviAgent = this.enemy.GetComponent<NavMeshAgent>();
@@ -69,8 +74,10 @@ public class Scene2Enemy : MonoBehaviour
         Debug.Log(hp);
     }
     void DetectDead() {
-        if (hp <= 0)
+        if (hp <= 0){ 
             animator.SetTrigger("Death");
+        }
+            
     }
     public void CreateArrow() {
         Face = player.transform.position - enemy.transform.position;
@@ -80,8 +87,10 @@ public class Scene2Enemy : MonoBehaviour
         ArrowPrefab = Instantiate(Arrow, new Vector3(enemy.transform.position.x, enemy.transform.position.y + 1, enemy.transform.position.z), Quaternion.LookRotation(Face) * Quaternion.Euler(90, 0, 0));
         
         ArrowPrefab.GetComponent<Rigidbody>().AddForce(Face * 200.0f);
-         
+        audioPlayer.PlayOneShot(attackSE);
        
     }
-
+    public void DeadSE(){
+        deadPlayer.PlayOneShot(deadSE);
+    }
 }
