@@ -52,7 +52,7 @@ public class enemyScript : MonoBehaviour
     } 
 
     public void DamagePlayer() {
-        DataManager.Instance.PlayerOnHit(1.0f);
+        DataManager.Instance.PlayerOnHit(50.0f);
         print(DataManager.Instance._HP);
     }
 }
