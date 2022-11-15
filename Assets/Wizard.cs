@@ -81,7 +81,7 @@ public class Wizard : MonoBehaviour
     {
         if(other.gameObject.name == "Player")
         {
-            DataManager.Instance.PlayerOnHit(90);
+            DataManager.Instance.PlayerOnHit(20);
             // playerControl.PlayerOnHit(40);
         }
         if(other.gameObject.layer == 6)
