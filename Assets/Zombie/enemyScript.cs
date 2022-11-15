@@ -26,6 +26,7 @@ public class enemyScript : MonoBehaviour
         GameController = GameControllerObj.GetComponent<GameController>();
         naviAgent = this.GetComponent<NavMeshAgent>();
         ZombieAnim = GetComponent<Animator>();
+        DataManager.Instance.SetSceneState(false);
     }
 
     // Update is called once per frame
@@ -49,8 +50,12 @@ public class enemyScript : MonoBehaviour
         }
         if(hp<=0){
             ZombieAnim.SetBool("Dead",true);
+
         }
         if(ZombieAnim.GetCurrentAnimatorStateInfo(0).IsName("Dissapear")){ //dissapear after dead
+            gameObject.SetActive(false);
+        }
+        if(DataManager.Instance.SceneWin == true) {
             gameObject.SetActive(false);
         }
     }

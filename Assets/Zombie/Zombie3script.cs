@@ -49,6 +49,7 @@ public class Zombie3script : MonoBehaviour
         }
         if(hp<=0){
             ZombieAnim.SetBool("Dead",true);
+            
         }
         if(ZombieAnim.GetCurrentAnimatorStateInfo(0).IsName("Dissapear")){ //dissapear after dead
             gameObject.SetActive(false);
@@ -71,6 +72,7 @@ public class Zombie3script : MonoBehaviour
         audioPlayer.PlayOneShot(ZombieDead);
     }
     public void LoadScene2(){
+        DataManager.Instance.SetSceneState(true);
         if(gameObject.name == "Zombie3") {
             animator.SetTrigger("FadeOut");
         }
