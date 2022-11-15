@@ -13,6 +13,7 @@ public class PlayerControl : MonoBehaviour
     public Transform ShooterPoint;
     public GameObject Gam;
     public GameObject DashEffect;
+    public GameObject FireEffect;
 
     [Header("Settings")]
     public Vector3 SpawnPoint;
@@ -25,6 +26,8 @@ public class PlayerControl : MonoBehaviour
     public float DashDistance;
     public float DashSpeed;
     public float MedkitHealHP;
+    public float MAXHP;
+    public float FireEffectStop;
 
     private UnityEngine.AI.NavMeshAgent m_naviAgent;
     private RaycastHit hit;
@@ -33,12 +36,10 @@ public class PlayerControl : MonoBehaviour
     private bool Firing;
     private GameObject BulletPrefab;
     private Vector3 FacingTarget;
-    private float _HP;
     private GameController gam;
     private bool Dashing;
     private bool Doing;
     private bool MedkitHealCD;
-    private float MaxHP;
     private float _DashCD;
 
     void Start()
@@ -55,18 +56,20 @@ public class PlayerControl : MonoBehaviour
     {
         LocateDestination();
         FaceTarget();
+        Attack();
         Dash();
     }
 
     void Init() {
         Firing = false;
-        _HP = gam.PlayerMaxHP;
-        MaxHP = gam.PlayerMaxHP;
         Dashing = false;
         Doing = false;
         transform.position = SpawnPoint;
         DashEffect.SetActive(false);
         MedkitHealCD = true;
+        DataManager.Instance.SetPlayerHP(MAXHP);
+        DataManager.Instance.SetMAXHP(MAXHP);
+        FireEffect.SetActive(false);
     }
 
     void LocateDestination() {
@@ -77,8 +80,6 @@ public class PlayerControl : MonoBehaviour
             if (Physics.Raycast(ray, out hit)) {
                 if (hit.collider.CompareTag("Ground")) {
                     m_naviAgent.SetDestination(hit.point);
-                } else if (hit.collider.CompareTag("Enemy")) {
-                    Attack(hit.collider.transform.position);
                 }
             }
         }
@@ -110,9 +111,14 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    void Attack(Vector3 Target) {
-        if (!Firing) {
-            PlayerAnim.SetBool("Fire", true);
+    void Attack() {
+        if (Input.GetKey(KeyCode.A) && !Firing) {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Vector3 Target = Vector3.zero;
+            if (Physics.Raycast(ray, out hit)) {
+                Target = hit.point;
+            }
+            PlayerAnim.SetInteger("Doing", 1);
             Firing = true;
             FacingTarget = Target - transform.position;
             ToggleNavi();
@@ -122,18 +128,25 @@ public class PlayerControl : MonoBehaviour
             // StartCoroutine(shoot2);
             // Invoke("ToggleNavi", Shoot2WaitingTime + 0.11f);
             Invoke("ToggleNavi", ShootWaitingTime + 0.1f);
-            Invoke("ResetAnimFire", 0.05f);
+            Invoke("ResetAnimDoing", 0.05f);
             // Invoke("ResetFiring", Shoot2WaitingTime + ReloadSpeed);
             Invoke("ResetFiring", ReloadSpeed);
+            Invoke("DisableFireEffect", FireEffectStop);
         }
+    }
+
+    void DisableFireEffect() {
+        FireEffect.SetActive(false);
     }
 
     IEnumerator ShootBullet(Vector3 Target) {
         yield return new WaitForSeconds(ShootWaitingTime);
         Vector3 ShootDir = Target - ShooterPoint.position;
         ShootDir = new Vector3(ShootDir.x, 0f, ShootDir.z).normalized;
+        FireEffect.SetActive(true);
         BulletPrefab = Instantiate(Bullet, ShooterPoint.position, Quaternion.identity);
         BulletPrefab.GetComponent<Rigidbody>().AddForce(ShootDir * ShootForce);
+        Invoke("DisableFireEffect", FireEffectStop);
     }
 
     IEnumerator ShootBullet2(Vector3 Target) {
@@ -153,24 +166,12 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    void ResetAnimFire() {
-        PlayerAnim.SetBool("Fire", false);
+    void ResetAnimDoing() {
+        PlayerAnim.SetInteger("Doing", 0);
     }
 
     void ResetFiring() {
         Firing = false;
-    }
-
-    public void OnHit(float damage) {
-        _HP -= damage;
-    }
-
-    public void SetPlayerHP(float hp) {
-        _HP = hp;
-    }
-
-    public float GetHP() {
-        return _HP;
     }
 
     Vector3 GetMousePos() {
@@ -185,7 +186,7 @@ public class PlayerControl : MonoBehaviour
         if (Input.GetKey(KeyCode.Q) && !Dashing) {
             Dashing = true;
             DashEffect.SetActive(true);
-            PlayerAnim.SetBool("Dash", true);
+            PlayerAnim.SetInteger("Doing", 2);
             ToggleNavi();
             Vector3 dir = GetMousePos() - transform.position;
             dir = new Vector3(dir.x, 0f, dir.z);
@@ -210,24 +211,14 @@ public class PlayerControl : MonoBehaviour
             DashAmount += Time.deltaTime * DashSpeed;
             yield return null;
         }
-        ResetAnimDash();
+        ResetAnimDoing();
         ResetDoing();
         ToggleNavi();
         DashEffect.SetActive(false);
     }
 
-    void ResetAnimDash() {
-        PlayerAnim.SetBool("Dash", false);
-    }
-
     void ResetDashing() {
         Dashing = false;
-    }
-
-    public void Heal(float HealHP) {
-        _HP += HealHP;
-        if (_HP > MaxHP)
-            _HP = MaxHP;
     }
 
     void OnTriggerEnter(Collider other) {
@@ -235,7 +226,7 @@ public class PlayerControl : MonoBehaviour
             Destroy(other.gameObject.transform.parent.gameObject);
             if (MedkitHealCD) {
                 MedkitHealCD = false;
-                Heal(MedkitHealHP);
+                DataManager.Instance.HealPlayer(MedkitHealHP);
                 Invoke("ResetMedkitHealCD", 0.2f);
             }
         }

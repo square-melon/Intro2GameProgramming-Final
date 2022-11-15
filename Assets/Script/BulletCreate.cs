@@ -8,6 +8,7 @@ public class BulletCreate : MonoBehaviour
     [Header("Settings")]
     public float ExistTime;
     public GameObject GameControllerObj;
+    public GameObject ExplodeEffect;
 
     private GameController gameController;
 
@@ -19,6 +20,7 @@ public class BulletCreate : MonoBehaviour
     }
 
     // Update is called once per frame
+    
     void Update()
     {
         DetectShootOn();
@@ -27,17 +29,36 @@ public class BulletCreate : MonoBehaviour
     void DetectShootOn() {
         Ray ray = new Ray(transform.position, GetComponent<Rigidbody>().velocity);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 0.1f)) {
+        if (Physics.Raycast(ray, out hit, 0.5f)) {
             if (hit.collider.CompareTag("Enemy")) {
                 gameController._PlayerBulletHitOn(hit.collider.gameObject);
+                Instantiate(ExplodeEffect, hit.point, Quaternion.identity);
+                //print("yes" + i);
+                Debug.Log(hit.collider.name);
+                takedamage(hit.transform);
+                //i++;
                 Destroy(gameObject);
             }
         }
     }
-
+    void takedamage(Transform enemy) {
+        Scene2Enemy e1 = enemy.GetComponent<Scene2Enemy>();
+        enemyScript e2 = enemy.GetComponent<enemyScript>();
+        if (e1)
+            e1.Damage();
+        else if (e2)
+            e2.Damage();
+    }
     void OnCollisionEnter(Collision other) {
         if (!other.collider.CompareTag("Player")) {
+            if (other.collider.CompareTag("Enemy")) {
+                Instantiate(ExplodeEffect, other.contacts[0].point, Quaternion.identity);
+                takedamage(other.collider.transform);
+            }
             Destroy(gameObject);
         }
+        // if(other.gameObject == "Enemy") {
+        //     takedamage(other.transform);
+        // }
     }
 }
