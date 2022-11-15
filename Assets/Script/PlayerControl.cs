@@ -6,14 +6,13 @@ using UnityEngine.AI;
 public class PlayerControl : MonoBehaviour
 {
     [Header("References")]
-    public Camera PlayerCamera;
     public Transform rightGunBone;
     public GameObject rightGun;
     public GameObject Bullet;
     public Transform ShooterPoint;
-    public GameObject Gam;
     public GameObject DashEffect;
     public GameObject FireEffect;
+    public GameObject HealEffect;
 
     [Header("Settings")]
     public Vector3 SpawnPoint;
@@ -36,7 +35,6 @@ public class PlayerControl : MonoBehaviour
     private bool Firing;
     private GameObject BulletPrefab;
     private Vector3 FacingTarget;
-    private GameController gam;
     private bool Dashing;
     private bool Doing;
     private bool MedkitHealCD;
@@ -44,20 +42,25 @@ public class PlayerControl : MonoBehaviour
 
     void Start()
     {
-        gam = Gam.GetComponent<GameController>();
         m_naviAgent = GetComponent<NavMeshAgent>();
         PlayerRb = GetComponent<Rigidbody>();
         PlayerAnim = GetComponent<Animator>();
+        DataManager.Instance.SetMAXDashCD(DashCooldown);
         SetGun();
         Init();
     }
 
     void Update()
     {
-        LocateDestination();
-        FaceTarget();
-        Attack();
-        Dash();
+        if (!DataManager.Instance.IsPlayerDead) {
+            LocateDestination();
+            FaceTarget();
+            Attack();
+            Dash();
+            DeadDetect();
+        } else {
+            // Maybe reset?
+        }
     }
 
     void Init() {
@@ -65,11 +68,16 @@ public class PlayerControl : MonoBehaviour
         Dashing = false;
         Doing = false;
         transform.position = SpawnPoint;
+        m_naviAgent.isStopped = false;
         DashEffect.SetActive(false);
         MedkitHealCD = true;
+        FireEffect.SetActive(false);
+        HealEffect.SetActive(false);
         DataManager.Instance.SetPlayerHP(MAXHP);
         DataManager.Instance.SetMAXHP(MAXHP);
-        FireEffect.SetActive(false);
+        DataManager.Instance.PlayerDead(false);
+        DataManager.Instance.SetDashCD(0);
+        ResetAnimDoing();
     }
 
     void LocateDestination() {
@@ -91,7 +99,7 @@ public class PlayerControl : MonoBehaviour
     void FaceTarget() {
         if (m_naviAgent.velocity != Vector3.zero && !m_naviAgent.isStopped) {
             transform.eulerAngles = new Vector3(0, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(m_naviAgent.velocity - Vector3.zero), Time.deltaTime * RotationSlerp).eulerAngles.y, 0);
-        } else if (m_naviAgent.isStopped) {
+        } else if (m_naviAgent.isStopped && FacingTarget != Vector3.zero) {
             transform.eulerAngles = new Vector3(0, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(FacingTarget), Time.deltaTime * RotationSlerp * 2).eulerAngles.y, 0);
         }
     }
@@ -167,7 +175,8 @@ public class PlayerControl : MonoBehaviour
     }
 
     void ResetAnimDoing() {
-        PlayerAnim.SetInteger("Doing", 0);
+        if (DataManager.Instance.IsPlayerDead == false)
+            PlayerAnim.SetInteger("Doing", 0);
     }
 
     void ResetFiring() {
@@ -214,6 +223,10 @@ public class PlayerControl : MonoBehaviour
         ResetAnimDoing();
         ResetDoing();
         ToggleNavi();
+        Invoke("DashEffectDisabled", 0.3f);
+    }
+
+    void DashEffectDisabled() {
         DashEffect.SetActive(false);
     }
 
@@ -225,11 +238,17 @@ public class PlayerControl : MonoBehaviour
         if (other.gameObject.CompareTag("Medkit")) {
             Destroy(other.gameObject.transform.parent.gameObject);
             if (MedkitHealCD) {
+                HealEffect.SetActive(true);
                 MedkitHealCD = false;
                 DataManager.Instance.HealPlayer(MedkitHealHP);
                 Invoke("ResetMedkitHealCD", 0.2f);
+                Invoke("HealEffectDisabled", 0.8f);
             }
         }
+    }
+
+    void HealEffectDisabled() {
+        HealEffect.SetActive(false);
     }
 
     void ResetMedkitHealCD() {
@@ -240,13 +259,30 @@ public class PlayerControl : MonoBehaviour
         _DashCD = DashCooldown;
         while (_DashCD > 0) {
             _DashCD -= Time.deltaTime;
+            DataManager.Instance.SetDashCD(_DashCD);
             yield return null;
         }
         _DashCD = 0;
+        DataManager.Instance.SetDashCD(0);
     }
 
     public float DashCD() {
         return _DashCD;
+    }
+
+    void DeadDetect() {
+        if (DataManager.Instance.IsPlayerDead == false) {
+            if (DataManager.Instance.HP() <= 0) {
+                DataManager.Instance.PlayerDead(true);
+                PlayerAnim.SetInteger("Doing", 3);
+                Doing = true;
+                ToggleNavi();
+            }
+        }
+    }
+
+    public void Reset() {
+        Init();
     }
 
 }
