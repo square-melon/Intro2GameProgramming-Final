@@ -30,7 +30,7 @@ public class GameController : MonoBehaviour
     }
 
     public Vector3 PlayerPos() {
-        return playerControl.PlayerPos();
+         return playerControl.PlayerPos();
     }
 
     public GameObject PlayerBulletHitOn() {
