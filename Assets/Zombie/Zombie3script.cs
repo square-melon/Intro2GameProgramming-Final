@@ -4,7 +4,7 @@ using UnityEngine;
 
 using UnityEngine.AI;
 
-public class enemyScript : MonoBehaviour
+public class Zombie3script : MonoBehaviour
 {
     // Start is called before the first frame update
     public AudioSource audioPlayer;
@@ -17,7 +17,7 @@ public class enemyScript : MonoBehaviour
     private NavMeshAgent naviAgent;
     private Animator ZombieAnim;
     private UnityEngine.AI.NavMeshAgent nav;
-    private int  hp=2;
+    private int  hp=10;
     private bool first=true;
 
     void Start()
@@ -33,7 +33,7 @@ public class enemyScript : MonoBehaviour
     {
         float dstToPlayer = Vector3.Distance(transform.position, GameController.PlayerPos());
         
-        if(dstToPlayer<15.0f && dstToPlayer > 1.0f){ //Track
+        if(dstToPlayer<20.0f && dstToPlayer > 1.0f){ //Track
             if(first){
                 audioPlayer.PlayOneShot(ZombieMoan);
                 first = false;
