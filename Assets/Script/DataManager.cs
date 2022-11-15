@@ -8,6 +8,7 @@ public class DataManager : MonoBehaviour
     public float Score { get; private set; }
     public float _HP { get; private set; }
     public float MAXHP { get; private set; }
+    public bool IsPlayerDead { get; private set; }
     private void Awake() 
     {   
         Instance = this; 
@@ -41,5 +42,9 @@ public class DataManager : MonoBehaviour
 
     public void SetMAXHP(float hp) {
         MAXHP = hp;
+    }
+
+    public void PlayerDead(bool state) {
+        IsPlayerDead = state;
     }
 }

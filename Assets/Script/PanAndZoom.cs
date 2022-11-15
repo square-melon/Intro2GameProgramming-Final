@@ -37,9 +37,13 @@ public class PanAndZoom : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Y))
-            Lock = !Lock;
-        MoveCamera();
+        if (DataManager.Instance.IsPlayerDead) {
+            Center();
+        } else {
+            if (Input.GetKeyDown(KeyCode.Y))
+                Lock = !Lock;
+            MoveCamera();
+        }
     }
 
     void MoveCamera() {
