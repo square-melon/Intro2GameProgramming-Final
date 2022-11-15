@@ -6,12 +6,10 @@ using UnityEngine.AI;
 public class PlayerControl : MonoBehaviour
 {
     [Header("References")]
-    public Camera PlayerCamera;
     public Transform rightGunBone;
     public GameObject rightGun;
     public GameObject Bullet;
     public Transform ShooterPoint;
-    public GameObject Gam;
     public GameObject DashEffect;
     public GameObject FireEffect;
     public GameObject HealEffect;
@@ -37,7 +35,6 @@ public class PlayerControl : MonoBehaviour
     private bool Firing;
     private GameObject BulletPrefab;
     private Vector3 FacingTarget;
-    private GameController gam;
     private bool Dashing;
     private bool Doing;
     private bool MedkitHealCD;
@@ -45,21 +42,25 @@ public class PlayerControl : MonoBehaviour
 
     void Start()
     {
-        gam = Gam.GetComponent<GameController>();
         m_naviAgent = GetComponent<NavMeshAgent>();
         PlayerRb = GetComponent<Rigidbody>();
         PlayerAnim = GetComponent<Animator>();
+        DataManager.Instance.SetMAXDashCD(DashCooldown);
         SetGun();
         Init();
     }
 
     void Update()
     {
-        LocateDestination();
-        FaceTarget();
-        Attack();
-        Dash();
-        DeadDetect();
+        if (!DataManager.Instance.IsPlayerDead) {
+            LocateDestination();
+            FaceTarget();
+            Attack();
+            Dash();
+            DeadDetect();
+        } else {
+            // Maybe reset?
+        }
     }
 
     void Init() {
@@ -75,6 +76,7 @@ public class PlayerControl : MonoBehaviour
         DataManager.Instance.SetPlayerHP(MAXHP);
         DataManager.Instance.SetMAXHP(MAXHP);
         DataManager.Instance.PlayerDead(false);
+        DataManager.Instance.SetDashCD(0);
         ResetAnimDoing();
     }
 
@@ -97,7 +99,7 @@ public class PlayerControl : MonoBehaviour
     void FaceTarget() {
         if (m_naviAgent.velocity != Vector3.zero && !m_naviAgent.isStopped) {
             transform.eulerAngles = new Vector3(0, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(m_naviAgent.velocity - Vector3.zero), Time.deltaTime * RotationSlerp).eulerAngles.y, 0);
-        } else if (m_naviAgent.isStopped) {
+        } else if (m_naviAgent.isStopped && FacingTarget != Vector3.zero) {
             transform.eulerAngles = new Vector3(0, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(FacingTarget), Time.deltaTime * RotationSlerp * 2).eulerAngles.y, 0);
         }
     }
@@ -257,9 +259,11 @@ public class PlayerControl : MonoBehaviour
         _DashCD = DashCooldown;
         while (_DashCD > 0) {
             _DashCD -= Time.deltaTime;
+            DataManager.Instance.SetDashCD(_DashCD);
             yield return null;
         }
         _DashCD = 0;
+        DataManager.Instance.SetDashCD(0);
     }
 
     public float DashCD() {
@@ -275,6 +279,10 @@ public class PlayerControl : MonoBehaviour
                 ToggleNavi();
             }
         }
+    }
+
+    public void Reset() {
+        Init();
     }
 
 }
