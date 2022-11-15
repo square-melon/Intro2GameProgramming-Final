@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class PlayerControl : MonoBehaviour
     public AudioClip healSE;
     public AudioClip dashSE;
     public AudioClip deadSE;
+    public GameObject DamagedEffect;
 
     [Header("Settings")]
     public Vector3 SpawnPoint;
@@ -45,6 +47,7 @@ public class PlayerControl : MonoBehaviour
     private bool Doing;
     private bool MedkitHealCD;
     private float _DashCD;
+    private float OriHP;
 
     void Start()
     {
@@ -83,6 +86,7 @@ public class PlayerControl : MonoBehaviour
         DataManager.Instance.SetMAXHP(MAXHP);
         DataManager.Instance.PlayerDead(false);
         DataManager.Instance.SetDashCD(0);
+        OriHP = MAXHP;
         ResetAnimDoing();
     }
 
@@ -281,14 +285,27 @@ public class PlayerControl : MonoBehaviour
 
     void DeadDetect() {
         if (DataManager.Instance.IsPlayerDead == false) {
-            if (DataManager.Instance.HP() <= 0) {
+            float CurHP = DataManager.Instance.HP();
+            if (CurHP <= 0) {
                 audioPlayer.PlayOneShot(deadSE);
                 DataManager.Instance.PlayerDead(true);
                 PlayerAnim.SetInteger("Doing", 3);
                 Doing = true;
                 ToggleNavi();
+                Invoke("LoadLoseScene", 4f);
+            } else {
+                if (CurHP != OriHP) {
+                    Instantiate(DamagedEffect, transform.position, Quaternion.identity);
+                    PlayerAnim.SetInteger("Doing", 4);
+                    OriHP = CurHP;
+                    Invoke("ResetAnimDoing", 0.2f);
+                }
             }
         }
+    }
+
+    void LoadLoseScene() {
+        SceneManager.LoadScene("Lose");
     }
 
     public void Reset() {
