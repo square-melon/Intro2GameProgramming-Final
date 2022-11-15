@@ -45235,15 +45235,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2738a0ca14ca8204c93dabd6977728ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerCamera: {fileID: 0}
   rightGunBone: {fileID: 8046192949904021524}
   rightGun: {fileID: 100000, guid: d992a232642f7574b80a75c2ca4b4cb8, type: 3}
   Bullet: {fileID: 4752126221620332536, guid: 24fadc67dfeb07548a33f2d3ccd4826a, type: 3}
   ShooterPoint: {fileID: 8046192949422829984}
-  Gam: {fileID: 0}
   DashEffect: {fileID: 5018198201819171616}
   FireEffect: {fileID: 3441795374441200997}
   HealEffect: {fileID: 1887287257339693798}
+  audioPlayer: {fileID: 0}
+  shootSE: {fileID: 8300000, guid: 7575dc366f03a8046850f97855376936, type: 3}
+  walkSE: {fileID: 8300000, guid: 450f20958c8db4541a8a2c24d89b58cd, type: 3}
+  healSE: {fileID: 8300000, guid: d3631271d9479f64c804a99a2f2b86ba, type: 3}
+  dashSE: {fileID: 8300000, guid: ac0bd361f4c7bd0449c84f45bc815aef, type: 3}
+  deadSE: {fileID: 8300000, guid: 0498ad96395514e4a8017aac5d17fb67, type: 3}
+  DamagedEffect: {fileID: 4719135891236240383, guid: 5c770ecfad3352442b9db59ef820be4f,
+    type: 3}
   SpawnPoint: {x: 0, y: 0, z: 0}
   RotationSlerp: 10
   ReloadSpeed: 0.7
