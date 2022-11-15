@@ -11,6 +11,7 @@ public class DataManager : MonoBehaviour
     public bool IsPlayerDead { get; private set; }
     public float MAXDashCD { get; private set; }
     public float CurDashCD { get; private set; }
+    public int PreviousScene { get; private set;}
     private void Awake() 
     {   
         Instance = this; 
@@ -21,9 +22,7 @@ public class DataManager : MonoBehaviour
         }
         DontDestroyOnLoad(this.gameObject);
     }
-    // void Start() {
-    //     Score = 0.0f;
-    // }
+
     public void IncreaseScore(float amount)
     {
         Score += amount;
@@ -62,5 +61,13 @@ public class DataManager : MonoBehaviour
 
     public void SetMAXDashCD(float cd) {
         MAXDashCD = cd;
+    }
+
+    public void SetPreviousScene(int scene) {
+        PreviousScene = scene;
+    }
+
+    public int GetPreviousScene() {
+        return PreviousScene;
     }
 }

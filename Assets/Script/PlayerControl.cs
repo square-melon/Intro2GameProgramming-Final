@@ -291,6 +291,7 @@ public class PlayerControl : MonoBehaviour
                 audioPlayer.PlayOneShot(deadSE);
                 DataManager.Instance.PlayerDead(true);
                 PlayerAnim.SetInteger("Doing", 3);
+                PlayerPrefs.SetInt("SavedScene", SceneManager.GetActiveScene().buildIndex);
                 Doing = true;
                 ToggleNavi();
                 Invoke("LoadLoseScene", 4f);

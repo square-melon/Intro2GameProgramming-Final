@@ -7,11 +7,14 @@ public class Wizard : MonoBehaviour
     public GameObject player;
     public GameObject Fire;
 
+    public AudioSource audioPlayer;
+    public AudioClip attackSE;
+
     public float hitRange = 5f;
     public float speed = 5f;
 
     private Animator animator;
-    // private Rigidbody rb;
+    private Transform tf;
 
     private int IdleState;
     private int AttackStartState;
@@ -28,7 +31,7 @@ public class Wizard : MonoBehaviour
     void Start()
     {
         animator = gameObject.GetComponent<Animator>();
-        // rb = gameObject.GetComponent<Rigidbody>();
+        tf = gameObject.GetComponent<Transform>();
 
         IdleState = Animator.StringToHash("Base Layer.Idle03");
         AttackStartState = Animator.StringToHash("Base Layer.Attack02Start");
@@ -45,9 +48,11 @@ public class Wizard : MonoBehaviour
     void Update()
     {
         if(hp == 0) {
+            hp = 0;
             animator.SetBool("Dead", true);
             Fire.SetActive(false);
         }
+        tf.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
 
     void FixedUpdate()
@@ -65,6 +70,7 @@ public class Wizard : MonoBehaviour
         else if(state.fullPathHash == AttackStartState)
         {
             Fire.SetActive(true);
+            // audioPlayer.PlayOneShot(attackSE);
         }
         else if(state.fullPathHash == AttackDashState)
         {
@@ -81,8 +87,7 @@ public class Wizard : MonoBehaviour
     {
         if(other.gameObject.name == "Player")
         {
-            DataManager.Instance.PlayerOnHit(20);
-            // playerControl.PlayerOnHit(40);
+            if(hp > 0) DataManager.Instance.PlayerOnHit(40);
         }
         if(other.gameObject.layer == 6)
         {
@@ -93,5 +98,9 @@ public class Wizard : MonoBehaviour
 
     public void Damage() {
         hp--;
+    }
+
+    public int GetHp() {
+        return hp;
     }
 }

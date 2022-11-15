@@ -4872,7 +4872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2038b435c5dc62e469cb0975becd35cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExistTime: 1.2
+  ExistTime: 0.4
   GameControllerObj: {fileID: 5740922170830594228, guid: cf5cdc43f2e68c04c82ff43ba23e8b73,
     type: 3}
   ExplodeEffect: {fileID: 8420350629562768551, guid: b7cda52f057c21d45a51e288191cbaa1,
