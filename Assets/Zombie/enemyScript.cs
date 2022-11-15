@@ -70,4 +70,7 @@ public class enemyScript : MonoBehaviour
     public void DeadSE(){
         audioPlayer.PlayOneShot(ZombieDead);
     }
+    public void LoadScene2() {
+
+    }
 } 
