@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class Scene2Boss : MonoBehaviour
 {
     // Start is called before the first frame update
 
     public Animator animator;
+    public Animator animatorfade;
     //public 
     //public GameObject ExplodeEffect;
     public GameObject boss;
@@ -17,8 +19,8 @@ public class Scene2Boss : MonoBehaviour
     public GameObject Arrow;
     private float dis;
     private Vector3 Face;
-    private float hp = 10;
-
+    private float hp = 1;
+    public Text m_Text;
     void Start()
     {
         m_naviAgent = this.boss.GetComponent<NavMeshAgent>();
@@ -95,8 +97,18 @@ public class Scene2Boss : MonoBehaviour
         
         ArrowPrefab.GetComponent<Rigidbody>().AddForce(Face * 100.0f);
     }
+    // public void LoadtoNextScene() {
+    //     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    //     animatorfade.SetTrigger("FadeOut");
+    // }
+
+
     public void LoadtoNextScene() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        
+        animatorfade.SetTrigger("FadeOut");
+
+        //StartCoroutine(Load());
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
-    
 }
+    
