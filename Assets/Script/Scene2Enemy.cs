@@ -53,16 +53,16 @@ public class Scene2Enemy : MonoBehaviour
         
     }
 
-    void OnCollisionEnter(Collision col) {
-        if(col.gameObject.tag == "Bullet") {
-            //animator.SetTrigger("Death");
-            hp--;
-            if(hp <= 0 ){
-                animator.SetTrigger("Death");
-            }
-            print("yes");
-        }
-    }
+    // void OnCollisionEnter(Collision col) {
+    //     if(col.gameObject.tag == "Bullet") {
+    //         //animator.SetTrigger("Death");
+    //         hp--;
+    //         if(hp <= 0 ){
+    //             animator.SetTrigger("Death");
+    //         }
+    //         print("yes");
+    //     }
+    // }
     public void Damage() {
         hp--;
         Debug.Log(hp);
