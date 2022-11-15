@@ -11,11 +11,12 @@ public class DataManager : MonoBehaviour
     public bool IsPlayerDead { get; private set; }
     public float MAXDashCD { get; private set; }
     public float CurDashCD { get; private set; }
+    public int PreviousScene { get; private set;}
     public AudioSource audioPlayer;
     public AudioClip hurtSE;
     private void Awake() 
     {   
-        Instance = this; 
+        Instance = this;
     }
     // void Start() {
     //     Score = 0.0f;
@@ -59,5 +60,13 @@ public class DataManager : MonoBehaviour
 
     public void SetMAXDashCD(float cd) {
         MAXDashCD = cd;
+    }
+
+    public void SetPreviousScene(int scene) {
+        PreviousScene = scene;
+    }
+
+    public int GetPreviousScene() {
+        return PreviousScene;
     }
 }
