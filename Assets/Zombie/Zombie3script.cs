@@ -19,7 +19,7 @@ public class Zombie3script : MonoBehaviour
     private UnityEngine.AI.NavMeshAgent nav;
     private int  hp=10;
     private bool first=true;
-
+    public Animator animator;
     void Start()
     {
         audioPlayer.volume = 5.0f;
@@ -69,5 +69,8 @@ public class Zombie3script : MonoBehaviour
     }
     public void DeadSE(){
         audioPlayer.PlayOneShot(ZombieDead);
+    }
+    public void LoadScene2(){
+        animator.SetTrigger("FadeOut");
     }
 } 

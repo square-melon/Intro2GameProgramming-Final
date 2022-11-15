@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Shootable
+  - Enemy
+  - Medkit
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -13,7 +16,7 @@ TagManager:
   - Water
   - UI
   - 
-  - 
+  - CameraCollide
   - Lighting
   - Ground
   - Postprocessing
