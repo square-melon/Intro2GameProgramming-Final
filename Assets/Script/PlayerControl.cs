@@ -18,6 +18,7 @@ public class PlayerControl : MonoBehaviour
     public AudioClip walkSE;
     public AudioClip healSE;
     public AudioClip dashSE;
+    public AudioClip deadSE;
 
     [Header("Settings")]
     public Vector3 SpawnPoint;
@@ -281,6 +282,7 @@ public class PlayerControl : MonoBehaviour
     void DeadDetect() {
         if (DataManager.Instance.IsPlayerDead == false) {
             if (DataManager.Instance.HP() <= 0) {
+                audioPlayer.PlayOneShot(deadSE);
                 DataManager.Instance.PlayerDead(true);
                 PlayerAnim.SetInteger("Doing", 3);
                 Doing = true;
