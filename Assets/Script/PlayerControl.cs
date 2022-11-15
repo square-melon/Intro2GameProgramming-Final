@@ -14,13 +14,14 @@ public class PlayerControl : MonoBehaviour
     public GameObject DashEffect;
     public GameObject FireEffect;
     public GameObject HealEffect;
+    public GameObject DamagedEffect;
     public AudioSource audioPlayer;
     public AudioClip shootSE;
     public AudioClip walkSE;
     public AudioClip healSE;
     public AudioClip dashSE;
     public AudioClip deadSE;
-    public GameObject DamagedEffect;
+    public AudioClip hurtSE;
 
     [Header("Settings")]
     public Vector3 SpawnPoint;
@@ -294,7 +295,8 @@ public class PlayerControl : MonoBehaviour
                 ToggleNavi();
                 Invoke("LoadLoseScene", 4f);
             } else {
-                if (CurHP != OriHP) {
+                if (CurHP < OriHP) {
+                    audioPlayer.PlayOneShot(hurtSE);
                     Instantiate(DamagedEffect, transform.position, Quaternion.identity);
                     PlayerAnim.SetInteger("Doing", 4);
                     OriHP = CurHP;

@@ -30,7 +30,6 @@ public class BulletCreate : MonoBehaviour
             if (hit.collider.CompareTag("Enemy")) {
                 gameController._PlayerBulletHitOn(hit.collider.gameObject);
                 Instantiate(ExplodeEffect, hit.point, Quaternion.identity);
-                Debug.Log(hit.collider.name);
                 takedamage(hit.transform);
                 Destroy(gameObject);
             }

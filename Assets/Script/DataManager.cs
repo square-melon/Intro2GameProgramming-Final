@@ -11,11 +11,15 @@ public class DataManager : MonoBehaviour
     public bool IsPlayerDead { get; private set; }
     public float MAXDashCD { get; private set; }
     public float CurDashCD { get; private set; }
-    public AudioSource audioPlayer;
-    public AudioClip hurtSE;
     private void Awake() 
     {   
         Instance = this; 
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("DataManager");
+        if (objs.Length > 1)
+        {
+            Destroy(this.gameObject);
+        }
+        DontDestroyOnLoad(this.gameObject);
     }
     // void Start() {
     //     Score = 0.0f;
@@ -34,7 +38,6 @@ public class DataManager : MonoBehaviour
     }
 
     public void PlayerOnHit(float damage) {
-        audioPlayer.PlayOneShot(hurtSE);
         _HP -= damage;
     }
 
