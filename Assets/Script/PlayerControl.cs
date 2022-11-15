@@ -13,6 +13,11 @@ public class PlayerControl : MonoBehaviour
     public GameObject DashEffect;
     public GameObject FireEffect;
     public GameObject HealEffect;
+    public AudioSource audioPlayer;
+    public AudioClip shootSE;
+    public AudioClip walkSE;
+    public AudioClip healSE;
+    public AudioClip dashSE;
 
     [Header("Settings")]
     public Vector3 SpawnPoint;
@@ -91,7 +96,7 @@ public class PlayerControl : MonoBehaviour
                 }
             }
         }
-
+        //audioPlayer.PlayOneShot(walkSE);
         Vector3 velocity = m_naviAgent.velocity;
         PlayerAnim.SetFloat("Speed", velocity.magnitude);
     }
@@ -127,6 +132,7 @@ public class PlayerControl : MonoBehaviour
                 Target = hit.point;
             }
             PlayerAnim.SetInteger("Doing", 1);
+            audioPlayer.PlayOneShot(shootSE);
             Firing = true;
             FacingTarget = Target - transform.position;
             ToggleNavi();
@@ -206,6 +212,7 @@ public class PlayerControl : MonoBehaviour
             StartCoroutine(dashMoving);
             StartCoroutine(CalDashCD());
             Invoke("ResetDashing", DashCooldown);
+            audioPlayer.PlayOneShot(dashSE);
         }
     }
 
@@ -236,6 +243,7 @@ public class PlayerControl : MonoBehaviour
 
     void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Medkit")) {
+            audioPlayer.PlayOneShot(healSE);
             Destroy(other.gameObject.transform.parent.gameObject);
             if (MedkitHealCD) {
                 HealEffect.SetActive(true);

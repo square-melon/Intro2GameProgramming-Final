@@ -33,7 +33,7 @@ public class enemyScript : MonoBehaviour
     {
         float dstToPlayer = Vector3.Distance(transform.position, GameController.PlayerPos());
         
-        if(dstToPlayer<5.0f && dstToPlayer > 1.0f){ //Track
+        if(dstToPlayer<10.0f && dstToPlayer > 1.0f){ //Track
             if(first){
                 audioPlayer.PlayOneShot(ZombieMoan);
                 first = false;
