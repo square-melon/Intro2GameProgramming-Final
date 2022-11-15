@@ -19,6 +19,6 @@ public class LoseToLastScene : MonoBehaviour
 
     public void handleClick()
     {
-        SceneManager.LoadScene(DataManager.Instance.GetPreviousScene());
+        SceneManager.LoadScene(PlayerPrefs.GetInt("SavedScene"));
     }
 }

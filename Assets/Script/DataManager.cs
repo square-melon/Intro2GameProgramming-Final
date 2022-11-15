@@ -12,15 +12,18 @@ public class DataManager : MonoBehaviour
     public float MAXDashCD { get; private set; }
     public float CurDashCD { get; private set; }
     public int PreviousScene { get; private set;}
-    public AudioSource audioPlayer;
-    public AudioClip hurtSE;
+    public bool SceneWin { get; private set; }
     private void Awake() 
     {   
-        Instance = this;
+        Instance = this; 
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("DataManager");
+        if (objs.Length > 1)
+        {
+            Destroy(this.gameObject);
+        }
+        DontDestroyOnLoad(this.gameObject);
     }
-    // void Start() {
-    //     Score = 0.0f;
-    // }
+
     public void IncreaseScore(float amount)
     {
         Score += amount;
@@ -35,7 +38,6 @@ public class DataManager : MonoBehaviour
     }
 
     public void PlayerOnHit(float damage) {
-        audioPlayer.PlayOneShot(hurtSE);
         _HP -= damage;
     }
 
@@ -68,5 +70,9 @@ public class DataManager : MonoBehaviour
 
     public int GetPreviousScene() {
         return PreviousScene;
+    }
+
+    public bool SetSceneState(bool state) {
+        SceneWin = state;
     }
 }
