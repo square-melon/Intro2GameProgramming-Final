@@ -22,4 +22,17 @@ public class ArrowControl : MonoBehaviour
         }
         
     }
+    void DetectShoot() {
+        Ray ray = new Ray(transform.position, GetComponent<Rigidbody>().velocity);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 0.3f)) {
+            if (hit.collider.CompareTag("Player")) {
+                //gameController._PlayerBulletHitOn(hit.collider.gameObject);
+                //takedamage(hit.transform);
+                Debug.Log(hit.collider.name);
+                //Destroy(gameObject);
+                
+            }
+        }
+    }
 }
