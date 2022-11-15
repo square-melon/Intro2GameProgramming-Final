@@ -14,6 +14,7 @@ public class PlayerControl : MonoBehaviour
     public GameObject Gam;
     public GameObject DashEffect;
     public GameObject FireEffect;
+    public GameObject HealEffect;
 
     [Header("Settings")]
     public Vector3 SpawnPoint;
@@ -58,6 +59,7 @@ public class PlayerControl : MonoBehaviour
         FaceTarget();
         Attack();
         Dash();
+        DeadDetect();
     }
 
     void Init() {
@@ -65,11 +67,15 @@ public class PlayerControl : MonoBehaviour
         Dashing = false;
         Doing = false;
         transform.position = SpawnPoint;
+        m_naviAgent.isStopped = false;
         DashEffect.SetActive(false);
         MedkitHealCD = true;
+        FireEffect.SetActive(false);
+        HealEffect.SetActive(false);
         DataManager.Instance.SetPlayerHP(MAXHP);
         DataManager.Instance.SetMAXHP(MAXHP);
-        FireEffect.SetActive(false);
+        DataManager.Instance.PlayerDead(false);
+        ResetAnimDoing();
     }
 
     void LocateDestination() {
@@ -167,7 +173,8 @@ public class PlayerControl : MonoBehaviour
     }
 
     void ResetAnimDoing() {
-        PlayerAnim.SetInteger("Doing", 0);
+        if (DataManager.Instance.IsPlayerDead == false)
+            PlayerAnim.SetInteger("Doing", 0);
     }
 
     void ResetFiring() {
@@ -214,6 +221,10 @@ public class PlayerControl : MonoBehaviour
         ResetAnimDoing();
         ResetDoing();
         ToggleNavi();
+        Invoke("DashEffectDisabled", 0.3f);
+    }
+
+    void DashEffectDisabled() {
         DashEffect.SetActive(false);
     }
 
@@ -225,11 +236,17 @@ public class PlayerControl : MonoBehaviour
         if (other.gameObject.CompareTag("Medkit")) {
             Destroy(other.gameObject.transform.parent.gameObject);
             if (MedkitHealCD) {
+                HealEffect.SetActive(true);
                 MedkitHealCD = false;
                 DataManager.Instance.HealPlayer(MedkitHealHP);
                 Invoke("ResetMedkitHealCD", 0.2f);
+                Invoke("HealEffectDisabled", 0.8f);
             }
         }
+    }
+
+    void HealEffectDisabled() {
+        HealEffect.SetActive(false);
     }
 
     void ResetMedkitHealCD() {
@@ -247,6 +264,17 @@ public class PlayerControl : MonoBehaviour
 
     public float DashCD() {
         return _DashCD;
+    }
+
+    void DeadDetect() {
+        if (DataManager.Instance.IsPlayerDead == false) {
+            if (DataManager.Instance.HP() <= 0) {
+                DataManager.Instance.PlayerDead(true);
+                PlayerAnim.SetInteger("Doing", 3);
+                Doing = true;
+                ToggleNavi();
+            }
+        }
     }
 
 }
