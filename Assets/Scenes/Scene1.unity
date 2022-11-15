@@ -842,7 +842,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameControllerObj: {fileID: 3233271802692098204}
-  player: {fileID: 0}
+  player: {fileID: 2060177172354117864}
 --- !u!65 &162112748
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1510,7 +1510,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameControllerObj: {fileID: 3233271802692098204}
-  player: {fileID: 0}
+  player: {fileID: 2060177172354117864}
 --- !u!195 &508163401
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3892,7 +3892,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameControllerObj: {fileID: 3233271802692098204}
-  player: {fileID: 0}
+  player: {fileID: 2060177172354117864}
 --- !u!65 &1736290222
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4714,7 +4714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameControllerObj: {fileID: 3233271802692098204}
-  player: {fileID: 0}
+  player: {fileID: 2060177172354117864}
 --- !u!65 &2049320687
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20789,7 +20789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 070f6a406c5d86e47bef8289084c28eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 0}
+  Player: {fileID: 2060177172354117864}
   PlayerMaxHP: 100
   PlayerBulletDamage: 20
 --- !u!4 &3264483270749342005
