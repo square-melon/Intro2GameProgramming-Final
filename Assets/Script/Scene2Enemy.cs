@@ -8,6 +8,7 @@ public class Scene2Enemy : MonoBehaviour
 
     public Animator animator;
     //public 
+    //public GameObject ExplodeEffect;
     public GameObject enemy;
     public GameObject player;
     private UnityEngine.AI.NavMeshAgent m_naviAgent;
@@ -31,7 +32,7 @@ public class Scene2Enemy : MonoBehaviour
         Face = player.transform.position - enemy.transform.position;
         dis = Vector3.Distance(player.transform.position, enemy.transform.position);
         
-        if(dis < 5.0f) {
+        if(dis < 8.0f) {
             Quaternion rotation = Quaternion.LookRotation(Face, Vector3.up);
             transform.rotation = rotation;
             
@@ -75,13 +76,10 @@ public class Scene2Enemy : MonoBehaviour
         Face = player.transform.position - enemy.transform.position;
         Face = new Vector3(Face.x, 0f, Face.z).normalized;
         //Quaternion rotation = Quaternion.LookRotation(Face, Vector3.up);
-        ArrowPrefab = Instantiate(Arrow, enemy.transform.position, Quaternion.identity);
-        //ArrowPrefab.transform.rotation = rotation;
+
+        ArrowPrefab = Instantiate(Arrow, enemy.transform.position, Quaternion.LookRotation(Face) * Quaternion.Euler(90, 0, 0));
         
-        ArrowPrefab.transform.LookAt(Face);
-        ArrowPrefab.transform.localEulerAngles += new Vector3(0, 0, 90);
-        
-        ArrowPrefab.GetComponent<Rigidbody>().AddForce(Face * 200.0f);
+        ArrowPrefab.GetComponent<Rigidbody>().AddForce(Face * 300.0f);
          
        
     }

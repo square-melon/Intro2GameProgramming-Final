@@ -53,9 +53,12 @@ public class ControlScore : MonoBehaviour
                 
             // }
         }
+        else if(scene.name == "Menu") {
+            //animator.SetTrigger("FadeOut");
+        }
         
     }
     public void LoadtoNextScene() {
-        SceneManager.LoadScene("Scenetest");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

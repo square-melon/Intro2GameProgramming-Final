@@ -21,7 +21,7 @@ public class ArrowControl : MonoBehaviour
             Destroy(gameObject);
             //扣寫
             DataManager.Instance.PlayerOnHit(50.0f);
-                print(DataManager.Instance._HP);
+            print(DataManager.Instance._HP);
         }
         
     }
@@ -32,8 +32,8 @@ public class ArrowControl : MonoBehaviour
             if (hit.collider.tag == "Player") {
                 //gameController._PlayerBulletHitOn(hit.collider.gameObject);
                 //takedamage(hit.transform);
-                // DataManager.Instance.PlayerOnHit(50.0f);
-                // print(DataManager.Instance._HP);
+                //DataManager.Instance.PlayerOnHit(50.0f);
+                //print(DataManager.Instance._HP);
                 // Debug.Log(hit.collider.name);
                 //Destroy(gameObject);
                 
