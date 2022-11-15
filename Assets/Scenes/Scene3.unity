@@ -2190,6 +2190,8 @@ MonoBehaviour:
   W3: {fileID: 1261502403}
   W4: {fileID: 1202982141}
   W5: {fileID: 182276520}
+  animator: {fileID: 7845870445304628517, guid: deaaf31384eecbe4198bba94eaef07a4,
+    type: 3}
 --- !u!4 &802439574
 Transform:
   m_ObjectHideFlags: 0
@@ -6369,7 +6371,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 62a6944a237b745ba970e3320803daa7, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 87c4fac058e834b4d8197e891558b5ae, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -8320,7 +8322,7 @@ MonoBehaviour:
   ShootForce: 1200
   ShootWaitingTime: 0.2
   Shoot2WaitingTime: 0.5
-  DashCooldown: 3
+  DashCooldown: 1
   DashDistance: 1.5
   DashSpeed: 7
   MedkitHealHP: 50
