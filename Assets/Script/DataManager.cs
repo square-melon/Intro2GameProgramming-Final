@@ -12,6 +12,7 @@ public class DataManager : MonoBehaviour
     public float MAXDashCD { get; private set; }
     public float CurDashCD { get; private set; }
     public int PreviousScene { get; private set;}
+    public bool SceneWin { get; private set; }
     private void Awake() 
     {   
         Instance = this; 
@@ -69,5 +70,9 @@ public class DataManager : MonoBehaviour
 
     public int GetPreviousScene() {
         return PreviousScene;
+    }
+
+    public bool SetSceneState(bool state) {
+        SceneWin = state;
     }
 }
