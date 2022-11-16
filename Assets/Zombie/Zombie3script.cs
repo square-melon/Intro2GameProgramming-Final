@@ -23,6 +23,7 @@ public class Zombie3script : MonoBehaviour
     void Start()
     {
         audioPlayer.volume = 5.0f;
+        DataManager.Instance.SetSceneState(false);
         GameController = GameControllerObj.GetComponent<GameController>();
         naviAgent = this.GetComponent<NavMeshAgent>();
         ZombieAnim = GetComponent<Animator>();

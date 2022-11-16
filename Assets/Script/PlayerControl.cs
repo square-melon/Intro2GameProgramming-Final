@@ -215,7 +215,6 @@ public class PlayerControl : MonoBehaviour
             IEnumerator dashMoving = DashMoving(dir);
             StartCoroutine(dashMoving);
             StartCoroutine(CalDashCD());
-            Invoke("ResetDashing", DashCooldown);
             audioPlayer.PlayOneShot(dashSE);
         }
     }
@@ -270,10 +269,11 @@ public class PlayerControl : MonoBehaviour
     IEnumerator CalDashCD() {
         _DashCD = DashCooldown;
         while (_DashCD > 0) {
-            _DashCD -= Time.deltaTime;
+            _DashCD -= 0.05f;
             DataManager.Instance.SetDashCD(_DashCD);
-            yield return null;
+            yield return new WaitForSeconds(0.05f);
         }
+        ResetDashing();
         _DashCD = 0;
         DataManager.Instance.SetDashCD(0);
     }

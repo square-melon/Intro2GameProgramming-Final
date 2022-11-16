@@ -15,13 +15,12 @@ public class DataManager : MonoBehaviour
     public bool SceneWin { get; private set; }
     private void Awake() 
     {   
-        Instance = this; 
-        GameObject[] objs = GameObject.FindGameObjectsWithTag("DataManager");
-        if (objs.Length > 1)
-        {
+        if (Instance != null && Instance != this) {
             Destroy(this.gameObject);
+        } else {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
         }
-        DontDestroyOnLoad(this.gameObject);
     }
 
     public void IncreaseScore(float amount)
