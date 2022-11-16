@@ -20,7 +20,12 @@ public class Scene2Boss : MonoBehaviour
     private float dis;
     private Vector3 Face;
     private float hp = 1;
-    public Text m_Text;
+    // public Text m_Text;
+    public AudioSource audioPlayer;
+    public AudioSource deadPlayer;
+    public AudioClip attackSE;
+    public AudioClip deadSE;
+
     void Start()
     {
         m_naviAgent = this.boss.GetComponent<NavMeshAgent>();
@@ -73,8 +78,13 @@ public class Scene2Boss : MonoBehaviour
         Debug.Log(hp);
     }
     void DetectDead() {
-        if (hp <= 0)
+        if (hp <= 0){
+            
+            audioPlayer.PlayOneShot(deadSE); 
+            audioPlayer.Stop();
             animator.SetTrigger("BossDeath");
+        }
+            
     }
     // public void CreateArrow() {
     //     Face = player.transform.position - boss.transform.position;
@@ -96,12 +106,17 @@ public class Scene2Boss : MonoBehaviour
         ArrowPrefab = Instantiate(Arrow, new Vector3(boss.transform.position.x, boss.transform.position.y + 3, boss.transform.position.z), Quaternion.LookRotation(Face) * Quaternion.Euler(90, 0, 0));
         
         ArrowPrefab.GetComponent<Rigidbody>().AddForce(Face * 100.0f);
+        audioPlayer.PlayOneShot(attackSE);
     }
     // public void LoadtoNextScene() {
     //     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     //     animatorfade.SetTrigger("FadeOut");
     // }
-
+    public void BossDeadSE(){
+        deadPlayer.PlayOneShot(deadSE);
+        
+        print("dead");
+    }
 
     public void LoadtoNextScene() {
         

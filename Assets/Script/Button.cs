@@ -27,6 +27,8 @@ public class Button : MonoBehaviour
     }
     public void StartPlay()
     {
+        DataManager.Instance.SetMAXHP(200);
+        DataManager.Instance.SetPlayerHP(200);
         SceneManager.LoadScene("Scene1");
         animator.SetTrigger("FadeOut");
     }

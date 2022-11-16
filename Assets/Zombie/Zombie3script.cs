@@ -73,9 +73,9 @@ public class Zombie3script : MonoBehaviour
     }
     public void LoadScene2(){
         DataManager.Instance.SetSceneState(true);
-        if(gameObject.name == "Zombie3") {
+        //if(gameObject.name == "Zombie3") {
             animator.SetTrigger("FadeOut");
-        }
+        
             
     }
 } 
