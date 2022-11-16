@@ -17,7 +17,7 @@ public class Zombie3script : MonoBehaviour
     private NavMeshAgent naviAgent;
     private Animator ZombieAnim;
     private UnityEngine.AI.NavMeshAgent nav;
-    private int  hp=1;
+    private int  hp=5;
     private bool first=true;
     public Animator animator;
     void Start()
@@ -76,7 +76,5 @@ public class Zombie3script : MonoBehaviour
         DataManager.Instance.SetSceneState(true);
         //if(gameObject.name == "Zombie3") {
             animator.SetTrigger("FadeOut");
-        
-            
     }
 } 

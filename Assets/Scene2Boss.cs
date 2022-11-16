@@ -19,7 +19,7 @@ public class Scene2Boss : MonoBehaviour
     public GameObject Arrow;
     private float dis;
     private Vector3 Face;
-    private float hp = 1;
+    private float hp = 5;
     // public Text m_Text;
     public AudioSource audioPlayer;
     public AudioSource deadPlayer;

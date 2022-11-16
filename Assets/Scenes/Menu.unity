@@ -946,9 +946,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 7845870445372434510}
   image: {fileID: 2009938375}
-  audioPlayer: {fileID: 0}
-  hover: {fileID: 0}
-  click: {fileID: 0}
+  audioPlayer: {fileID: 963194229}
+  hover: {fileID: 8300000, guid: fd8c27018f7974ee8a5ccb83efb36eab, type: 3}
+  click: {fileID: 8300000, guid: fa467a83876bc44e29e067d7709a06ab, type: 3}
 --- !u!4 &1044279956
 Transform:
   m_ObjectHideFlags: 0
