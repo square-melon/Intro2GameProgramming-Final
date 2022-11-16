@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -946,9 +946,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 7845870445372434510}
   image: {fileID: 2009938375}
-  audioPlayer: {fileID: 0}
-  hover: {fileID: 0}
-  click: {fileID: 0}
+  audioPlayer: {fileID: 963194229}
+  hover: {fileID: 8300000, guid: fd8c27018f7974ee8a5ccb83efb36eab, type: 3}
+  click: {fileID: 8300000, guid: fa467a83876bc44e29e067d7709a06ab, type: 3}
 --- !u!4 &1044279956
 Transform:
   m_ObjectHideFlags: 0
