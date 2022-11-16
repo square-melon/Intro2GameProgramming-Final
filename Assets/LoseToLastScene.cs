@@ -19,6 +19,7 @@ public class LoseToLastScene : MonoBehaviour
 
     public void handleClick()
     {
+        DataManager.Instance.SetPlayerHP(DataManager.Instance.MAXHP);
         SceneManager.LoadScene(PlayerPrefs.GetInt("SavedScene"));
     }
 }
