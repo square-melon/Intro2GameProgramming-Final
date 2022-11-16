@@ -13,7 +13,7 @@ public class HealthBar : MonoBehaviour
     }
 
     void Update() {
-        slider.maxValue = DataManager.Instance.MAXHP;
-        slider.value = DataManager.Instance.HP();
+        slider.maxValue = 200;
+        slider.value = DataManager.Instance._HP;
     }
 }

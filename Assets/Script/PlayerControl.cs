@@ -83,11 +83,9 @@ public class PlayerControl : MonoBehaviour
         MedkitHealCD = true;
         FireEffect.SetActive(false);
         HealEffect.SetActive(false);
-        DataManager.Instance.SetPlayerHP(MAXHP);
-        DataManager.Instance.SetMAXHP(MAXHP);
         DataManager.Instance.PlayerDead(false);
         DataManager.Instance.SetDashCD(0);
-        OriHP = MAXHP;
+        OriHP = DataManager.Instance.HP();
         ResetAnimDoing();
     }
 
@@ -300,9 +298,9 @@ public class PlayerControl : MonoBehaviour
                     audioPlayer.PlayOneShot(hurtSE);
                     Instantiate(DamagedEffect, transform.position, Quaternion.identity);
                     PlayerAnim.SetInteger("Doing", 4);
-                    OriHP = CurHP;
                     Invoke("ResetAnimDoing", 0.2f);
                 }
+                OriHP = CurHP;
             }
         }
     }
