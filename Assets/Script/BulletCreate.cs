@@ -7,15 +7,11 @@ public class BulletCreate : MonoBehaviour
 
     [Header("Settings")]
     public float ExistTime;
-    public GameObject GameControllerObj;
     public GameObject ExplodeEffect;
-
-    private GameController gameController;
     
     void Start()
     {
         Destroy(gameObject, ExistTime);
-        gameController = GameControllerObj.GetComponent<GameController>();
     }
     
     void Update()
@@ -28,7 +24,6 @@ public class BulletCreate : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 0.5f)) {
             if (hit.collider.CompareTag("Enemy")) {
-                gameController._PlayerBulletHitOn(hit.collider.gameObject);
                 Instantiate(ExplodeEffect, hit.point, Quaternion.identity);
                 takedamage(hit.transform);
                 Destroy(gameObject);
