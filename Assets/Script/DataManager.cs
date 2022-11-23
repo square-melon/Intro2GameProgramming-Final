@@ -13,6 +13,8 @@ public class DataManager : MonoBehaviour
     public float CurDashCD { get; private set; }
     public int PreviousScene { get; private set;}
     public bool SceneWin { get; private set; }
+    public Vector3 PlayerPos { get; private set; }
+    public float BiolanceValue { get; private set; }
     private void Awake() 
     {   
         if (Instance != null && Instance != this) {
@@ -73,5 +75,13 @@ public class DataManager : MonoBehaviour
 
     public void SetSceneState(bool state) {
         SceneWin = state;
+    }
+
+    public void SetPlayerPos(Vector3 pos) {
+        PlayerPos = pos;
+    }
+
+    public void SetBiolanceValue(float val) {
+        BiolanceValue = val;
     }
 }

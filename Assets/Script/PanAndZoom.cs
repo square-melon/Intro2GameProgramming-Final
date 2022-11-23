@@ -7,7 +7,6 @@ public class PanAndZoom : MonoBehaviour
 {
 
     [Header("References")]
-    public GameObject gameController;
 
     [Header("Settings")]
     public float CameraZAxisCtrl;
@@ -25,7 +24,6 @@ public class PanAndZoom : MonoBehaviour
     void Start()
     {
         VirtualCamera = GetComponent<CinemachineVirtualCamera>();
-        gam = gameController.GetComponent<GameController>();
         CameraTransform = VirtualCamera.VirtualCameraGameObject.transform;
         Init();
     }
@@ -59,7 +57,7 @@ public class PanAndZoom : MonoBehaviour
     }
 
     void Center() {
-        Vector3 playerPos = gam.PlayerPos();
+        Vector3 playerPos = DataManager.Instance.PlayerPos;
         CameraTransform.position = new Vector3(playerPos.x, CameraTransform.position.y, playerPos.z - CameraZAxisCtrl);
     }
 
