@@ -11,6 +11,9 @@ public class PlayerControl : MonoBehaviour
 
     [Header("References")]
     public Transform rightGunBone;
+    public Transform leftGunBone;
+    public Transform rightHand;
+    public Transform leftHand;
     public GameObject rightGun;
     public GameObject Bullet;
     public GameObject FrostBeam;
@@ -42,6 +45,7 @@ public class PlayerControl : MonoBehaviour
     public float MAXHP;
     public float FireEffectStop;
     public float FrostCoolDown;
+    public float FrostWaitTime;
 
     private UnityEngine.AI.NavMeshAgent m_naviAgent;
     private RaycastHit hit;
@@ -78,14 +82,18 @@ public class PlayerControl : MonoBehaviour
             UpdateValue();
             Skills();
             DeadDetect();
+            BioValDetect();
         } else {
             // Maybe reset?
         }
     }
 
     void Init() {
-        if (OnDebug)
+        if (OnDebug) {
             DataManager.Instance.SetPlayerHP(MAXHP);
+            DataManager.Instance.SetMAXHP(MAXHP);
+            DataManager.Instance.SetBiolanceValue(0);
+        }
         Firing = false;
         Dashing = false;
         Doing = false;
@@ -121,8 +129,9 @@ public class PlayerControl : MonoBehaviour
     }
 
     void LocateDestination() {
-        if (Doing)
+        if (Doing) {
             return;
+        }
         if (Input.GetMouseButtonDown(1)) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit)) {
@@ -132,8 +141,14 @@ public class PlayerControl : MonoBehaviour
             }
         }
         //audioPlayer.PlayOneShot(walkSE);
-        Vector3 velocity = m_naviAgent.velocity;
-        PlayerAnim.SetFloat("Speed", velocity.magnitude);
+        bool IsWalking = true;
+        if (!m_naviAgent.pathPending) {
+            if (m_naviAgent.remainingDistance <= m_naviAgent.stoppingDistance) {
+                if (!m_naviAgent.hasPath || m_naviAgent.velocity.sqrMagnitude == 0f)
+                    IsWalking = false;
+            }
+        }
+        PlayerAnim.SetBool("Walking", IsWalking);
     }
 
     void FaceTarget() {
@@ -172,15 +187,7 @@ public class PlayerControl : MonoBehaviour
             FacingTarget = Target - transform.position;
             ToggleNavi();
             IEnumerator shoot = ShootBullet(Target);
-            // IEnumerator shoot2 = ShootBullet2(Target);
             StartCoroutine(shoot);
-            // StartCoroutine(shoot2);
-            // Invoke("ToggleNavi", Shoot2WaitingTime + 0.11f);
-            Invoke("ToggleNavi", ShootWaitingTime + 0.1f);
-            Invoke("ResetAnimDoing", 0.05f);
-            // Invoke("ResetFiring", Shoot2WaitingTime + ReloadSpeed);
-            Invoke("ResetFiring", ReloadSpeed);
-            Invoke("DisableFireEffect", FireEffectStop);
         }
     }
 
@@ -189,21 +196,22 @@ public class PlayerControl : MonoBehaviour
     }
 
     IEnumerator ShootBullet(Vector3 Target) {
-        yield return new WaitForSeconds(ShootWaitingTime);
+        float dur = 0;
+        while (PlayerAnim.GetCurrentAnimatorStateInfo(0).IsName("Walk")) {
+            dur += Time.deltaTime;
+            yield return null;
+        }
+        yield return new WaitForSeconds(ShootWaitingTime - dur);
         Vector3 ShootDir = Target - ShooterPoint.position;
         ShootDir = new Vector3(ShootDir.x, 0f, ShootDir.z).normalized;
         FireEffect.SetActive(true);
         BulletPrefab = Instantiate(Bullet, ShooterPoint.position, Quaternion.identity);
         BulletPrefab.GetComponent<Rigidbody>().AddForce(ShootDir * ShootForce);
         Invoke("DisableFireEffect", FireEffectStop);
-    }
-
-    IEnumerator ShootBullet2(Vector3 Target) {
-        yield return new WaitForSeconds(Shoot2WaitingTime);
-        Vector3 ShootDir = Target - ShooterPoint.position;
-        ShootDir = new Vector3(ShootDir.x, 0f, ShootDir.z).normalized;
-        BulletPrefab = Instantiate(Bullet, ShooterPoint.position, Quaternion.identity);
-        BulletPrefab.GetComponent<Rigidbody>().AddForce(ShootDir * ShootForce);
+        Invoke("ToggleNavi", 0.15f);
+        Invoke("ResetAnimDoing", 0.05f);
+        Invoke("ResetFiring", ReloadSpeed);
+        Invoke("DisableFireEffect", FireEffectStop);
     }
 
     void ToggleNavi() {
@@ -288,6 +296,7 @@ public class PlayerControl : MonoBehaviour
     void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Medkit")) {
             audioPlayer.PlayOneShot(healSE);
+            DataManager.Instance.IncreaseBiolanceValue(31f);
             Destroy(other.gameObject.transform.parent.gameObject);
             if (MedkitHealCD) {
                 HealEffect.SetActive(true);
@@ -352,17 +361,26 @@ public class PlayerControl : MonoBehaviour
             Vector3 Target = GetMousePos() - transform.position;
             FacingTarget = Target;
             FrostCD = true;
+            PlayerAnim.SetInteger("Doing", 5);
             ToggleNavi();
             Doing = true;
             Target.y = 0;
-            Instantiate(FrostBeam, rightGunBone.position, Quaternion.LookRotation(Target));
+            StartCoroutine(ShootFrost(Target, FrostWaitTime));
             StartCoroutine(CoolDownCal(FrostCoolDown, (returnVal1, returnVal2) => {
                 CurFrostCD = returnVal1;
                 FrostCD = returnVal2;
             }));
-            ResetDoing(0.2f);
-            Invoke("ToggleNavi", 0.2f);
+            ResetDoing(FrostWaitTime + 0.2f);
+            Invoke("ResetAnimDoing", FrostWaitTime + 0.1f);
+            Invoke("ToggleNavi", FrostWaitTime + 0.2f);
         }
+    }
+
+    IEnumerator ShootFrost(Vector3 Target, float wait) {
+        yield return new WaitForSeconds(wait);
+        Vector3 posi = (rightHand.position + leftHand.position) / 2.0f;
+        posi.y = transform.position.y + 0.2f;
+        Instantiate(FrostBeam, posi, Quaternion.LookRotation(Target));
     }
 
     IEnumerator CoolDownCal(float coolDown, System.Action<float, bool> callback) {
@@ -375,5 +393,19 @@ public class PlayerControl : MonoBehaviour
         _CD = 0;
         callback(0f, false);
         yield return null;
+    }
+
+    private int BioLevel;
+    void BioValDetect() {
+        float BioVal = DataManager.Instance.BiolanceValue;
+        if (BioVal >= 90f) {
+            BioLevel = 3;
+        } else if (BioVal >= 60f) {
+            BioLevel = 2;
+        } else if (BioVal >= 20f) {
+            BioLevel = 1;
+        } else {
+            BioLevel = 0;
+        }
     }
 }
