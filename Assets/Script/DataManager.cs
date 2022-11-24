@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
+    public float IncreaseBioValRate;
     public static DataManager Instance { get; private set; }
     public float Score { get; private set; }
     public float _HP { get; private set; }
@@ -15,6 +16,7 @@ public class DataManager : MonoBehaviour
     public bool SceneWin { get; private set; }
     public Vector3 PlayerPos { get; private set; }
     public float BiolanceValue { get; private set; }
+    public int IsPausing;
     private void Awake() 
     {   
         if (Instance != null && Instance != this) {
@@ -40,6 +42,9 @@ public class DataManager : MonoBehaviour
 
     public void PlayerOnHit(float damage) {
         _HP -= damage;
+        if (BiolanceValue >= 20f) {
+            BiolanceValue += damage * IncreaseBioValRate;
+        }
     }
 
     public void HealPlayer(float hp) {
@@ -83,5 +88,9 @@ public class DataManager : MonoBehaviour
 
     public void SetBiolanceValue(float val) {
         BiolanceValue = val;
+    }
+
+    public void IncreaseBiolanceValue(float val) {
+        BiolanceValue += val;
     }
 }
