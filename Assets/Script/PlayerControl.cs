@@ -22,6 +22,7 @@ public class PlayerControl : MonoBehaviour
     public GameObject FireEffect;
     public GameObject HealEffect;
     public GameObject DamagedEffect;
+    public GameObject ChargeEffect;
     public AudioSource audioPlayer;
     public AudioClip shootSE;
     public AudioClip walkSE;
@@ -97,6 +98,7 @@ public class PlayerControl : MonoBehaviour
         Firing = false;
         Dashing = false;
         Doing = false;
+        AvoidCasting = false;
         transform.position = SpawnPoint;
         m_naviAgent.isStopped = false;
         DashEffect.SetActive(false);
@@ -109,18 +111,46 @@ public class PlayerControl : MonoBehaviour
         ResetAnimDoing();
     }
 
+    private bool AvoidCasting;
     void Skills() {
         for (int i = 0; i < 4; i++) {
-            if (Input.GetKey(SkillKey[i])) {
-                switch(SkillEvent[i]) {
-                    case 0:
-                        Dash();
-                        break;
-                    case 1:
-                        Frost();
-                        break;
+            if (Input.GetKey(SkillKey[i]) && !CheckSkillState(SkillEvent[i])) {
+                if (BioLevel == 3) {
+                    if (!AvoidCasting) {
+                        AvoidCasting = true;
+                        Vector3 EffectPos = transform.position;
+                        EffectPos.y += 0.5f;
+                        EffectPos.z -= 0.2f;
+                        Instantiate(ChargeEffect, EffectPos, Quaternion.identity);
+                        Vector3 Target = GetMousePos() - transform.position;
+                        FacingTarget = Target;
+                        ToggleNavi();
+                        PlayerAnim.SetInteger("Doing", 6);
+                        StartCoroutine(CastSkill(SkillEvent[i], Target, 1.5f));
+                    }
+                } else {
+                    ToggleNavi();
+                    StartCoroutine(CastSkill(SkillEvent[i], new Vector3(0, 0, 0), 0f));
                 }
             }
+        }
+    }
+
+    bool CheckSkillState(int skillNum) {
+        switch(skillNum) {
+            case 0: return Dashing;
+            case 1: return FrostCD;
+        }
+        return true;
+    }
+
+    IEnumerator CastSkill(int skillNum, Vector3 Target, float dur) {
+        if (dur != 0)
+            yield return new WaitForSeconds(dur);
+        AvoidCasting = false;
+        switch(skillNum) {
+            case 0: Dash(Target); break;
+            case 1: Frost(Target); break;
         }
     }
 
@@ -148,6 +178,8 @@ public class PlayerControl : MonoBehaviour
                     IsWalking = false;
             }
         }
+        if (m_naviAgent.isStopped)
+            IsWalking = false;
         PlayerAnim.SetBool("Walking", IsWalking);
     }
 
@@ -181,13 +213,12 @@ public class PlayerControl : MonoBehaviour
             if (Physics.Raycast(ray, out hit)) {
                 Target = hit.point;
             }
-            PlayerAnim.SetInteger("Doing", 1);
-            audioPlayer.PlayOneShot(shootSE);
             Firing = true;
             FacingTarget = Target - transform.position;
             ToggleNavi();
             IEnumerator shoot = ShootBullet(Target);
             StartCoroutine(shoot);
+            Invoke("ResetFiring", ReloadSpeed);
         }
     }
 
@@ -196,12 +227,13 @@ public class PlayerControl : MonoBehaviour
     }
 
     IEnumerator ShootBullet(Vector3 Target) {
-        float dur = 0;
-        while (PlayerAnim.GetCurrentAnimatorStateInfo(0).IsName("Walk")) {
-            dur += Time.deltaTime;
+        while (PlayerAnim.IsInTransition(0)) {
             yield return null;
         }
-        yield return new WaitForSeconds(ShootWaitingTime - dur);
+        PlayerAnim.SetInteger("Doing", 1);
+        Invoke("ResetAnimDoing", 0.1f);
+        yield return new WaitForSeconds(ShootWaitingTime);
+        audioPlayer.PlayOneShot(shootSE);
         Vector3 ShootDir = Target - ShooterPoint.position;
         ShootDir = new Vector3(ShootDir.x, 0f, ShootDir.z).normalized;
         FireEffect.SetActive(true);
@@ -209,8 +241,6 @@ public class PlayerControl : MonoBehaviour
         BulletPrefab.GetComponent<Rigidbody>().AddForce(ShootDir * ShootForce);
         Invoke("DisableFireEffect", FireEffectStop);
         Invoke("ToggleNavi", 0.15f);
-        Invoke("ResetAnimDoing", 0.05f);
-        Invoke("ResetFiring", ReloadSpeed);
         Invoke("DisableFireEffect", FireEffectStop);
     }
 
@@ -244,25 +274,25 @@ public class PlayerControl : MonoBehaviour
         return new Vector3(0, 0, 0);
     }
 
-    void Dash() {
-        if (!Dashing) {
-            Dashing = true;
-            DashEffect.SetActive(true);
-            PlayerAnim.SetInteger("Doing", 2);
-            ToggleNavi();
-            Vector3 dir = GetMousePos() - transform.position;
-            dir = new Vector3(dir.x, 0f, dir.z);
-            dir = dir.normalized;
-            FacingTarget = dir;
-            Doing = true;
-            IEnumerator dashMoving = DashMoving(dir);
-            StartCoroutine(dashMoving);
-            StartCoroutine(CoolDownCal(DashCooldown, (returnVal1, returnVal2) => {
-                DataManager.Instance.SetDashCD(returnVal1);
-                Dashing = returnVal2;
-            }));
-            audioPlayer.PlayOneShot(dashSE);
+    void Dash(Vector3 Target) {
+        Dashing = true;
+        DashEffect.SetActive(true);
+        PlayerAnim.SetInteger("Doing", 2);
+        Vector3 dir = GetMousePos() - transform.position;
+        if (BioLevel == 3) {
+            dir = Target;
         }
+        dir = new Vector3(dir.x, 0f, dir.z);
+        dir = dir.normalized;
+        FacingTarget = dir;
+        Doing = true;
+        IEnumerator dashMoving = DashMoving(dir);
+        StartCoroutine(dashMoving);
+        StartCoroutine(CoolDownCal(DashCooldown, (returnVal1, returnVal2) => {
+            DataManager.Instance.SetDashCD(returnVal1);
+            Dashing = returnVal2;
+        }));
+        audioPlayer.PlayOneShot(dashSE);
     }
 
     void ResetDoing(float time) {
@@ -295,10 +325,10 @@ public class PlayerControl : MonoBehaviour
 
     void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Medkit")) {
-            audioPlayer.PlayOneShot(healSE);
-            DataManager.Instance.IncreaseBiolanceValue(31f);
-            Destroy(other.gameObject.transform.parent.gameObject);
             if (MedkitHealCD) {
+                audioPlayer.PlayOneShot(healSE);
+                DataManager.Instance.IncreaseBiolanceValue(46f);
+                Destroy(other.gameObject.transform.parent.gameObject);
                 HealEffect.SetActive(true);
                 MedkitHealCD = false;
                 DataManager.Instance.HealPlayer(MedkitHealHP);
@@ -336,7 +366,7 @@ public class PlayerControl : MonoBehaviour
                     audioPlayer.PlayOneShot(hurtSE);
                     Instantiate(DamagedEffect, transform.position, Quaternion.identity);
                     PlayerAnim.SetInteger("Doing", 4);
-                    Invoke("ResetAnimDoing", 0.2f);
+                    Invoke("ResetAnimDoing", 0.1f);
                 }
                 OriHP = CurHP;
             }
@@ -356,24 +386,25 @@ public class PlayerControl : MonoBehaviour
 
     private bool FrostCD = false;
     private float CurFrostCD;
-    void Frost() {
-        if (!FrostCD) {
-            Vector3 Target = GetMousePos() - transform.position;
-            FacingTarget = Target;
-            FrostCD = true;
-            PlayerAnim.SetInteger("Doing", 5);
-            ToggleNavi();
-            Doing = true;
-            Target.y = 0;
-            StartCoroutine(ShootFrost(Target, FrostWaitTime));
-            StartCoroutine(CoolDownCal(FrostCoolDown, (returnVal1, returnVal2) => {
-                CurFrostCD = returnVal1;
-                FrostCD = returnVal2;
-            }));
-            ResetDoing(FrostWaitTime + 0.2f);
-            Invoke("ResetAnimDoing", FrostWaitTime + 0.1f);
-            Invoke("ToggleNavi", FrostWaitTime + 0.2f);
+    void Frost(Vector3 SubTarget) {
+        Vector3 Target = GetMousePos() - transform.position;
+        if (BioLevel == 3) {
+            Target = SubTarget;
         }
+        FacingTarget = Target;
+        FrostCD = true;
+        PlayerAnim.SetInteger("Doing", 5);
+        Doing = true;
+        Target.y = 0;
+        StartCoroutine(ShootFrost(Target, FrostWaitTime));
+        audioPlayer.PlayOneShot(frostSE);
+        StartCoroutine(CoolDownCal(FrostCoolDown, (returnVal1, returnVal2) => {
+            CurFrostCD = returnVal1;
+            FrostCD = returnVal2;
+        }));
+        ResetDoing(FrostWaitTime + 0.2f);
+        Invoke("ResetAnimDoing", 0.1f);
+        Invoke("ToggleNavi", FrostWaitTime + 0.2f);
     }
 
     IEnumerator ShootFrost(Vector3 Target, float wait) {

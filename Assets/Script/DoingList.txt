@@ -1,0 +1,8 @@
+Doing
+0 => Idle
+1 => Fire
+2 => Dash
+3 => Dead
+4 => Damaged
+5 => Frost
+6 => Charging (BiolanceValue >= 90%)

@@ -13,27 +13,28 @@ public class Frost : MonoBehaviour
     public float FrozenTime;
     public GameObject HitEffect;
 
-    private bool ExplodeCreated;
+    private Dictionary<int, bool> HitEnemy;
 
     // Start is called before the first frame update
     void Start()
     {
-        ExplodeCreated = false;
+        HitEnemy = new Dictionary<int, bool>();
         Destroy(gameObject, ExistTime);
     }
 
     // Update is called once per frame
     void Update()
     {
-        RaycastHit hit;
+        RaycastHit[] hit = Physics.SphereCastAll(transform.position, RayRadius, transform.forward, RayLength);
         Debug.DrawRay(transform.position, transform.forward * RayLength);
-        if (Physics.SphereCast(transform.position, RayRadius, transform.forward, out hit, RayLength)) {
-            if (hit.collider.CompareTag("Enemy")) {
-                if (ExplodeCreated == false) {
-                    ExplodeCreated = true;
-                    Instantiate(HitEffect, hit.point, Quaternion.identity);
+        foreach (var obj in hit) {
+            if (obj.collider.CompareTag("Enemy")) {
+                int hash = obj.collider.gameObject.GetHashCode();
+                if (HitEnemy.ContainsKey(hash) == false) {
+                    HitEnemy.Add(hash, true);
+                    Instantiate(HitEffect, obj.point, Quaternion.identity);
+                    takedamage(obj.transform);
                 }
-                takedamage(hit.transform);
             }
         }
     }
