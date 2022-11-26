@@ -41976,7 +41976,7 @@ MonoBehaviour:
   SparkyCoolDown: 1
   MaxSparkyChargingTime: 2
   SparkyShootForce: 500
-  SparkyTransScale: 25
+  SparkyTransScale: 16
 --- !u!195 &4870221790982276295
 NavMeshAgent:
   m_ObjectHideFlags: 0

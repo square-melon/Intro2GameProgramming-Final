@@ -343,7 +343,6 @@ public class PlayerControl : MonoBehaviour
         if (other.gameObject.CompareTag("Medkit")) {
             if (MedkitHealCD) {
                 audioPlayer.PlayOneShot(healSE);
-                DataManager.Instance.IncreaseBiolanceValue(46f);
                 Destroy(other.gameObject.transform.parent.gameObject);
                 HealEffect.SetActive(true);
                 MedkitHealCD = false;
@@ -481,7 +480,6 @@ public class PlayerControl : MonoBehaviour
             dur += Time.deltaTime;
             yield return null;
         }
-        Debug.Log(ChargingEF.transform.localScale.x);
         if (scale > 1)
             scale = 1;
         Destroy(ChargingEF);

@@ -5879,7 +5879,7 @@ ParticleSystem:
       repeatInterval: 0.01
       probability: 1
   SizeModule:
-    enabled: 1
+    enabled: 0
     curve:
       serializedVersion: 2
       minMaxState: 1
@@ -9694,7 +9694,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.8
+  m_Radius: 0.4
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7844008309283741692
 MonoBehaviour:
@@ -9708,7 +9708,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ea64322617ede248b1a2ad801fea9a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExistTime: 5
+  ExistTime: 3
+  AreaDamageTime: 0.8
+  scaling: 0.005
+  damage: 0
 --- !u!1 &2220027757545468144
 GameObject:
   m_ObjectHideFlags: 0
