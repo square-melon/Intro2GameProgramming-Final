@@ -16,11 +16,13 @@ public class PlayerControl : MonoBehaviour
     public Transform leftHand;
     public Transform ShooterPoint;
     public GameObject rightGun;
+    public GameObject LightningMan;
 
     [Header("Bullets")]
     public GameObject Bullet;
     public GameObject FrostBeam;
     public GameObject Sparky;
+    public GameObject LightningBullet;
     
     [Header("Effects")]
     public GameObject DashEffect;
@@ -59,6 +61,9 @@ public class PlayerControl : MonoBehaviour
     public float MaxSparkyChargingTime;
     public float SparkyShootForce;
     public float SparkyTransScale;
+    public float LightningCoolDown;
+    public float DisableLightningTime;
+    public float StopLightningTime;
 
     private UnityEngine.AI.NavMeshAgent m_naviAgent;
     private RaycastHit hit;
@@ -72,7 +77,7 @@ public class PlayerControl : MonoBehaviour
     private bool MedkitHealCD;
     private float _DashCD;
     private float OriHP;
-    private int[] SkillEvent = {0, 1, 2, 0};
+    private int[] SkillEvent = {0, 1, 2, 3};
     private KeyCode[] SkillKey = {KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R};
     private Coroutine RSTDoing;
 
@@ -155,6 +160,7 @@ public class PlayerControl : MonoBehaviour
             case 0: return Dashing;
             case 1: return FrostCD;
             case 2: return SparkyCD;
+            case 3: return LightningCD;
         }
         return true;
     }
@@ -164,9 +170,10 @@ public class PlayerControl : MonoBehaviour
             yield return new WaitForSeconds(dur);
         AvoidCasting = false;
         switch(skillNum) {
-            case 0: Dash(Target); break;
-            case 1: Frost(Target); break;
-            case 2: ShootSparky(key); break;
+            case 0: if (!LightningCast) Dash(Target); break;
+            case 1: if (!LightningCast) Frost(Target); break;
+            case 2: if (!LightningCast) ShootSparky(key); break;
+            case 3: Thunder(); break;
         }
     }
 
@@ -501,5 +508,28 @@ public class PlayerControl : MonoBehaviour
 
     void ResetAvoidCasting() {
         AvoidCasting = false;
+    }
+
+    private bool LightningCD;
+    private float CurLightningCD;
+    private bool LightningCast;
+    private GameObject LightningManPrefab;
+    void Thunder() {
+        ToggleNavi();          
+        StartCoroutine(CoolDownCal(DisableLightningTime, (returnVal1, returnVal2) => {
+            CurLightningCD = returnVal1;
+            LightningCD = returnVal2;
+        }));
+        if (!LightningCast) {
+            LightningManPrefab = Instantiate(LightningMan);
+            LightningCast = true;
+        } else {
+            LightningCast = false;
+            Destroy(LightningManPrefab);
+            StartCoroutine(CoolDownCal(LightningCoolDown, (returnVal1, returnVal2) => {
+                CurLightningCD = returnVal1;
+                LightningCD = returnVal2;
+            }));
+        }
     }
 }
