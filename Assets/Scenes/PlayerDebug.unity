@@ -41936,17 +41936,20 @@ MonoBehaviour:
   leftGunBone: {fileID: 0}
   rightHand: {fileID: 4812163650324713857}
   leftHand: {fileID: 4812459709148043879}
+  ShooterPoint: {fileID: 1870460795}
   rightGun: {fileID: 0}
   Bullet: {fileID: 8808765177973143126, guid: 8e2eb7e848cd3604482fdc88390cd376, type: 3}
   FrostBeam: {fileID: 2545011683520402149, guid: 0deeff9108d9f1b46aad5ff46b911ee8,
     type: 3}
-  ShooterPoint: {fileID: 1870460795}
+  Sparky: {fileID: 808286808262885353, guid: 397e491b0846d234cafbd67cef1426c6, type: 3}
   DashEffect: {fileID: 9020304811979299078}
   FireEffect: {fileID: 8423705820118572680}
   HealEffect: {fileID: 7920024004918560501}
   DamagedEffect: {fileID: 4719135891236240383, guid: 5c770ecfad3352442b9db59ef820be4f,
     type: 3}
   ChargeEffect: {fileID: 2879373803546197552, guid: 300307ccb91f49845857b5dd4eb0cd53,
+    type: 3}
+  SparkyChargeEffect: {fileID: 9201107320229664451, guid: 0c5fa403bb522f74aa88fbb6429f9f55,
     type: 3}
   audioPlayer: {fileID: 390378357}
   shootSE: {fileID: 8300000, guid: 7575dc366f03a8046850f97855376936, type: 3}
@@ -41970,6 +41973,10 @@ MonoBehaviour:
   FireEffectStop: 0.1
   FrostCoolDown: 7
   FrostWaitTime: 0.65
+  SparkyCoolDown: 1
+  MaxSparkyChargingTime: 2
+  SparkyShootForce: 500
+  SparkyTransScale: 25
 --- !u!195 &4870221790982276295
 NavMeshAgent:
   m_ObjectHideFlags: 0
