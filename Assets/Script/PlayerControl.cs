@@ -14,15 +14,23 @@ public class PlayerControl : MonoBehaviour
     public Transform leftGunBone;
     public Transform rightHand;
     public Transform leftHand;
+    public Transform ShooterPoint;
     public GameObject rightGun;
+
+    [Header("Bullets")]
     public GameObject Bullet;
     public GameObject FrostBeam;
-    public Transform ShooterPoint;
+    public GameObject Sparky;
+    
+    [Header("Effects")]
     public GameObject DashEffect;
     public GameObject FireEffect;
     public GameObject HealEffect;
     public GameObject DamagedEffect;
     public GameObject ChargeEffect;
+    public GameObject SparkyChargeEffect;
+
+    [Header("Sounds")]
     public AudioSource audioPlayer;
     public AudioClip shootSE;
     public AudioClip walkSE;
@@ -47,6 +55,10 @@ public class PlayerControl : MonoBehaviour
     public float FireEffectStop;
     public float FrostCoolDown;
     public float FrostWaitTime;
+    public float SparkyCoolDown;
+    public float MaxSparkyChargingTime;
+    public float SparkyShootForce;
+    public float SparkyTransScale;
 
     private UnityEngine.AI.NavMeshAgent m_naviAgent;
     private RaycastHit hit;
@@ -60,7 +72,7 @@ public class PlayerControl : MonoBehaviour
     private bool MedkitHealCD;
     private float _DashCD;
     private float OriHP;
-    private int[] SkillEvent = {0, 1, 0, 0};
+    private int[] SkillEvent = {0, 1, 2, 0};
     private KeyCode[] SkillKey = {KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R};
     private Coroutine RSTDoing;
 
@@ -126,11 +138,13 @@ public class PlayerControl : MonoBehaviour
                         FacingTarget = Target;
                         ToggleNavi();
                         PlayerAnim.SetInteger("Doing", 6);
-                        StartCoroutine(CastSkill(SkillEvent[i], Target, 1.5f));
+                        StartCoroutine(CastSkill(SkillEvent[i], Target, 1.5f, SkillKey[i]));
                     }
                 } else {
-                    ToggleNavi();
-                    StartCoroutine(CastSkill(SkillEvent[i], new Vector3(0, 0, 0), 0f));
+                    if (!AvoidCasting) {
+                        ToggleNavi();
+                        StartCoroutine(CastSkill(SkillEvent[i], new Vector3(0, 0, 0), 0f, SkillKey[i]));
+                    }
                 }
             }
         }
@@ -140,17 +154,19 @@ public class PlayerControl : MonoBehaviour
         switch(skillNum) {
             case 0: return Dashing;
             case 1: return FrostCD;
+            case 2: return SparkyCD;
         }
         return true;
     }
 
-    IEnumerator CastSkill(int skillNum, Vector3 Target, float dur) {
+    IEnumerator CastSkill(int skillNum, Vector3 Target, float dur, KeyCode key) {
         if (dur != 0)
             yield return new WaitForSeconds(dur);
         AvoidCasting = false;
         switch(skillNum) {
             case 0: Dash(Target); break;
             case 1: Frost(Target); break;
+            case 2: ShootSparky(key); break;
         }
     }
 
@@ -438,5 +454,54 @@ public class PlayerControl : MonoBehaviour
         } else {
             BioLevel = 0;
         }
+    }
+
+    private float CurSparkyCD;
+    private bool SparkyCD;
+    void ShootSparky(KeyCode key) {
+        PlayerAnim.SetInteger("Doing", 7);
+        SparkyCD = true;
+        FacingTarget = GetMousePos() - transform.position;
+        StartCoroutine(SparkyCharge(key));
+    }
+
+    IEnumerator SparkyCharge(KeyCode key) {
+        float scale = 0;
+        float dur = 0;
+        AvoidCasting = true;
+        yield return new WaitForSeconds(0.3f);
+        GameObject ChargingEF;
+        ChargingEF = Instantiate(SparkyChargeEffect, (rightHand.position + leftHand.position) / 2.0f, Quaternion.identity);
+        Vector3 IntoScale = new Vector3(0.7f, 0.7f, 0.7f);
+        while (Input.GetKey(key) && dur < MaxSparkyChargingTime) {
+            if (dur > MaxSparkyChargingTime / 3.0f) {
+                ChargingEF.transform.localScale = Vector3.Slerp(ChargingEF.transform.localScale, IntoScale, Time.deltaTime * 2.5f);
+            }
+            scale = ((ChargingEF.transform.localScale.x - 0.3f) / 0.4f) * 0.8f + 0.2f;
+            dur += Time.deltaTime;
+            yield return null;
+        }
+        Debug.Log(ChargingEF.transform.localScale.x);
+        if (scale > 1)
+            scale = 1;
+        Destroy(ChargingEF);
+        ResetAnimDoing();
+        GameObject SparkyBullet = Instantiate(Sparky, rightHand.position, Quaternion.identity);
+        SparkyBullet.transform.localScale = scale * SparkyTransScale * new Vector3(0.1f, 0.1f, 0.1f);
+        Vector3 ShootDir = GetMousePos() - transform.position;
+        ShootDir.y = 0f;
+        yield return new WaitForSeconds(0.25f);
+        FacingTarget = ShootDir;
+        SparkyBullet.GetComponent<Rigidbody>().AddForce(ShootDir.normalized * SparkyShootForce);
+        StartCoroutine(CoolDownCal(SparkyCoolDown, (returnVal1, returnVal2) => {
+            CurSparkyCD = returnVal1;
+            SparkyCD = returnVal2;
+        }));
+        Invoke("ResetAvoidCasting", 0.3f);
+        Invoke("ToggleNavi", 0.3f);
+    }
+
+    void ResetAvoidCasting() {
+        AvoidCasting = false;
     }
 }

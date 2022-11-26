@@ -6,3 +6,9 @@ Doing
 4 => Damaged
 5 => Frost
 6 => Charging (BiolanceValue >= 90%)
+7 => Sparky
+
+Skill Key
+0 => Dash
+1 => Frost
+2 => Sparky
