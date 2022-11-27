@@ -11,10 +11,11 @@ public class LightningManager : MonoBehaviour
     public float AdditionalDamage;
 
     private void Awake() {
+        Instance = this;
         Lightning = new Dictionary<int, int>();
     }
 
-    public void HitOn(GameObject obj) {
+    public void HitOn(Transform obj) {
         int hash = obj.GetHashCode();
         if (Lightning.ContainsKey(hash)) {
             Lightning[hash]++;

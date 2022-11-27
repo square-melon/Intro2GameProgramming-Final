@@ -25,7 +25,7 @@ public class BulletCreate : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 0.5f)) {
             if (hit.collider.CompareTag("Enemy")) {
                 Instantiate(ExplodeEffect, hit.point, Quaternion.identity);
-                takedamage(hit.transform);
+                takedamage(hit.transform.root);
                 Destroy(gameObject);
             }
         }

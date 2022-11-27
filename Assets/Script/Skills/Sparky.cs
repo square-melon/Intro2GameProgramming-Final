@@ -42,11 +42,10 @@ public class Sparky : MonoBehaviour
                 StartCoroutine(AreaDamage());
                 CancelInvoke("DestroyMe");
             }
-            int hash = other.gameObject.GetHashCode();
+            int hash = other.gameObject.transform.root.GetHashCode();
             if (HitEnemy.ContainsKey(hash) == false) {
                 HitEnemy.Add(hash, true);
-                takedamage(other.transform, damage);
-                Debug.Log(other.name);
+                takedamage(other.gameObject.transform.root, damage);
             }
         }
     }
@@ -67,7 +66,6 @@ public class Sparky : MonoBehaviour
             transform.localScale *= 1 + scaling;
             yield return null;
         }
-        Debug.Log(particle.main.startColor.color.a);
         DestroyMe();
     }
 
