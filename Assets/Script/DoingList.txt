@@ -1,0 +1,17 @@
+Doing
+0 => Idle
+1 => Fire
+2 => Dash
+3 => Dead
+4 => Damaged
+5 => Frost
+6 => Charging (BiolanceValue >= 90%)
+7 => Sparky
+8 => LightningCastBasicAttack
+9 => LightningCharge
+
+Skill Key
+0 => Dash
+1 => Frost
+2 => Sparky
+3 => LightningSkill

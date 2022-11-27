@@ -11,14 +11,33 @@ public class PlayerControl : MonoBehaviour
 
     [Header("References")]
     public Transform rightGunBone;
+    public Transform leftGunBone;
+    public Transform rightHand;
+    public Transform leftHand;
+    public Transform ShooterPoint;
     public GameObject rightGun;
+    public GameObject LightningMan;
+    public GameObject LightningEmt;
+
+    [Header("Bullets")]
     public GameObject Bullet;
     public GameObject FrostBeam;
-    public Transform ShooterPoint;
+    public GameObject Sparky;
+    public GameObject LightningBullet;
+    
+    [Header("Effects")]
     public GameObject DashEffect;
     public GameObject FireEffect;
     public GameObject HealEffect;
     public GameObject DamagedEffect;
+    public GameObject ChargeEffect;
+    public GameObject SparkyChargeEffect;
+    public GameObject LightningEffect;
+    public GameObject LightningRefill1;
+    public GameObject LightningRefill2;
+    public GameObject LightningMode;
+
+    [Header("Sounds")]
     public AudioSource audioPlayer;
     public AudioClip shootSE;
     public AudioClip walkSE;
@@ -42,6 +61,16 @@ public class PlayerControl : MonoBehaviour
     public float MAXHP;
     public float FireEffectStop;
     public float FrostCoolDown;
+    public float FrostWaitTime;
+    public float SparkyCoolDown;
+    public float MaxSparkyChargingTime;
+    public float SparkyShootForce;
+    public float SparkyTransScale;
+    public float LightningCoolDown;
+    public float DisableLightningTime;
+    public float CastLightningWaitingTime;
+    public float LightningBasicAS;
+    public float LightningAddAS;
 
     private UnityEngine.AI.NavMeshAgent m_naviAgent;
     private RaycastHit hit;
@@ -55,7 +84,7 @@ public class PlayerControl : MonoBehaviour
     private bool MedkitHealCD;
     private float _DashCD;
     private float OriHP;
-    private int[] SkillEvent = {0, 1, 0, 0};
+    private int[] SkillEvent = {0, 1, 2, 3};
     private KeyCode[] SkillKey = {KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R};
     private Coroutine RSTDoing;
 
@@ -78,17 +107,22 @@ public class PlayerControl : MonoBehaviour
             UpdateValue();
             Skills();
             DeadDetect();
+            BioValDetect();
         } else {
             // Maybe reset?
         }
     }
 
     void Init() {
-        if (OnDebug)
+        if (OnDebug) {
             DataManager.Instance.SetPlayerHP(MAXHP);
+            DataManager.Instance.SetMAXHP(MAXHP);
+            DataManager.Instance.SetBiolanceValue(0);
+        }
         Firing = false;
         Dashing = false;
         Doing = false;
+        AvoidCasting = false;
         transform.position = SpawnPoint;
         m_naviAgent.isStopped = false;
         DashEffect.SetActive(false);
@@ -101,18 +135,62 @@ public class PlayerControl : MonoBehaviour
         ResetAnimDoing();
     }
 
+    private bool AvoidCasting;
     void Skills() {
         for (int i = 0; i < 4; i++) {
-            if (Input.GetKey(SkillKey[i])) {
-                switch(SkillEvent[i]) {
-                    case 0:
-                        Dash();
-                        break;
-                    case 1:
-                        Frost();
-                        break;
+            if (Input.GetKey(SkillKey[i]) && !CheckSkillState(SkillEvent[i])) {
+                if (BioLevel == 3) {
+                    if (!AvoidCasting) {
+                        AvoidCasting = true;
+                        Vector3 EffectPos = transform.position;
+                        EffectPos.y += 0.5f;
+                        EffectPos.z -= 0.2f;
+                        Instantiate(ChargeEffect, EffectPos, Quaternion.identity);
+                        Vector3 Target = GetMousePos() - transform.position;
+                        FacingTarget = Target;
+                        ToggleNavi();
+                        PlayerAnim.SetInteger("Doing", 6);
+                        StartCoroutine(CastSkill(SkillEvent[i], Target, 1.5f, SkillKey[i]));
+                    }
+                } else {
+                    if (!AvoidCasting) {
+                        ToggleNavi();
+                        StartCoroutine(CastSkill(SkillEvent[i], new Vector3(0, 0, 0), 0f, SkillKey[i]));
+                    }
                 }
             }
+        }
+    }
+
+    bool CheckSkillState(int skillNum) {
+        if (!LightningCast) {
+            switch(skillNum) {
+                case 0: return Dashing;
+                case 1: return FrostCD;
+                case 2: return SparkyCD;
+                case 3: return LightningCD;
+            }
+        } else {
+            switch(skillNum) {
+                case 0: return true;
+                case 1: return true;
+                case 2: return true;
+                case 3: return LightningCD;
+            }
+        }
+        return true;
+    }
+
+    IEnumerator CastSkill(int skillNum, Vector3 Target, float dur, KeyCode key) {
+        if (dur != 0)
+            yield return new WaitForSeconds(dur);
+        AvoidCasting = false;
+        switch(skillNum) {
+            case 0: Dash(Target); break;
+            case 1: Frost(Target); break;
+            case 2: ShootSparky(key); break;
+            case 3: Thunder(); break;
+            default: break;
         }
     }
 
@@ -121,8 +199,9 @@ public class PlayerControl : MonoBehaviour
     }
 
     void LocateDestination() {
-        if (Doing)
+        if (Doing) {
             return;
+        }
         if (Input.GetMouseButtonDown(1)) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit)) {
@@ -132,8 +211,16 @@ public class PlayerControl : MonoBehaviour
             }
         }
         //audioPlayer.PlayOneShot(walkSE);
-        Vector3 velocity = m_naviAgent.velocity;
-        PlayerAnim.SetFloat("Speed", velocity.magnitude);
+        bool IsWalking = true;
+        if (!m_naviAgent.pathPending) {
+            if (m_naviAgent.remainingDistance <= m_naviAgent.stoppingDistance) {
+                if (!m_naviAgent.hasPath || m_naviAgent.velocity.sqrMagnitude == 0f)
+                    IsWalking = false;
+            }
+        }
+        if (m_naviAgent.isStopped)
+            IsWalking = false;
+        PlayerAnim.SetBool("Walking", IsWalking);
     }
 
     void FaceTarget() {
@@ -159,29 +246,52 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
+    private bool LightningFiring;
+    private float CurLightningAttackSpeed;
     void Attack() {
-        if (Input.GetKey(KeyCode.A) && !Firing) {
+        if (Input.GetKey(KeyCode.A) && !Firing && !LightningCast) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Vector3 Target = Vector3.zero;
             if (Physics.Raycast(ray, out hit)) {
                 Target = hit.point;
             }
-            PlayerAnim.SetInteger("Doing", 1);
-            audioPlayer.PlayOneShot(shootSE);
             Firing = true;
             FacingTarget = Target - transform.position;
             ToggleNavi();
             IEnumerator shoot = ShootBullet(Target);
-            // IEnumerator shoot2 = ShootBullet2(Target);
             StartCoroutine(shoot);
-            // StartCoroutine(shoot2);
-            // Invoke("ToggleNavi", Shoot2WaitingTime + 0.11f);
-            Invoke("ToggleNavi", ShootWaitingTime + 0.1f);
-            Invoke("ResetAnimDoing", 0.05f);
-            // Invoke("ResetFiring", Shoot2WaitingTime + ReloadSpeed);
             Invoke("ResetFiring", ReloadSpeed);
-            Invoke("DisableFireEffect", FireEffectStop);
+        } else if (Input.GetKey(KeyCode.A) && !LightningFiring && LightningCast) {
+            Vector3 ShootDir = GetMousePos();
+            LightningFiring = true;
+            FacingTarget = ShootDir - transform.position;
+            ToggleNavi();
+            StartCoroutine(CastLightning(ShootDir));
+            Invoke("ResetLightningFiring", CurLightningAttackSpeed);
+            CurLightningAttackSpeed += LightningAddAS;
         }
+    }
+
+    void ResetLightningFiring() {
+        LightningFiring = false;
+        ResetLE = false;
+    }
+
+    IEnumerator CastLightning(Vector3 Target) {
+        while (PlayerAnim.IsInTransition(0)) {
+            yield return null;
+        }
+        PlayerAnim.SetInteger("Doing", 8);
+        Invoke("ResetAnimDoing", 0.1f);
+        yield return new WaitForSeconds(CastLightningWaitingTime);
+        for (var i = LightningEmt.transform.childCount - 1; i >= 0; i--) {
+            Destroy(LightningEmt.transform.GetChild(i).gameObject);
+        }
+        Vector3 ShootDir = Target - (rightHand.position + leftHand.position) / 2;
+        ShootDir.y = 0;
+        ShootDir = ShootDir.normalized;
+        Instantiate(LightningBullet, (rightHand.position + leftHand.position) / 2, Quaternion.LookRotation(ShootDir));
+        Invoke("ToggleNavi", 0.15f);
     }
 
     void DisableFireEffect() {
@@ -189,21 +299,20 @@ public class PlayerControl : MonoBehaviour
     }
 
     IEnumerator ShootBullet(Vector3 Target) {
+        while (PlayerAnim.IsInTransition(0)) {
+            yield return null;
+        }
+        PlayerAnim.SetInteger("Doing", 1);
+        Invoke("ResetAnimDoing", 0.1f);
         yield return new WaitForSeconds(ShootWaitingTime);
-        Vector3 ShootDir = Target - ShooterPoint.position;
+        audioPlayer.PlayOneShot(shootSE);
+        Vector3 ShootDir = Target - rightHand.position;
         ShootDir = new Vector3(ShootDir.x, 0f, ShootDir.z).normalized;
         FireEffect.SetActive(true);
-        BulletPrefab = Instantiate(Bullet, ShooterPoint.position, Quaternion.identity);
+        BulletPrefab = Instantiate(Bullet, rightHand.position, Quaternion.identity);
         BulletPrefab.GetComponent<Rigidbody>().AddForce(ShootDir * ShootForce);
         Invoke("DisableFireEffect", FireEffectStop);
-    }
-
-    IEnumerator ShootBullet2(Vector3 Target) {
-        yield return new WaitForSeconds(Shoot2WaitingTime);
-        Vector3 ShootDir = Target - ShooterPoint.position;
-        ShootDir = new Vector3(ShootDir.x, 0f, ShootDir.z).normalized;
-        BulletPrefab = Instantiate(Bullet, ShooterPoint.position, Quaternion.identity);
-        BulletPrefab.GetComponent<Rigidbody>().AddForce(ShootDir * ShootForce);
+        Invoke("ToggleNavi", 0.15f);
     }
 
     void ToggleNavi() {
@@ -236,25 +345,25 @@ public class PlayerControl : MonoBehaviour
         return new Vector3(0, 0, 0);
     }
 
-    void Dash() {
-        if (!Dashing) {
-            Dashing = true;
-            DashEffect.SetActive(true);
-            PlayerAnim.SetInteger("Doing", 2);
-            ToggleNavi();
-            Vector3 dir = GetMousePos() - transform.position;
-            dir = new Vector3(dir.x, 0f, dir.z);
-            dir = dir.normalized;
-            FacingTarget = dir;
-            Doing = true;
-            IEnumerator dashMoving = DashMoving(dir);
-            StartCoroutine(dashMoving);
-            StartCoroutine(CoolDownCal(DashCooldown, (returnVal1, returnVal2) => {
-                DataManager.Instance.SetDashCD(returnVal1);
-                Dashing = returnVal2;
-            }));
-            audioPlayer.PlayOneShot(dashSE);
+    void Dash(Vector3 Target) {
+        Dashing = true;
+        DashEffect.SetActive(true);
+        PlayerAnim.SetInteger("Doing", 2);
+        Vector3 dir = GetMousePos() - transform.position;
+        if (BioLevel == 3) {
+            dir = Target;
         }
+        dir = new Vector3(dir.x, 0f, dir.z);
+        dir = dir.normalized;
+        FacingTarget = dir;
+        Doing = true;
+        IEnumerator dashMoving = DashMoving(dir);
+        StartCoroutine(dashMoving);
+        StartCoroutine(CoolDownCal(DashCooldown, (returnVal1, returnVal2) => {
+            DataManager.Instance.SetDashCD(returnVal1);
+            Dashing = returnVal2;
+        }));
+        audioPlayer.PlayOneShot(dashSE);
     }
 
     void ResetDoing(float time) {
@@ -286,10 +395,10 @@ public class PlayerControl : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other) {
-        if (other.gameObject.CompareTag("Medkit")) {
-            audioPlayer.PlayOneShot(healSE);
-            Destroy(other.gameObject.transform.parent.gameObject);
+        if (other.gameObject.CompareTag("Medkit") && !LightningCast) {
             if (MedkitHealCD) {
+                audioPlayer.PlayOneShot(healSE);
+                Destroy(other.gameObject.transform.parent.gameObject);
                 HealEffect.SetActive(true);
                 MedkitHealCD = false;
                 DataManager.Instance.HealPlayer(MedkitHealHP);
@@ -327,7 +436,7 @@ public class PlayerControl : MonoBehaviour
                     audioPlayer.PlayOneShot(hurtSE);
                     Instantiate(DamagedEffect, transform.position, Quaternion.identity);
                     PlayerAnim.SetInteger("Doing", 4);
-                    Invoke("ResetAnimDoing", 0.2f);
+                    Invoke("ResetAnimDoing", 0.1f);
                 }
                 OriHP = CurHP;
             }
@@ -347,22 +456,32 @@ public class PlayerControl : MonoBehaviour
 
     private bool FrostCD = false;
     private float CurFrostCD;
-    void Frost() {
-        if (!FrostCD) {
-            Vector3 Target = GetMousePos() - transform.position;
-            FacingTarget = Target;
-            FrostCD = true;
-            ToggleNavi();
-            Doing = true;
-            Target.y = 0;
-            Instantiate(FrostBeam, rightGunBone.position, Quaternion.LookRotation(Target));
-            StartCoroutine(CoolDownCal(FrostCoolDown, (returnVal1, returnVal2) => {
-                CurFrostCD = returnVal1;
-                FrostCD = returnVal2;
-            }));
-            ResetDoing(0.2f);
-            Invoke("ToggleNavi", 0.2f);
+    void Frost(Vector3 SubTarget) {
+        Vector3 Target = GetMousePos() - transform.position;
+        if (BioLevel == 3) {
+            Target = SubTarget;
         }
+        FacingTarget = Target;
+        FrostCD = true;
+        PlayerAnim.SetInteger("Doing", 5);
+        Doing = true;
+        Target.y = 0;
+        StartCoroutine(ShootFrost(Target, FrostWaitTime));
+        audioPlayer.PlayOneShot(frostSE);
+        StartCoroutine(CoolDownCal(FrostCoolDown, (returnVal1, returnVal2) => {
+            CurFrostCD = returnVal1;
+            FrostCD = returnVal2;
+        }));
+        ResetDoing(FrostWaitTime + 0.2f);
+        Invoke("ResetAnimDoing", 0.1f);
+        Invoke("ToggleNavi", FrostWaitTime + 0.2f);
+    }
+
+    IEnumerator ShootFrost(Vector3 Target, float wait) {
+        yield return new WaitForSeconds(wait);
+        Vector3 posi = (rightHand.position + leftHand.position) / 2.0f;
+        posi.y = transform.position.y + 0.2f;
+        Instantiate(FrostBeam, posi, Quaternion.LookRotation(Target));
     }
 
     IEnumerator CoolDownCal(float coolDown, System.Action<float, bool> callback) {
@@ -375,5 +494,132 @@ public class PlayerControl : MonoBehaviour
         _CD = 0;
         callback(0f, false);
         yield return null;
+    }
+
+    private int BioLevel;
+    void BioValDetect() {
+        float BioVal = DataManager.Instance.BiolanceValue;
+        if (BioVal >= 90f) {
+            BioLevel = 3;
+        } else if (BioVal >= 60f) {
+            BioLevel = 2;
+        } else if (BioVal >= 20f) {
+            BioLevel = 1;
+        } else {
+            BioLevel = 0;
+        }
+    }
+
+    private float CurSparkyCD;
+    private bool SparkyCD;
+    void ShootSparky(KeyCode key) {
+        PlayerAnim.SetInteger("Doing", 7);
+        SparkyCD = true;
+        FacingTarget = GetMousePos() - transform.position;
+        StartCoroutine(SparkyCharge(key));
+    }
+
+    IEnumerator SparkyCharge(KeyCode key) {
+        float scale = 0;
+        float dur = 0;
+        AvoidCasting = true;
+        yield return new WaitForSeconds(0.1f);
+        GameObject ChargingEF;
+        ChargingEF = Instantiate(SparkyChargeEffect, (rightHand.position + leftHand.position) / 2.0f, Quaternion.identity);
+        Vector3 IntoScale = new Vector3(0.7f, 0.7f, 0.7f);
+        while (Input.GetKey(key) && dur < MaxSparkyChargingTime) {
+            if (dur > MaxSparkyChargingTime / 3.0f) {
+                ChargingEF.transform.localScale = Vector3.Slerp(ChargingEF.transform.localScale, IntoScale, Time.deltaTime * 2.5f);
+            }
+            scale = ((ChargingEF.transform.localScale.x - 0.3f) / 0.4f) * 0.8f + 0.2f;
+            dur += Time.deltaTime;
+            yield return null;
+        }
+        if (scale > 1)
+            scale = 1;
+        Destroy(ChargingEF);
+        ResetAnimDoing();
+        GameObject SparkyBullet = Instantiate(Sparky, rightHand.position, Quaternion.identity);
+        SparkyBullet.transform.localScale = scale * SparkyTransScale * new Vector3(0.1f, 0.1f, 0.1f);
+        Vector3 ShootDir = GetMousePos() - transform.position;
+        ShootDir.y = 0f;
+        yield return new WaitForSeconds(0.25f);
+        FacingTarget = ShootDir;
+        SparkyBullet.GetComponent<Rigidbody>().AddForce(ShootDir.normalized * SparkyShootForce);
+        StartCoroutine(CoolDownCal(SparkyCoolDown, (returnVal1, returnVal2) => {
+            CurSparkyCD = returnVal1;
+            SparkyCD = returnVal2;
+        }));
+        Invoke("ResetAvoidCasting", 0.3f);
+        Invoke("ToggleNavi", 0.3f);
+    }
+
+    void ResetAvoidCasting() {
+        AvoidCasting = false;
+    }
+
+    private bool LightningCD;
+    private float CurLightningCD;
+    private bool LightningCast;
+    private GameObject LightningManPrefab;
+    private Coroutine lightningAround;
+    void Thunder() {          
+        if (!LightningCast) {
+            StartCoroutine(CoolDownCal(DisableLightningTime, (returnVal1, returnVal2) => {
+                CurLightningCD = returnVal1;
+                LightningCD = returnVal2;
+            }));
+            LightningManPrefab = Instantiate(LightningMan);
+            CurLightningAttackSpeed = LightningBasicAS;
+            PlayerAnim.SetInteger("Doing", 9);
+            ResetLE = false;
+            Invoke("ResetAnimDoing", 0.2f);
+            Invoke("WaitThunderAnim", DisableLightningTime - 0.2f);
+        } else {
+            ToggleNavi();
+            LightningMode.SetActive(false);
+            LightningCast = false;
+            Destroy(LightningManPrefab);
+            StopCoroutine(lightningAround);
+            for (var i = LightningEmt.transform.childCount - 1; i >= 0; i--) {
+                Destroy(LightningEmt.transform.GetChild(i).gameObject);
+            }
+            StartCoroutine(CoolDownCal(LightningCoolDown, (returnVal1, returnVal2) => {
+                CurLightningCD = returnVal1;
+                LightningCD = returnVal2;
+            }));
+        }
+    }
+
+    void WaitThunderAnim() {
+        LightningCast = true;
+        LightningFiring = false;
+        LightningMode.SetActive(true);
+        ToggleNavi();
+        lightningAround = StartCoroutine(LightningAround());
+    }
+
+    private GameObject LE;
+    private GameObject FullEnergy1;
+    private GameObject FullEnergy2;
+    private bool ResetLE;
+    IEnumerator LightningAround() {
+        while (true) {
+            while (LightningFiring)
+                yield return null;
+            if (!ResetLE) {
+                LE = Instantiate(LightningEffect, transform.position + new Vector3(0f, 2f, 0f), Quaternion.identity);
+                LE.transform.parent = transform;
+                ResetLE = true;
+                Destroy(LE, 0.5f);
+                yield return new WaitForSeconds(0.5f);
+                FullEnergy1 = Instantiate(LightningRefill1, transform.position + new Vector3(0f, 0.8f, -0.18f), Quaternion.identity);
+                // yield return new WaitForSeconds(0.2f);
+                FullEnergy2 = Instantiate(LightningRefill2, transform.position + new Vector3(0f, 0.8f, -0.18f), Quaternion.identity);
+                FullEnergy1.transform.parent = LightningEmt.transform;
+                FullEnergy2.transform.parent = LightningEmt.transform;
+            }
+            yield return null;
+        }
     }
 }
