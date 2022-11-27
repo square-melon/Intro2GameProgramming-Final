@@ -16,11 +16,14 @@ public class PlayerControl : MonoBehaviour
     public Transform leftHand;
     public Transform ShooterPoint;
     public GameObject rightGun;
+    public GameObject LightningMan;
+    public GameObject LightningEmt;
 
     [Header("Bullets")]
     public GameObject Bullet;
     public GameObject FrostBeam;
     public GameObject Sparky;
+    public GameObject LightningBullet;
     
     [Header("Effects")]
     public GameObject DashEffect;
@@ -29,6 +32,10 @@ public class PlayerControl : MonoBehaviour
     public GameObject DamagedEffect;
     public GameObject ChargeEffect;
     public GameObject SparkyChargeEffect;
+    public GameObject LightningEffect;
+    public GameObject LightningRefill1;
+    public GameObject LightningRefill2;
+    public GameObject LightningMode;
 
     [Header("Sounds")]
     public AudioSource audioPlayer;
@@ -59,6 +66,11 @@ public class PlayerControl : MonoBehaviour
     public float MaxSparkyChargingTime;
     public float SparkyShootForce;
     public float SparkyTransScale;
+    public float LightningCoolDown;
+    public float DisableLightningTime;
+    public float CastLightningWaitingTime;
+    public float LightningBasicAS;
+    public float LightningAddAS;
 
     private UnityEngine.AI.NavMeshAgent m_naviAgent;
     private RaycastHit hit;
@@ -72,7 +84,7 @@ public class PlayerControl : MonoBehaviour
     private bool MedkitHealCD;
     private float _DashCD;
     private float OriHP;
-    private int[] SkillEvent = {0, 1, 2, 0};
+    private int[] SkillEvent = {0, 1, 2, 3};
     private KeyCode[] SkillKey = {KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R};
     private Coroutine RSTDoing;
 
@@ -151,10 +163,20 @@ public class PlayerControl : MonoBehaviour
     }
 
     bool CheckSkillState(int skillNum) {
-        switch(skillNum) {
-            case 0: return Dashing;
-            case 1: return FrostCD;
-            case 2: return SparkyCD;
+        if (!LightningCast) {
+            switch(skillNum) {
+                case 0: return Dashing;
+                case 1: return FrostCD;
+                case 2: return SparkyCD;
+                case 3: return LightningCD;
+            }
+        } else {
+            switch(skillNum) {
+                case 0: return true;
+                case 1: return true;
+                case 2: return true;
+                case 3: return LightningCD;
+            }
         }
         return true;
     }
@@ -167,6 +189,8 @@ public class PlayerControl : MonoBehaviour
             case 0: Dash(Target); break;
             case 1: Frost(Target); break;
             case 2: ShootSparky(key); break;
+            case 3: Thunder(); break;
+            default: break;
         }
     }
 
@@ -222,8 +246,10 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
+    private bool LightningFiring;
+    private float CurLightningAttackSpeed;
     void Attack() {
-        if (Input.GetKey(KeyCode.A) && !Firing) {
+        if (Input.GetKey(KeyCode.A) && !Firing && !LightningCast) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Vector3 Target = Vector3.zero;
             if (Physics.Raycast(ray, out hit)) {
@@ -235,7 +261,37 @@ public class PlayerControl : MonoBehaviour
             IEnumerator shoot = ShootBullet(Target);
             StartCoroutine(shoot);
             Invoke("ResetFiring", ReloadSpeed);
+        } else if (Input.GetKey(KeyCode.A) && !LightningFiring && LightningCast) {
+            Vector3 ShootDir = GetMousePos();
+            LightningFiring = true;
+            FacingTarget = ShootDir - transform.position;
+            ToggleNavi();
+            StartCoroutine(CastLightning(ShootDir));
+            Invoke("ResetLightningFiring", CurLightningAttackSpeed);
+            CurLightningAttackSpeed += LightningAddAS;
         }
+    }
+
+    void ResetLightningFiring() {
+        LightningFiring = false;
+        ResetLE = false;
+    }
+
+    IEnumerator CastLightning(Vector3 Target) {
+        while (PlayerAnim.IsInTransition(0)) {
+            yield return null;
+        }
+        PlayerAnim.SetInteger("Doing", 8);
+        Invoke("ResetAnimDoing", 0.1f);
+        yield return new WaitForSeconds(CastLightningWaitingTime);
+        for (var i = LightningEmt.transform.childCount - 1; i >= 0; i--) {
+            Destroy(LightningEmt.transform.GetChild(i).gameObject);
+        }
+        Vector3 ShootDir = Target - (rightHand.position + leftHand.position) / 2;
+        ShootDir.y = 0;
+        ShootDir = ShootDir.normalized;
+        Instantiate(LightningBullet, (rightHand.position + leftHand.position) / 2, Quaternion.LookRotation(ShootDir));
+        Invoke("ToggleNavi", 0.15f);
     }
 
     void DisableFireEffect() {
@@ -250,14 +306,13 @@ public class PlayerControl : MonoBehaviour
         Invoke("ResetAnimDoing", 0.1f);
         yield return new WaitForSeconds(ShootWaitingTime);
         audioPlayer.PlayOneShot(shootSE);
-        Vector3 ShootDir = Target - ShooterPoint.position;
+        Vector3 ShootDir = Target - rightHand.position;
         ShootDir = new Vector3(ShootDir.x, 0f, ShootDir.z).normalized;
         FireEffect.SetActive(true);
-        BulletPrefab = Instantiate(Bullet, ShooterPoint.position, Quaternion.identity);
+        BulletPrefab = Instantiate(Bullet, rightHand.position, Quaternion.identity);
         BulletPrefab.GetComponent<Rigidbody>().AddForce(ShootDir * ShootForce);
         Invoke("DisableFireEffect", FireEffectStop);
         Invoke("ToggleNavi", 0.15f);
-        Invoke("DisableFireEffect", FireEffectStop);
     }
 
     void ToggleNavi() {
@@ -340,7 +395,7 @@ public class PlayerControl : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other) {
-        if (other.gameObject.CompareTag("Medkit")) {
+        if (other.gameObject.CompareTag("Medkit") && !LightningCast) {
             if (MedkitHealCD) {
                 audioPlayer.PlayOneShot(healSE);
                 Destroy(other.gameObject.transform.parent.gameObject);
@@ -468,7 +523,7 @@ public class PlayerControl : MonoBehaviour
         float scale = 0;
         float dur = 0;
         AvoidCasting = true;
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.1f);
         GameObject ChargingEF;
         ChargingEF = Instantiate(SparkyChargeEffect, (rightHand.position + leftHand.position) / 2.0f, Quaternion.identity);
         Vector3 IntoScale = new Vector3(0.7f, 0.7f, 0.7f);
@@ -501,5 +556,70 @@ public class PlayerControl : MonoBehaviour
 
     void ResetAvoidCasting() {
         AvoidCasting = false;
+    }
+
+    private bool LightningCD;
+    private float CurLightningCD;
+    private bool LightningCast;
+    private GameObject LightningManPrefab;
+    private Coroutine lightningAround;
+    void Thunder() {          
+        if (!LightningCast) {
+            StartCoroutine(CoolDownCal(DisableLightningTime, (returnVal1, returnVal2) => {
+                CurLightningCD = returnVal1;
+                LightningCD = returnVal2;
+            }));
+            LightningManPrefab = Instantiate(LightningMan);
+            CurLightningAttackSpeed = LightningBasicAS;
+            PlayerAnim.SetInteger("Doing", 9);
+            ResetLE = false;
+            Invoke("ResetAnimDoing", 0.2f);
+            Invoke("WaitThunderAnim", DisableLightningTime - 0.2f);
+        } else {
+            ToggleNavi();
+            LightningMode.SetActive(false);
+            LightningCast = false;
+            Destroy(LightningManPrefab);
+            StopCoroutine(lightningAround);
+            for (var i = LightningEmt.transform.childCount - 1; i >= 0; i--) {
+                Destroy(LightningEmt.transform.GetChild(i).gameObject);
+            }
+            StartCoroutine(CoolDownCal(LightningCoolDown, (returnVal1, returnVal2) => {
+                CurLightningCD = returnVal1;
+                LightningCD = returnVal2;
+            }));
+        }
+    }
+
+    void WaitThunderAnim() {
+        LightningCast = true;
+        LightningFiring = false;
+        LightningMode.SetActive(true);
+        ToggleNavi();
+        lightningAround = StartCoroutine(LightningAround());
+    }
+
+    private GameObject LE;
+    private GameObject FullEnergy1;
+    private GameObject FullEnergy2;
+    private bool ResetLE;
+    IEnumerator LightningAround() {
+        while (true) {
+            while (LightningFiring)
+                yield return null;
+            if (!ResetLE) {
+                LE = Instantiate(LightningEffect, transform.position + new Vector3(0f, 2f, 0f), Quaternion.identity);
+                LE.transform.parent = transform;
+                ResetLE = true;
+                Destroy(LE, 0.5f);
+                yield return new WaitForSeconds(0.5f);
+                FullEnergy1 = Instantiate(LightningRefill1, transform.position + new Vector3(0f, 0.8f, -0.18f), Quaternion.identity);
+                // yield return new WaitForSeconds(0.2f);
+                FullEnergy2 = Instantiate(LightningRefill2, transform.position + new Vector3(0f, 0.8f, -0.18f), Quaternion.identity);
+                FullEnergy1.transform.parent = LightningEmt.transform;
+                FullEnergy2.transform.parent = LightningEmt.transform;
+            }
+            yield return null;
+        }
     }
 }
