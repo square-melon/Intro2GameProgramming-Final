@@ -1,0 +1,14 @@
+Skills
+Dash => 不是LightningSkill，(Level 0)向滑鼠方向衝刺一小段距離
+Frost => 不是LightningSkill，(Level 0)向滑鼠方向施放冰霜
+Sparky => 不是LightningSkill，(Level 0)集氣後向滑鼠方向施放電磁砲，撞到敵人會變大
+Lightning => LightningSkill，(Level 0)切換成LightningMode，並且攻擊變成閃電攻擊(範圍)
+
+LightningSkill，在LightningMode
+=> 不是LightningSkill的技能不能施放
+=> 補包無法拾取
+=> 敵人會有閃電疊層，會越來越痛(無上限)
+=> 玩家每攻擊一次，攻速會變慢；每使用一次技能，技能CD變長
+=> 關閉後會回復正常攻速及技能CD
+=> 普通的LightningSkill在不是LightningMode施放時，不會切換模式且不享有閃電疊層效果
+=> 基礎傷害極低，但疊層傷害會很高
