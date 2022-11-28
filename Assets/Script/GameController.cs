@@ -40,12 +40,4 @@ public class GameController : MonoBehaviour
     public void _PlayerBulletHitOn(GameObject obj) {
         _PlayerBulletHitObj = obj;
     }
-    
-    public float CurDashCD() {
-        return playerControl.DashCD();
-    }
-
-    public float DashCD() {
-        return playerControl.DashCooldown;
-    }
 }
