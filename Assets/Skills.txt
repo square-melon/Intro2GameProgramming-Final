@@ -3,6 +3,10 @@ Dash => 不是LightningSkill，(Level 0)向滑鼠方向衝刺一小段距離
 Frost => 不是LightningSkill，(Level 0)向滑鼠方向施放冰霜
 Sparky => 不是LightningSkill，(Level 0)集氣後向滑鼠方向施放電磁砲，撞到敵人會變大
 Lightning => LightningSkill，(Level 0)切換成LightningMode，並且攻擊變成閃電攻擊(範圍)
+Explo => 不是LightningSkill，(Level 0)三隻抽一隻，(Level 1)三隻抽兩隻增加數值，(Level 2)一次放三隻
+            紅色 => (Level 0) 基本
+            藍色 => (Level 0) 普攻傷害較高
+            綠色 => (Level 0) 普攻回血
 
 LightningSkill，在LightningMode
 => 不是LightningSkill的技能不能施放
