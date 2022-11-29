@@ -14,15 +14,33 @@ public class PlayerControl : MonoBehaviour
     public Transform leftGunBone;
     public Transform rightHand;
     public Transform leftHand;
+    public Transform ShooterPoint;
     public GameObject rightGun;
+    public GameObject LightningMan;
+    public GameObject LightningEmt;
+    public GameObject ExploBugR;
+    public GameObject ExploBugB;
+    public GameObject ExploBugG;
+
+    [Header("Bullets")]
     public GameObject Bullet;
     public GameObject FrostBeam;
-    public Transform ShooterPoint;
+    public GameObject Sparky;
+    public GameObject LightningBullet;
+    
+    [Header("Effects")]
     public GameObject DashEffect;
     public GameObject FireEffect;
     public GameObject HealEffect;
     public GameObject DamagedEffect;
     public GameObject ChargeEffect;
+    public GameObject SparkyChargeEffect;
+    public GameObject LightningEffect;
+    public GameObject LightningRefill1;
+    public GameObject LightningRefill2;
+    public GameObject LightningMode;
+
+    [Header("Sounds")]
     public AudioSource audioPlayer;
     public AudioClip shootSE;
     public AudioClip walkSE;
@@ -47,6 +65,16 @@ public class PlayerControl : MonoBehaviour
     public float FireEffectStop;
     public float FrostCoolDown;
     public float FrostWaitTime;
+    public float SparkyCoolDown;
+    public float MaxSparkyChargingTime;
+    public float SparkyShootForce;
+    public float SparkyTransScale;
+    public float LightningCoolDown;
+    public float DisableLightningTime;
+    public float CastLightningWaitingTime;
+    public float LightningBasicAS;
+    public float LightningAddAS;
+    public float ExploCoolDown;
 
     private UnityEngine.AI.NavMeshAgent m_naviAgent;
     private RaycastHit hit;
@@ -60,7 +88,7 @@ public class PlayerControl : MonoBehaviour
     private bool MedkitHealCD;
     private float _DashCD;
     private float OriHP;
-    private int[] SkillEvent = {0, 1, 0, 0};
+    private int[] SkillEvent = {0, 1, 2, 3};
     private KeyCode[] SkillKey = {KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R};
     private Coroutine RSTDoing;
 
@@ -69,7 +97,6 @@ public class PlayerControl : MonoBehaviour
         m_naviAgent = GetComponent<NavMeshAgent>();
         PlayerRb = GetComponent<Rigidbody>();
         PlayerAnim = GetComponent<Animator>();
-        DataManager.Instance.SetMAXDashCD(DashCooldown);
         SetGun();
         Init();
     }
@@ -77,6 +104,7 @@ public class PlayerControl : MonoBehaviour
     void Update()
     {
         if (!DataManager.Instance.IsPlayerDead) {
+            UpdateSkill();
             LocateDestination();
             FaceTarget();
             Attack();
@@ -94,6 +122,10 @@ public class PlayerControl : MonoBehaviour
             DataManager.Instance.SetPlayerHP(MAXHP);
             DataManager.Instance.SetMAXHP(MAXHP);
             DataManager.Instance.SetBiolanceValue(0);
+            DataManager.Instance.SetSkillEvent(0, 0);
+            DataManager.Instance.SetSkillEvent(1, 1);
+            DataManager.Instance.SetSkillEvent(2, 2);
+            DataManager.Instance.SetSkillEvent(3, 3);
         }
         Firing = false;
         Dashing = false;
@@ -106,9 +138,37 @@ public class PlayerControl : MonoBehaviour
         FireEffect.SetActive(false);
         HealEffect.SetActive(false);
         DataManager.Instance.PlayerDead(false);
-        DataManager.Instance.SetDashCD(0);
         OriHP = DataManager.Instance.HP();
         ResetAnimDoing();
+    }
+
+    void UpdateSkill() {
+        for (int i = 0; i < 4; i++) {
+            SkillEvent[i] = DataManager.Instance.SkillEvent[i];
+            DataManager.Instance.SetSkillCD(i, GetCD(SkillEvent[i]));
+            DataManager.Instance.SetMAXSkillCD(i, GetMAXCD(SkillEvent[i]));
+            DataManager.Instance.SetLightningMode(LightningCast);
+        }
+    }
+
+    float GetCD(int id) {
+        switch(id) {
+            case 0: return _DashCD;
+            case 1: return CurFrostCD;
+            case 2: return CurSparkyCD;
+            case 3: return CurLightningCD;
+            default: return 0.0f;
+        }
+    }
+
+    float GetMAXCD(int id) {
+        switch(id) {
+            case 0: return DashCooldown;
+            case 1: return FrostCoolDown;
+            case 2: return SparkyCoolDown;
+            case 3: return LightningCoolDown;
+            default: return 0.0f;
+        }
     }
 
     private bool AvoidCasting;
@@ -126,31 +186,50 @@ public class PlayerControl : MonoBehaviour
                         FacingTarget = Target;
                         ToggleNavi();
                         PlayerAnim.SetInteger("Doing", 6);
-                        StartCoroutine(CastSkill(SkillEvent[i], Target, 1.5f));
+                        StartCoroutine(CastSkill(SkillEvent[i], Target, 1.5f, SkillKey[i]));
                     }
                 } else {
-                    ToggleNavi();
-                    StartCoroutine(CastSkill(SkillEvent[i], new Vector3(0, 0, 0), 0f));
+                    if (!AvoidCasting) {
+                        ToggleNavi();
+                        StartCoroutine(CastSkill(SkillEvent[i], new Vector3(0, 0, 0), 0f, SkillKey[i]));
+                    }
                 }
             }
         }
     }
 
     bool CheckSkillState(int skillNum) {
-        switch(skillNum) {
-            case 0: return Dashing;
-            case 1: return FrostCD;
+        if (!LightningCast) {
+            switch(skillNum) {
+                case 0: return Dashing;
+                case 1: return FrostCD;
+                case 2: return SparkyCD;
+                case 3: return LightningCD;
+                case 4: return ExploCD;
+            }
+        } else {
+            switch(skillNum) {
+                case 0: return true;
+                case 1: return true;
+                case 2: return true;
+                case 3: return LightningCD;
+                case 4: return true;
+            }
         }
         return true;
     }
 
-    IEnumerator CastSkill(int skillNum, Vector3 Target, float dur) {
+    IEnumerator CastSkill(int skillNum, Vector3 Target, float dur, KeyCode key) {
         if (dur != 0)
             yield return new WaitForSeconds(dur);
         AvoidCasting = false;
         switch(skillNum) {
             case 0: Dash(Target); break;
             case 1: Frost(Target); break;
+            case 2: ShootSparky(key); break;
+            case 3: Thunder(); break;
+            case 4: ExplosiveBug(key); break;
+            default: break;
         }
     }
 
@@ -206,8 +285,10 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
+    private bool LightningFiring;
+    private float CurLightningAttackSpeed;
     void Attack() {
-        if (Input.GetKey(KeyCode.A) && !Firing) {
+        if (Input.GetKey(KeyCode.A) && !Firing && !LightningCast) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Vector3 Target = Vector3.zero;
             if (Physics.Raycast(ray, out hit)) {
@@ -219,7 +300,37 @@ public class PlayerControl : MonoBehaviour
             IEnumerator shoot = ShootBullet(Target);
             StartCoroutine(shoot);
             Invoke("ResetFiring", ReloadSpeed);
+        } else if (Input.GetKey(KeyCode.A) && !LightningFiring && LightningCast) {
+            Vector3 ShootDir = GetMousePos();
+            LightningFiring = true;
+            FacingTarget = ShootDir - transform.position;
+            ToggleNavi();
+            StartCoroutine(CastLightning(ShootDir));
+            Invoke("ResetLightningFiring", CurLightningAttackSpeed);
+            CurLightningAttackSpeed += LightningAddAS;
         }
+    }
+
+    void ResetLightningFiring() {
+        LightningFiring = false;
+        ResetLE = false;
+    }
+
+    IEnumerator CastLightning(Vector3 Target) {
+        while (PlayerAnim.IsInTransition(0)) {
+            yield return null;
+        }
+        PlayerAnim.SetInteger("Doing", 8);
+        Invoke("ResetAnimDoing", 0.1f);
+        yield return new WaitForSeconds(CastLightningWaitingTime);
+        for (var i = LightningEmt.transform.childCount - 1; i >= 0; i--) {
+            Destroy(LightningEmt.transform.GetChild(i).gameObject);
+        }
+        Vector3 ShootDir = Target - (rightHand.position + leftHand.position) / 2;
+        ShootDir.y = 0;
+        ShootDir = ShootDir.normalized;
+        Instantiate(LightningBullet, (rightHand.position + leftHand.position) / 2, Quaternion.LookRotation(ShootDir));
+        Invoke("ToggleNavi", 0.15f);
     }
 
     void DisableFireEffect() {
@@ -234,14 +345,13 @@ public class PlayerControl : MonoBehaviour
         Invoke("ResetAnimDoing", 0.1f);
         yield return new WaitForSeconds(ShootWaitingTime);
         audioPlayer.PlayOneShot(shootSE);
-        Vector3 ShootDir = Target - ShooterPoint.position;
+        Vector3 ShootDir = Target - rightHand.position;
         ShootDir = new Vector3(ShootDir.x, 0f, ShootDir.z).normalized;
         FireEffect.SetActive(true);
-        BulletPrefab = Instantiate(Bullet, ShooterPoint.position, Quaternion.identity);
+        BulletPrefab = Instantiate(Bullet, rightHand.position, Quaternion.identity);
         BulletPrefab.GetComponent<Rigidbody>().AddForce(ShootDir * ShootForce);
         Invoke("DisableFireEffect", FireEffectStop);
         Invoke("ToggleNavi", 0.15f);
-        Invoke("DisableFireEffect", FireEffectStop);
     }
 
     void ToggleNavi() {
@@ -289,7 +399,7 @@ public class PlayerControl : MonoBehaviour
         IEnumerator dashMoving = DashMoving(dir);
         StartCoroutine(dashMoving);
         StartCoroutine(CoolDownCal(DashCooldown, (returnVal1, returnVal2) => {
-            DataManager.Instance.SetDashCD(returnVal1);
+            _DashCD = returnVal1;
             Dashing = returnVal2;
         }));
         audioPlayer.PlayOneShot(dashSE);
@@ -324,10 +434,9 @@ public class PlayerControl : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other) {
-        if (other.gameObject.CompareTag("Medkit")) {
+        if (other.gameObject.CompareTag("Medkit") && !LightningCast) {
             if (MedkitHealCD) {
                 audioPlayer.PlayOneShot(healSE);
-                DataManager.Instance.IncreaseBiolanceValue(46f);
                 Destroy(other.gameObject.transform.parent.gameObject);
                 HealEffect.SetActive(true);
                 MedkitHealCD = false;
@@ -344,10 +453,6 @@ public class PlayerControl : MonoBehaviour
 
     void ResetMedkitHealCD() {
         MedkitHealCD = true;
-    }
-
-    public float DashCD() {
-        return _DashCD;
     }
 
     void DeadDetect() {
@@ -437,6 +542,161 @@ public class PlayerControl : MonoBehaviour
             BioLevel = 1;
         } else {
             BioLevel = 0;
+        }
+    }
+
+    private float CurSparkyCD;
+    private bool SparkyCD;
+    void ShootSparky(KeyCode key) {
+        PlayerAnim.SetInteger("Doing", 7);
+        SparkyCD = true;
+        FacingTarget = GetMousePos() - transform.position;
+        StartCoroutine(SparkyCharge(key));
+    }
+
+    IEnumerator SparkyCharge(KeyCode key) {
+        float scale = 0;
+        float dur = 0;
+        AvoidCasting = true;
+        yield return new WaitForSeconds(0.1f);
+        GameObject ChargingEF;
+        ChargingEF = Instantiate(SparkyChargeEffect, (rightHand.position + leftHand.position) / 2.0f, Quaternion.identity);
+        Vector3 IntoScale = new Vector3(0.7f, 0.7f, 0.7f);
+        while (Input.GetKey(key) && dur < MaxSparkyChargingTime) {
+            if (dur > MaxSparkyChargingTime / 3.0f) {
+                ChargingEF.transform.localScale = Vector3.Slerp(ChargingEF.transform.localScale, IntoScale, Time.deltaTime * 2.5f);
+            }
+            scale = ((ChargingEF.transform.localScale.x - 0.3f) / 0.4f) * 0.8f + 0.2f;
+            dur += Time.deltaTime;
+            yield return null;
+        }
+        if (scale > 1)
+            scale = 1;
+        Destroy(ChargingEF);
+        ResetAnimDoing();
+        GameObject SparkyBullet = Instantiate(Sparky, rightHand.position, Quaternion.identity);
+        SparkyBullet.transform.localScale = scale * SparkyTransScale * new Vector3(0.1f, 0.1f, 0.1f);
+        Vector3 ShootDir = GetMousePos() - transform.position;
+        ShootDir.y = 0f;
+        yield return new WaitForSeconds(0.25f);
+        FacingTarget = ShootDir;
+        SparkyBullet.GetComponent<Rigidbody>().AddForce(ShootDir.normalized * SparkyShootForce);
+        StartCoroutine(CoolDownCal(SparkyCoolDown, (returnVal1, returnVal2) => {
+            CurSparkyCD = returnVal1;
+            SparkyCD = returnVal2;
+        }));
+        Invoke("ResetAvoidCasting", 0.3f);
+        Invoke("ToggleNavi", 0.3f);
+    }
+
+    void ResetAvoidCasting() {
+        AvoidCasting = false;
+    }
+
+    private bool LightningCD;
+    private float CurLightningCD;
+    private bool LightningCast;
+    private GameObject LightningManPrefab;
+    private Coroutine lightningAround;
+    void Thunder() {          
+        if (!LightningCast) {
+            StartCoroutine(TemporarySetMax());
+            StartCoroutine(CoolDownCal(DisableLightningTime, (returnVal1, returnVal2) => {
+                CurLightningCD = returnVal1;
+                LightningCD = returnVal2;
+            }));
+            LightningManPrefab = Instantiate(LightningMan);
+            CurLightningAttackSpeed = LightningBasicAS;
+            PlayerAnim.SetInteger("Doing", 9);
+            ResetLE = false;
+            Invoke("ResetAnimDoing", 0.2f);
+            Invoke("WaitThunderAnim", DisableLightningTime - 0.2f);
+        } else {
+            ToggleNavi();
+            LightningMode.SetActive(false);
+            LightningCast = false;
+            Destroy(LightningManPrefab);
+            StopCoroutine(lightningAround);
+            for (var i = LightningEmt.transform.childCount - 1; i >= 0; i--) {
+                Destroy(LightningEmt.transform.GetChild(i).gameObject);
+            }
+            StartCoroutine(CoolDownCal(LightningCoolDown, (returnVal1, returnVal2) => {
+                CurLightningCD = returnVal1;
+                LightningCD = returnVal2;
+            }));
+        }
+    }
+
+    IEnumerator TemporarySetMax() {
+        float tmp = LightningCoolDown;
+        LightningCoolDown = DisableLightningTime;
+        yield return new WaitForSeconds(DisableLightningTime);
+        LightningCoolDown = tmp;
+    }
+
+    void WaitThunderAnim() {
+        LightningCast = true;
+        LightningFiring = false;
+        LightningMode.SetActive(true);
+        ToggleNavi();
+        lightningAround = StartCoroutine(LightningAround());
+    }
+
+    private GameObject LE;
+    private GameObject FullEnergy1;
+    private GameObject FullEnergy2;
+    private bool ResetLE;
+    IEnumerator LightningAround() {
+        while (true) {
+            while (LightningFiring)
+                yield return null;
+            if (!ResetLE) {
+                LE = Instantiate(LightningEffect, transform.position + new Vector3(0f, 2f, 0f), Quaternion.identity);
+                LE.transform.parent = transform;
+                ResetLE = true;
+                Destroy(LE, 0.5f);
+                yield return new WaitForSeconds(0.5f);
+                FullEnergy1 = Instantiate(LightningRefill1, transform.position + new Vector3(0f, 0.8f, -0.18f), Quaternion.identity);
+                // yield return new WaitForSeconds(0.2f);
+                FullEnergy2 = Instantiate(LightningRefill2, transform.position + new Vector3(0f, 0.8f, -0.18f), Quaternion.identity);
+                FullEnergy1.transform.parent = LightningEmt.transform;
+                FullEnergy2.transform.parent = LightningEmt.transform;
+            }
+            yield return null;
+        }
+    }
+
+    private bool ExploCD;
+    private float CurExploCD;
+    private int ExploLevel;
+    void ExplosiveBug(KeyCode key) {
+        ToggleNavi();
+        ExploLevel = DataManager.Instance.SkillLevel[4];
+        StartCoroutine(CoolDownCal(ExploCoolDown, (returnVal1, returnVal2) => {
+            CurExploCD = returnVal1;
+            ExploCD = returnVal2;
+        }));
+        int BugNum = 0;
+        if (ExploLevel == 0) {
+            BugNum = Random.Range(1, 4);
+        } else if (ExploLevel == 1) {
+            BugNum = 1;
+        } else if (ExploLevel == 2) {
+            PutOutBug(1);
+            PutOutBug(2);
+            PutOutBug(3);
+            return;
+        }
+        PutOutBug(BugNum);
+    }
+
+    void PutOutBug(int num) {
+        if (num == 1) {
+            Instantiate(ExploBugR, transform.position, Quaternion.identity);
+        } else if (num == 2) {
+            Instantiate(ExploBugG, transform.position, Quaternion.identity);
+        } else if (num == 3) {
+            Instantiate(ExploBugB, transform.position, Quaternion.identity);
         }
     }
 }
