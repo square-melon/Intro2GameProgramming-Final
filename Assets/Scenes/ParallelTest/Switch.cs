@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class Switch : MonoBehaviour
 {
-    public Animator animator;
+    public Animator canvasAnimator;
 
     public GameObject player;
     private GameObject[] enemies;
 
+    // player position
     private Vector3 ppos;
-    private Vector3 pos;
+    // enemies position
+    private Vector3 epos;
 
+    // TRUE: go to parallel world
     private bool toParallel = false;
+    // TRUE: in switching process, we can't do another transition
+    private bool inTransition = false;
 
     // Start is called before the first frame update
     void Start()
@@ -24,14 +29,15 @@ public class Switch : MonoBehaviour
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.LeftShift)) {
-            toParallel = !toParallel;
-            FindAllEnemy();
-            if(toParallel) {
-                StartCoroutine(ToParallel());
-                
-            } else {
-                StartCoroutine(ToOrigin());
-                
+            if(!inTransition) {
+                // inTransition = true;
+                toParallel = !toParallel;
+                FindAllEnemy();
+                if(toParallel) {
+                    StartCoroutine(ToParallel());
+                } else {
+                    StartCoroutine(ToOrigin());
+                }
             }
         }
     }
@@ -41,30 +47,30 @@ public class Switch : MonoBehaviour
     }
 
     IEnumerator ToParallel() {
-        animator.SetTrigger("Switch");
+        canvasAnimator.SetTrigger("Switch");
         yield return new WaitForSeconds(1);
         ppos = player.transform.position;
         player.transform.position = new Vector3(ppos.x, 51, ppos.z);
         foreach (GameObject enemy in enemies)
         {
-            pos = enemy.transform.position;
-            enemy.transform.position = new Vector3(pos.x, 51, pos.z);
+            epos = enemy.transform.position;
+            enemy.transform.position = new Vector3(epos.x, 51, epos.z);
         }
     }
 
     IEnumerator ToOrigin() {
-        animator.SetTrigger("PSwitch");
+        canvasAnimator.SetTrigger("PSwitch");
         yield return new WaitForSeconds(1);
         player.transform.position = new Vector3(ppos.x, 1, ppos.z);
         foreach (GameObject enemy in enemies)
         {
-            pos = enemy.transform.position;
-            enemy.transform.position = new Vector3(pos.x, 1, pos.z);
+            epos = enemy.transform.position;
+            enemy.transform.position = new Vector3(epos.x, 1, epos.z);
         }
     }
 
     IEnumerator Transition() {
-        animator.SetTrigger("Switch");
+        canvasAnimator.SetTrigger("Switch");
         yield return new WaitForSeconds(1);
     }
 }
