@@ -179,7 +179,9 @@ public class PlayerControl : MonoBehaviour
 
     private bool OriIsRooted;
     void RootedDetect() {
-        if (OriIsRooted != IsRooted);
+        if (OriIsRooted != IsRooted) {
+            ToggleNavi();
+        }
     }
 
     float GetCD(int id) {
@@ -240,7 +242,7 @@ public class PlayerControl : MonoBehaviour
     bool CheckSkillState(int skillNum) {
         if (!LightningCast) {
             switch(skillNum) {
-                case 0: return Dashing;
+                case 0: return Dashing || IsRooted;
                 case 1: return FrostCD;
                 case 2: return SparkyCD;
                 case 3: return LightningCD;
@@ -277,7 +279,7 @@ public class PlayerControl : MonoBehaviour
     }
 
     void LocateDestination() {
-        if (Doing) {
+        if (Doing || IsRooted) {
             return;
         }
         if (Input.GetMouseButtonDown(1)) {
