@@ -26,13 +26,15 @@ public class SkillCDUI : MonoBehaviour
     void FindWhichSkill() {
         string skname = "";
         bool lightning = false;
+        bool rooted = false;
         bool IsLightning = DataManager.Instance.LightningMode;
+        bool IsRooted = DataManager.Instance.PlayerIsRooted;
         switch (DataManager.Instance.SkillEvent[iam]) {
-            case 0: skname = "Dash"; lightning = false; break;
-            case 1: skname = "Frost"; lightning = false; break;
-            case 2: skname = "Sparky"; lightning = false; break;
-            case 3: skname = "LightningMode"; lightning = true; break;
-            case 4: skname = "ExploAll"; lightning = false; break;
+            case 0: skname = "Dash"; lightning = false; rooted = false; break;
+            case 1: skname = "Frost"; lightning = false; rooted = true; break;
+            case 2: skname = "Sparky"; lightning = false; rooted = true; break;
+            case 3: skname = "LightningMode"; lightning = true; rooted = true; break;
+            case 4: skname = "ExploAll"; lightning = false; rooted = true; break;
 
             case 101: skname = "ExploR"; lightning = false; break;
             case 102: skname = "ExploG"; lightning = false; break;
@@ -44,7 +46,7 @@ public class SkillCDUI : MonoBehaviour
                 Icon.transform.GetChild(i).gameObject.SetActive(false);
             } else {
                 Icon.transform.GetChild(i).gameObject.SetActive(true);
-                if (!lightning && IsLightning)
+                if ((!lightning && IsLightning) || (!rooted && IsRooted))
                     Disable.SetActive(true);
                 else
                     Disable.SetActive(false);
