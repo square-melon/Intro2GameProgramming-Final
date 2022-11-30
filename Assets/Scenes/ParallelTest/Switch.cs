@@ -50,8 +50,8 @@ public class Switch : MonoBehaviour
         canvasAnimator.SetTrigger("Switch");
         yield return new WaitForSeconds(1);
         ppos = player.transform.position;
+        DataManager.Instance.ToggleInParallel();
         player.transform.position = new Vector3(ppos.x, 51, ppos.z);
-        DataManager.Instance.SetPlayerPos(new Vector3(ppos.x, 51, ppos.z));
         foreach (GameObject enemy in enemies)
         {
             epos = enemy.transform.position;
@@ -63,8 +63,8 @@ public class Switch : MonoBehaviour
         canvasAnimator.SetTrigger("PSwitch");
         yield return new WaitForSeconds(1);
         ppos = player.transform.position;
+        DataManager.Instance.ToggleInParallel();
         player.transform.position = new Vector3(ppos.x, 1, ppos.z);
-        DataManager.Instance.SetPlayerPos(new Vector3(ppos.x, 1, ppos.z));
         foreach (GameObject enemy in enemies)
         {
             epos = enemy.transform.position;
