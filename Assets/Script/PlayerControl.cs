@@ -77,6 +77,7 @@ public class PlayerControl : MonoBehaviour
     public float ExploCoolDown;
     public float BugCircularChoosingTime;
     public float SwitchingParallelTime;
+    public float RootedTime;
 
     [Header("Debug")]
     public int Skill1;
@@ -179,9 +180,18 @@ public class PlayerControl : MonoBehaviour
 
     private bool OriIsRooted;
     void RootedDetect() {
-        if (OriIsRooted != IsRooted) {
+        if (OriIsRooted != IsRooted && OriIsRooted == false) {
             ToggleNavi();
+            PlayerAnim.SetBool("Walking", false);
+            PlayerAnim.SetInteger("Doing", 4);
+            Invoke("ResetAnimDoing", 0.3f);
+            Invoke("ResetRooted", DataManager.Instance.RootedTime);
         }
+        OriIsRooted = IsRooted;
+    }
+
+    void ResetRooted() {
+        DataManager.Instance.ToggleRooted();
     }
 
     float GetCD(int id) {
@@ -784,6 +794,11 @@ public class PlayerControl : MonoBehaviour
     void ToggleInParallel() {
         bool inParallel = DataManager.Instance.InParallel;
         if (OriInParrallel != inParallel) {
+            if(inParallel) {
+                m_naviAgent.Warp(new Vector3(transform.position.x, 50, transform.position.z));
+            } else {
+                m_naviAgent.Warp(new Vector3(transform.position.x, 0, transform.position.z));
+            }
             ToggleNavi();
             Switching = true;
             Invoke("ToggleNavi", SwitchingParallelTime);
