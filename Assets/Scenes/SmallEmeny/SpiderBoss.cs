@@ -46,17 +46,17 @@ public class SpiderBoss : MonoBehaviour
     {
         //Check for sight and attack range
         float dis = Vector3.Distance(player.position,transform.position);
-        AttackPlayer();
-        // if(dis < sightRange) {
-        //     playerInSightRange = true;
-        // } else {
-        //     playerInSightRange = false;
-        // }
-        // if(dis < attackRange) {
-        //     playerInAttackRange = true;
-        // } else {
-        //     playerInAttackRange = false;
-        // }
+        //AttackPlayer();
+        if(dis < sightRange) {
+            playerInSightRange = true;
+        } else {
+            playerInSightRange = false;
+        }
+        if(dis < attackRange) {
+            playerInAttackRange = true;
+        } else {
+            playerInAttackRange = false;
+        }
 
         // if (!playerInSightRange && !playerInAttackRange) {
         //     print(1);
@@ -67,11 +67,11 @@ public class SpiderBoss : MonoBehaviour
         //     print(2);
         //     ChasePlayer();
         // }
-        // if (playerInAttackRange && playerInSightRange) {
-        //     print(3);
-        //     //animator.SetBool("Move Forward Fast",false);
-        //     AttackPlayer();
-        // }
+        if (playerInAttackRange && playerInSightRange) {
+            print(3);
+            //animator.SetBool("Move Forward Fast",false);
+            AttackPlayer();
+        }
     }
 
     private void Patroling()
@@ -140,9 +140,7 @@ public class SpiderBoss : MonoBehaviour
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
     }
-    private void NoRooted() {
-        DataManager.Instance.IsRooted(false);
-    }
+    
     private void ResetAttack()
     {
         alreadyAttacked = false;

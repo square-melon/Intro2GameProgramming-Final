@@ -183,7 +183,7 @@ public class PlayerControl : MonoBehaviour
         if (OriIsRooted != IsRooted && OriIsRooted == false) {
             ToggleNavi();
             PlayerAnim.SetBool("Walking", false);
-            PlayerAnim.SetInteger("Doing", 4);
+            //PlayerAnim.SetInteger("Doing", 4);
             Invoke("ResetAnimDoing", 0.3f);
             Invoke("ResetRooted", DataManager.Instance.RootedTime);
         }

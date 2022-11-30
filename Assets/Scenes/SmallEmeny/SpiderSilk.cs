@@ -29,22 +29,23 @@ public class SpiderSilk : MonoBehaviour
     void Start() {
         player = GameObject.Find("Player");
         smallspider = GameObject.Find("Spider Enemy");
+        Destroy(gameObject,1);
     }
     void Update() {
         ShootSilk();
     }
     public void ShootSilk() {
-        Vector3 Face = player.transform.position - transform.position;
+        // Vector3 Face = player.transform.position - transform.position;
         Vector3 position = new Vector3(transform.position.x,transform.position.y+0.5f,transform.position.z);
-        Vector3 newface = new Vector3(Face.x,Face.y+0.5f,Face.z).normalized;
+        //Vector3 newface = new Vector3(Face.x,Face.y+0.5f,Face.z).normalized;
         
-        Ray ray = new Ray(transform.position,newface);
-        if (Physics.Raycast(ray, out hit,2f)) {
+        Ray ray = new Ray(transform.position,transform.forward);
+        if (Physics.Raycast(ray, out hit,1.5f)) {
                 if (hit.collider.CompareTag("Player")) {
                     smallspider.GetComponent<NavMeshAgent>().SetDestination(player.transform.position);
                     smallspider.GetComponent<NavMeshAgent>().speed = 15.0f;
                     //DataManager.Instance.IsRooted(true);
-                    Invoke(nameof(NoRooted),1);
+                    DataManager.Instance.IsRooted(2);
                     Destroy(gameObject); 
 
                     
@@ -54,8 +55,5 @@ public class SpiderSilk : MonoBehaviour
                     //Patroling();
                 }
     }
-    private void NoRooted() {
-        DataManager.Instance.IsRooted(false);
-        
-    }
+    
 }
