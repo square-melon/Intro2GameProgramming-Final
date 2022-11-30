@@ -4822,6 +4822,7 @@ GameObject:
   - component: {fileID: 6639364789348905109}
   - component: {fileID: 7336987408870963208}
   - component: {fileID: -6142730789497727720}
+  - component: {fileID: -9027109787723390843}
   m_Layer: 0
   m_Name: LightBeamBlast
   m_TagString: Untagged
@@ -9620,3 +9621,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-9027109787723390843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4184011895187892550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9491340343c0403418110291a85a0d70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

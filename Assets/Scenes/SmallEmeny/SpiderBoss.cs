@@ -104,14 +104,7 @@ public class SpiderBoss : MonoBehaviour
     {
         agent.SetDestination(player.position);
     }
-    private void ShootSilk() {
-        Vector3 Face = player.transform.position - transform.position;
-        Vector3 position = new Vector3(transform.position.x,transform.position.y+0.5f,transform.position.z);
-        silkprefab = Instantiate(silk,position,Quaternion.LookRotation(Face) * Quaternion.Euler(0, 0, 0));
-        silkprefab.GetComponent<Rigidbody>().AddForce(Face * 50.0f);
-        if(silkprefab)
-            Destroy(silkprefab,10);
-    }
+    
     private void AttackPlayer()
     {
         //Make sure enemy doesn't move
@@ -119,10 +112,10 @@ public class SpiderBoss : MonoBehaviour
 
         transform.LookAt(player);
         Vector3 Face = player.transform.position - transform.position;
-        
+        Vector3 position = new Vector3(transform.position.x,transform.position.y+0.5f,transform.position.z);
         Vector3 newface = new Vector3(Face.x,Face.y+0.5f,Face.z);
+        
         Debug.DrawRay(transform.position, newface * 100.0f, Color.green);
-        Ray ray = new Ray(transform.position,newface);
         if (!alreadyAttacked)
         {
             ///Attack code here
@@ -133,17 +126,13 @@ public class SpiderBoss : MonoBehaviour
             
             //Face = new Vector3(Face.x,Face.y-5.0f,Face.z);
             animator.SetTrigger("Cast Spell");
-            Invoke(nameof(ShootSilk),1.0f);
-           
             
-            if (Physics.Raycast(ray, out hit,20.0f)) {
-                if (hit.collider.CompareTag("Player")) {
-                    smallspider.GetComponent<NavMeshAgent>().SetDestination(player.transform.position);
-                    smallspider.GetComponent<NavMeshAgent>().speed = 15.0f;
-                }
-            } else {
-                    Patroling();
-                }
+            silkprefab = Instantiate(silk,position,Quaternion.LookRotation(Face) * Quaternion.Euler(0, 0, 0));
+            silkprefab.GetComponent<Rigidbody>().AddForce(Face * 50.0f);
+            
+                                    
+            //Invoke(nameof(ShootSilk),1.0f);
+            
             
             //animator.SetTrigger("Jump");
             //animator.SetTrigger("Cast Spell");
@@ -151,7 +140,9 @@ public class SpiderBoss : MonoBehaviour
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
     }
-    
+    private void NoRooted() {
+        DataManager.Instance.IsRooted(false);
+    }
     private void ResetAttack()
     {
         alreadyAttacked = false;
