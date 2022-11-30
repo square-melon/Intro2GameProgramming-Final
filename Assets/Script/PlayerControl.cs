@@ -76,6 +76,7 @@ public class PlayerControl : MonoBehaviour
     public float LightningAddAS;
     public float ExploCoolDown;
     public float BugCircularChoosingTime;
+    public float SwitchingParallelTime;
 
     [Header("Debug")]
     public int Skill1;
@@ -116,13 +117,16 @@ public class PlayerControl : MonoBehaviour
     {
         if (!DataManager.Instance.IsPlayerDead) {
             UpdateSkill();
-            LocateDestination();
-            FaceTarget();
-            Attack();
+            if (!Switching) {
+                LocateDestination();
+                FaceTarget();
+                Attack();
+                Skills();
+                DeadDetect();
+                BioValDetect();
+                ToggleInParallel();
+            }
             UpdateValue();
-            Skills();
-            DeadDetect();
-            BioValDetect();
         } else {
             // Maybe reset?
         }
@@ -759,5 +763,22 @@ public class PlayerControl : MonoBehaviour
             }
             yield return new WaitForSeconds(BugCircularChoosingTime);
         }
+    }
+
+    private bool OriInParrallel;
+    private bool Switching;
+    void ToggleInParallel() {
+        bool inParallel = DataManager.Instance.InParallel;
+        if (OriInParrallel != inParallel) {
+            ToggleNavi();
+            Switching = true;
+            Invoke("ToggleNavi", SwitchingParallelTime);
+            Invoke("ResetSwitching", SwitchingParallelTime);
+        }
+
+    }
+
+    void ResetSwitching() {
+        Switching = false;
     }
 }
