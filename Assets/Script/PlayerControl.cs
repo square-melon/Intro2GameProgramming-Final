@@ -784,6 +784,11 @@ public class PlayerControl : MonoBehaviour
     void ToggleInParallel() {
         bool inParallel = DataManager.Instance.InParallel;
         if (OriInParrallel != inParallel) {
+            if(inParallel) {
+                m_naviAgent.Warp(new Vector3(transform.position.x, 50, transform.position.z));
+            } else {
+                m_naviAgent.Warp(new Vector3(transform.position.x, 0, transform.position.z));
+            }
             ToggleNavi();
             Switching = true;
             Invoke("ToggleNavi", SwitchingParallelTime);

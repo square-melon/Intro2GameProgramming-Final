@@ -28,6 +28,7 @@ public class Switch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // print(player.transform.position);
         if(Input.GetKeyDown(KeyCode.LeftShift)) {
             if(!inTransition) {
                 // inTransition = true;
@@ -51,7 +52,7 @@ public class Switch : MonoBehaviour
         yield return new WaitForSeconds(1);
         ppos = player.transform.position;
         DataManager.Instance.ToggleInParallel();
-        player.transform.position = new Vector3(ppos.x, 51, ppos.z);
+        // player.transform.position = new Vector3(ppos.x, 51, ppos.z);
         foreach (GameObject enemy in enemies)
         {
             epos = enemy.transform.position;
@@ -64,7 +65,7 @@ public class Switch : MonoBehaviour
         yield return new WaitForSeconds(1);
         ppos = player.transform.position;
         DataManager.Instance.ToggleInParallel();
-        player.transform.position = new Vector3(ppos.x, 1, ppos.z);
+        // player.transform.position = new Vector3(ppos.x, 1, ppos.z);
         foreach (GameObject enemy in enemies)
         {
             epos = enemy.transform.position;

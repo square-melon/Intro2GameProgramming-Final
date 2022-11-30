@@ -106,15 +106,15 @@ NavMeshSettings:
   m_BuildSettings:
     serializedVersion: 2
     agentTypeID: 0
-    agentRadius: 0.5
+    agentRadius: 1
     agentHeight: 2
-    agentSlope: 45
+    agentSlope: 0
     agentClimb: 0.4
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
-    cellSize: 0.16666667
+    cellSize: 0.33333334
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
@@ -623,7 +623,7 @@ GameObject:
   m_Name: Origin
   m_TagString: Ground
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 3
   m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!64 &333880179
@@ -1792,7 +1792,7 @@ GameObject:
   m_Name: Parallel
   m_TagString: Ground
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 4
   m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!64 &1143110261
@@ -2579,7 +2579,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &1852387884
 Animator:
   serializedVersion: 4
@@ -2850,8 +2850,8 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 7590669230502268143}
-  m_Follow: {fileID: 7590669230502268143}
+  m_LookAt: {fileID: 0}
+  m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 40
     OrthographicSize: 10
@@ -2901,6 +2901,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraZAxisCtrl: 6
+  CameraYAxisCrtl: 10
   PanSpeed: 8
   BorderUp: 0.95
   BorderDown: 0.05
@@ -60361,6 +60362,16 @@ MonoBehaviour:
   LightningBasicAS: 2.5
   LightningAddAS: 1
   ExploCoolDown: 0
+  BugCircularChoosingTime: 0
+  SwitchingParallelTime: 1.5
+  Skill1: 0
+  Skill2: 0
+  Skill3: 0
+  Skill4: 0
+  SkillLevel1: 0
+  SkillLevel2: 0
+  SkillLevel3: 0
+  SkillLevel4: 0
 --- !u!195 &7496718590204494841
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -60370,10 +60381,10 @@ NavMeshAgent:
   m_GameObject: {fileID: 7592687065049618541}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 1
   m_Speed: 3
   m_Acceleration: 5000
-  avoidancePriority: 50
+  avoidancePriority: 0
   m_AngularSpeed: 0
   m_StoppingDistance: 0.03
   m_AutoTraverseOffMeshLink: 1
