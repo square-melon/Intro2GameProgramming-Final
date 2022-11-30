@@ -15,3 +15,10 @@ Skill Key
 1 => Frost
 2 => Sparky
 3 => LightningSkill
+4 => ExploBug
+
+
+
+101 => ExploBugR
+102 => ExploBugG
+103 => ExploBugB
