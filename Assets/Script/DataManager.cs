@@ -22,6 +22,7 @@ public class DataManager : MonoBehaviour
     public bool LightningMode { get; private set; }
     public bool InParallel { get; private set; }
     public bool PlayerIsRooted { get; private set; }
+    public float RootedTime { get; private set; }
     private void Awake()
     {   
         if (Instance != null && Instance != this) {
@@ -127,11 +128,12 @@ public class DataManager : MonoBehaviour
         InParallel = !InParallel;
     }
 
-    public void IsRooted(bool m) {
-        PlayerIsRooted = m;
+    public void IsRooted(float rootedTime) {
+        PlayerIsRooted = true;
+        RootedTime = rootedTime;
     }
 
-    public void ToggleRooted(bool m) {
+    public void ToggleRooted() {
         PlayerIsRooted = !PlayerIsRooted;
     }
 
