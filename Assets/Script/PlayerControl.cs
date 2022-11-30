@@ -103,6 +103,7 @@ public class PlayerControl : MonoBehaviour
     private int[] SkillEvent = {4, 1, 2, 3};
     private KeyCode[] SkillKey = {KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R};
     private Coroutine RSTDoing;
+    private bool IsRooted;
 
     void Start()
     {
@@ -122,10 +123,11 @@ public class PlayerControl : MonoBehaviour
                 FaceTarget();
                 Attack();
                 Skills();
-                DeadDetect();
                 BioValDetect();
                 ToggleInParallel();
             }
+            DeadDetect();
+            UpdateControlValue();
             UpdateValue();
         } else {
             // Maybe reset?
@@ -168,6 +170,16 @@ public class PlayerControl : MonoBehaviour
             DataManager.Instance.SetMAXSkillCD(i, GetMAXCD(SkillEvent[i]));
             DataManager.Instance.SetLightningMode(LightningCast);
         }
+    }
+
+    void UpdateControlValue() {
+        IsRooted = DataManager.Instance.PlayerIsRooted;
+        RootedDetect();
+    }
+
+    private bool OriIsRooted;
+    void RootedDetect() {
+        if (OriIsRooted != IsRooted);
     }
 
     float GetCD(int id) {
@@ -775,7 +787,7 @@ public class PlayerControl : MonoBehaviour
             Invoke("ToggleNavi", SwitchingParallelTime);
             Invoke("ResetSwitching", SwitchingParallelTime);
         }
-
+        OriInParrallel = inParallel;
     }
 
     void ResetSwitching() {
