@@ -32,6 +32,11 @@ public class SkillCDUI : MonoBehaviour
             case 1: skname = "Frost"; lightning = false; break;
             case 2: skname = "Sparky"; lightning = false; break;
             case 3: skname = "LightningMode"; lightning = true; break;
+            case 4: skname = "ExploAll"; lightning = false; break;
+
+            case 101: skname = "ExploR"; lightning = false; break;
+            case 102: skname = "ExploG"; lightning = false; break;
+            case 103: skname = "ExploB"; lightning = false; break;
             default: skname = ""; break;
         }
         for (var i = Icon.transform.childCount - 1; i >= 0; i--) {
