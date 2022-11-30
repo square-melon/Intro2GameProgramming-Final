@@ -21,6 +21,7 @@ public class DataManager : MonoBehaviour
     public float[] CurSkillCD { get; private set; }
     public bool LightningMode { get; private set; }
     public bool InParallel { get; private set; }
+    public bool PlayerIsRooted { get; private set; }
     private void Awake()
     {   
         if (Instance != null && Instance != this) {
@@ -124,6 +125,14 @@ public class DataManager : MonoBehaviour
 
     public void ToggleInParallel() {
         InParallel = !InParallel;
+    }
+
+    public void IsRooted(bool m) {
+        PlayerIsRooted = m;
+    }
+
+    public void ToggleRooted(bool m) {
+        PlayerIsRooted = !PlayerIsRooted;
     }
 
     public void takedamage(Transform enemy, float damage) {
