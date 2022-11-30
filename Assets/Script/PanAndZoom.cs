@@ -10,6 +10,7 @@ public class PanAndZoom : MonoBehaviour
 
     [Header("Settings")]
     public float CameraZAxisCtrl;
+    public float CameraYAxisCrtl;
     public float PanSpeed;
     public float BorderUp;
     public float BorderDown;
@@ -19,6 +20,7 @@ public class PanAndZoom : MonoBehaviour
     private CinemachineVirtualCamera VirtualCamera;
     private Transform CameraTransform;
     private GameController gam;
+    private bool Switching;
     private bool Lock;
 
     void Start()
@@ -30,18 +32,23 @@ public class PanAndZoom : MonoBehaviour
 
     void Init() {
         Center();
+        Switching = false;
         Lock = false;
     }
 
     void Update()
     {
+        Debug.Log(DataManager.Instance.InParallel == Switching);
         if (DataManager.Instance.IsPlayerDead) {
             Center();
+        } else if (DataManager.Instance.InParallel != Switching) {
+            StartCoroutine(CenterAfterHalfSec());
         } else {
             if (Input.GetKeyDown(KeyCode.Y))
                 Lock = !Lock;
             MoveCamera();
         }
+        Switching = DataManager.Instance.InParallel;
     }
 
     void MoveCamera() {
@@ -56,9 +63,14 @@ public class PanAndZoom : MonoBehaviour
         }
     }
 
+    IEnumerator CenterAfterHalfSec() {
+        yield return new WaitForSeconds(0.5f);
+        Center();
+    }
+
     void Center() {
         Vector3 playerPos = DataManager.Instance.PlayerPos;
-        CameraTransform.position = new Vector3(playerPos.x, CameraTransform.position.y, playerPos.z - CameraZAxisCtrl);
+        CameraTransform.position = new Vector3(playerPos.x, playerPos.y + CameraYAxisCrtl, playerPos.z - CameraZAxisCtrl);
     }
 
     void PanScreen() {
