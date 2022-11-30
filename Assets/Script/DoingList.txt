@@ -7,8 +7,18 @@ Doing
 5 => Frost
 6 => Charging (BiolanceValue >= 90%)
 7 => Sparky
+8 => LightningCastBasicAttack
+9 => LightningCharge
 
 Skill Key
 0 => Dash
 1 => Frost
 2 => Sparky
+3 => LightningSkill
+4 => ExploBug
+
+
+
+101 => ExploBugR
+102 => ExploBugG
+103 => ExploBugB

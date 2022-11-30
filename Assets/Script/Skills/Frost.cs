@@ -29,11 +29,11 @@ public class Frost : MonoBehaviour
         Debug.DrawRay(transform.position, transform.forward * RayLength);
         foreach (var obj in hit) {
             if (obj.collider.CompareTag("Enemy")) {
-                int hash = obj.collider.gameObject.GetHashCode();
+                int hash = obj.collider.transform.root.GetHashCode();
                 if (HitEnemy.ContainsKey(hash) == false) {
                     HitEnemy.Add(hash, true);
                     Instantiate(HitEffect, obj.point, Quaternion.identity);
-                    takedamage(obj.transform);
+                    takedamage(obj.transform.root);
                 }
             }
         }
