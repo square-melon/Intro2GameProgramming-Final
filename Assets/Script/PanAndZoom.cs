@@ -38,7 +38,6 @@ public class PanAndZoom : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(DataManager.Instance.InParallel == Switching);
         if (DataManager.Instance.IsPlayerDead) {
             Center();
         } else if (DataManager.Instance.InParallel != Switching) {
