@@ -78,6 +78,8 @@ public class PlayerControl : MonoBehaviour
     public float BugCircularChoosingTime;
     public float SwitchingParallelTime;
     public float RootedTime;
+    public float LightningAutoAttackRange;
+    public float LightningAutoAttackReload;
 
     [Header("Debug")]
     public int Skill1;
