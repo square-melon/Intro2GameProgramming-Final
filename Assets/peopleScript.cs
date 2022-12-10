@@ -15,6 +15,8 @@ public class peopleScript : MonoBehaviour
     Vector3 startSpot;
     private bool discoveredY = false;
     private bool discoveredR = false;
+    //Time
+    public static float deltaTime;
     void Start()
     {
         naviAgent = this.GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -24,28 +26,43 @@ public class peopleScript : MonoBehaviour
     }
 
     // Update is called once per frame
+    private float timer=0;
+    bool run = false;
     void Update()
     {
         float dstToPlayer = Vector3.Distance(transform.position, DataManager.Instance.PlayerPos);
-        if(dstToPlayer<15.0f && IsInFace()){
+        if(run==true){
+            Run();
+        }
+        else if(dstToPlayer<15.0f && IsInFace()){
+            timer += Time.deltaTime;
+            if(timer>=2){
+                run = true;
+            }
             if(discoveredR==false){
                 Destroy(ExclamationPrefabY,0.0f);
                 discoveredY = false;
-                InstantiateR();
-                Track();
+                InstantiateR();     
             }
+            Track();
         }
         else if(dstToPlayer<15.0f && IsInFront()){
             if(discoveredY==false){
                 Destroy(ExclamationPrefabR,0.0f);
                 discoveredR = false;
                 InstantiateY();
-                Track();
-            }    
+            } 
+            Track();   
+            timer=0;
         }
         else{
             idle();
+            timer=0;
         }
+        //Timer
+        Debug.Log(timer);
+    }
+    void TimeCount(){
         
     }
     void idle(){
@@ -58,6 +75,11 @@ public class peopleScript : MonoBehaviour
     
     void Track(){
         naviAgent.SetDestination(DataManager.Instance.PlayerPos);
+    }
+    void Run(){
+        Vector3 target = new Vector3(-40.0f,16.0f,92.0f);
+        naviAgent.SetDestination(target);
+        naviAgent.speed = 10.0f;
     }
     void InstantiateR(){
         Vector3 pos = transform.position;
