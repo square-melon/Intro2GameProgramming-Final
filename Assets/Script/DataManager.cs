@@ -23,6 +23,9 @@ public class DataManager : MonoBehaviour
     public bool InParallel { get; private set; }
     public bool PlayerIsRooted { get; private set; }
     public float RootedTime { get; private set; }
+    public int[] BearSkill { get; private set; }
+    public int BearTime;
+    public bool InBearMode;
     private void Awake()
     {   
         if (Instance != null && Instance != this) {
@@ -33,6 +36,7 @@ public class DataManager : MonoBehaviour
             SkillEvent = new int[4]{-1, -1, -1, -1};
             MAXSkillCD = new float[4]{-1, -1, -1, -1};
             CurSkillCD = new float[4];
+            BearSkill = new int[5]{-1, -1, -1, -1, -1};
             DontDestroyOnLoad(this.gameObject);
         }
     }
@@ -52,9 +56,9 @@ public class DataManager : MonoBehaviour
 
     public void PlayerOnHit(float damage) {
         _HP -= damage;
-        if (BiolanceValue >= 20f) {
-            BiolanceValue += damage * IncreaseBioValRate;
-        }
+        BiolanceValue += damage * IncreaseBioValRate;
+        if (BiolanceValue >= 100f)
+            BiolanceValue = 100f;
     }
 
     public void HealPlayer(float hp) {
@@ -138,6 +142,7 @@ public class DataManager : MonoBehaviour
     }
 
     public void takedamage(Transform enemy, float damage) {
+        Debug.Log(enemy.name);
         Scene2Enemy e1 = enemy.GetComponent<Scene2Enemy>();
         enemyScript e2 = enemy.GetComponent<enemyScript>();
         Zombie3script ee2 = enemy.GetComponent<Zombie3script>();

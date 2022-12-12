@@ -21,6 +21,22 @@ public class PlayerControl : MonoBehaviour
     public GameObject ExploBugR;
     public GameObject ExploBugB;
     public GameObject ExploBugG;
+    public GameObject Human;
+    public GameObject Bear;
+    public Transform BearFront;
+    public Transform BearLHand;
+    public Transform BearRHand;
+
+    [Header("BearSettings")]
+    public Animator PlayerAnim;
+    public Animator BearAnim;
+    public float BearScale;
+    public float HumanScale;
+    public float TurnIntoScaler;
+    public float TurnIntoDuration;
+    public float BearHumanScaleRatio;
+    public float HumanNavSpeed;
+    public float BearNavSpeed;
 
     [Header("Bullets")]
     public GameObject Bullet;
@@ -39,6 +55,7 @@ public class PlayerControl : MonoBehaviour
     public GameObject LightningRefill1;
     public GameObject LightningRefill2;
     public GameObject LightningMode;
+    public GameObject EarthQuakeEffect;
 
     [Header("Sounds")]
     public AudioSource audioPlayer;
@@ -53,6 +70,7 @@ public class PlayerControl : MonoBehaviour
     [Header("Settings")]
     public Vector3 SpawnPoint;
     public float RotationSlerp;
+    public float BearRotationSlerp;
     public float ReloadSpeed;
     public float ShootForce;
     public float ShootWaitingTime;
@@ -80,6 +98,24 @@ public class PlayerControl : MonoBehaviour
     public float RootedTime;
     public float LightningAutoAttackRange;
     public float LightningAutoAttackReload;
+    public float BecomeBearTime;
+    public float MaxInBearMode;
+    public float BearAttackSpeed;
+    public float BearAttackRadius;
+    public float BearAttackDis;
+    public float BearAttackBasicDamage;
+    public float BearThirdAttackDamage;
+    public float BearRegenRate;
+    public float BearJumpCoolDown;
+    public float BearJumpSpeed;
+    public float MaxBearJumpDis;
+    public float KnockFloorCoolDown;
+    public float AnimKnockWait;
+    public float Attack5AnimSpeed;
+    public float FirstKnockWait;
+    public float SecondKnockWait;
+    public float ThirdKnockWait;
+    public float KnockForwardScaler;
 
     [Header("Debug")]
     public int Skill1;
@@ -91,10 +127,11 @@ public class PlayerControl : MonoBehaviour
     public int SkillLevel3;
     public int SkillLevel4;
 
-    private UnityEngine.AI.NavMeshAgent m_naviAgent;
+    private UnityEngine.AI.NavMeshAgent Human_naviAgent;
+    private UnityEngine.AI.NavMeshAgent Bear_naviAgent;
     private RaycastHit hit;
-    private Animator PlayerAnim;
     private Rigidbody PlayerRb;
+    private Rigidbody BearRb;
     private bool Firing;
     private GameObject BulletPrefab;
     private Vector3 FacingTarget;
@@ -107,12 +144,14 @@ public class PlayerControl : MonoBehaviour
     private KeyCode[] SkillKey = {KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R};
     private Coroutine RSTDoing;
     private bool IsRooted;
+    private bool BearMode;
 
     void Start()
     {
-        m_naviAgent = GetComponent<NavMeshAgent>();
-        PlayerRb = GetComponent<Rigidbody>();
-        PlayerAnim = GetComponent<Animator>();
+        Human_naviAgent = Human.GetComponent<NavMeshAgent>();
+        Bear_naviAgent = Bear.GetComponent<NavMeshAgent>();
+        PlayerRb = Human.GetComponent<Rigidbody>();
+        BearRb = Bear.GetComponent<Rigidbody>();
         SetGun();
         Init();
     }
@@ -121,7 +160,7 @@ public class PlayerControl : MonoBehaviour
     {
         if (!DataManager.Instance.IsPlayerDead) {
             UpdateSkill();
-            if (!Switching) {
+            if (!Switching && !Turning) {
                 LocateDestination();
                 FaceTarget();
                 Attack();
@@ -155,8 +194,11 @@ public class PlayerControl : MonoBehaviour
         Dashing = false;
         Doing = false;
         AvoidCasting = false;
+        Human.SetActive(true);
+        Bear.SetActive(false);
         transform.position = SpawnPoint;
-        m_naviAgent.isStopped = false;
+        Human.transform.position = SpawnPoint;
+        Human_naviAgent.isStopped = false;
         DashEffect.SetActive(false);
         MedkitHealCD = true;
         FireEffect.SetActive(false);
@@ -207,6 +249,10 @@ public class PlayerControl : MonoBehaviour
             case 101: return CurExploCD;
             case 102: return CurExploCD;
             case 103: return CurExploCD;
+
+            case 201: return CurBearJumpCD;
+            case 202: return CurKnockFloorCD;
+
             default: return 0.0f;
         }
     }
@@ -222,6 +268,10 @@ public class PlayerControl : MonoBehaviour
             case 101: return ExploCoolDown;
             case 102: return ExploCoolDown;
             case 103: return ExploCoolDown;
+
+            case 201: return BearJumpCoolDown;
+            case 202: return KnockFloorCoolDown;
+
             default: return 0.0f;
         }
     }
@@ -230,22 +280,8 @@ public class PlayerControl : MonoBehaviour
     void Skills() {
         for (int i = 0; i < 4; i++) {
             if (Input.GetKey(SkillKey[i]) && !CheckSkillState(SkillEvent[i])) {
-                if (BioLevel == 3) {
-                    if (!AvoidCasting) {
-                        AvoidCasting = true;
-                        Vector3 EffectPos = transform.position;
-                        EffectPos.y += 0.5f;
-                        EffectPos.z -= 0.2f;
-                        Instantiate(ChargeEffect, EffectPos, Quaternion.identity);
-                        Vector3 Target = GetMousePos() - transform.position;
-                        FacingTarget = Target;
-                        PlayerAnim.SetInteger("Doing", 6);
-                        StartCoroutine(CastSkill(SkillEvent[i], Target, 1.5f, SkillKey[i], i));
-                    }
-                } else {
-                    if (!AvoidCasting) {
-                        StartCoroutine(CastSkill(SkillEvent[i], new Vector3(0, 0, 0), 0f, SkillKey[i], i));
-                    }
+                if (!AvoidCasting) {
+                    StartCoroutine(CastSkill(SkillEvent[i], new Vector3(0, 0, 0), 0f, SkillKey[i], i));
                 }
             }
         }
@@ -259,6 +295,8 @@ public class PlayerControl : MonoBehaviour
                 case 2: return SparkyCD;
                 case 3: return LightningCD;
                 case 4: return ExploCD;
+                case 201: return BearJumpCD;
+                case 202: return KnockFloorCD;
             }
         } else {
             switch(skillNum) {
@@ -267,6 +305,8 @@ public class PlayerControl : MonoBehaviour
                 case 2: return true;
                 case 3: return LightningCD;
                 case 4: return true;
+                case 201: return true;
+                case 202: return true;
             }
         }
         return true;
@@ -282,44 +322,86 @@ public class PlayerControl : MonoBehaviour
             case 2: ShootSparky(key); break;
             case 3: Thunder(); break;
             case 4: ExplosiveBug(keyid, key); break;
+
+            case 201: BearJump(); break;
+            case 202: BearKnockFloor(); break;
             default: break;
         }
     }
 
     void UpdateValue() {
-        DataManager.Instance.SetPlayerPos(transform.position);
+        if (BearMode) 
+            DataManager.Instance.SetPlayerPos(Bear.transform.position);
+        else
+            DataManager.Instance.SetPlayerPos(Human.transform.position);
+    }
+
+    public Vector3 PlayerPos() {
+        return DataManager.Instance.PlayerPos;
     }
 
     void LocateDestination() {
         if (Doing || IsRooted) {
+            PlayerAnim.SetBool("Walking", false);
+            BearAnim.SetBool("WalkForward", false);
             return;
         }
         if (Input.GetMouseButtonDown(1)) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit)) {
                 if (hit.collider.CompareTag("Ground")) {
-                    m_naviAgent.SetDestination(hit.point);
+                    if (BearMode) 
+                        Bear_naviAgent.SetDestination(hit.point);
+                    else
+                        Human_naviAgent.SetDestination(hit.point);
                 }
             }
         }
         //audioPlayer.PlayOneShot(walkSE);
         bool IsWalking = true;
-        if (!m_naviAgent.pathPending) {
-            if (m_naviAgent.remainingDistance <= m_naviAgent.stoppingDistance) {
-                if (!m_naviAgent.hasPath || m_naviAgent.velocity.sqrMagnitude == 0f)
-                    IsWalking = false;
-            }
+        if (BearMode) {
+            float dist = Bear_naviAgent.remainingDistance;
+            if (dist!=Mathf.Infinity && Bear_naviAgent.pathStatus==UnityEngine.AI.NavMeshPathStatus.PathComplete && Bear_naviAgent.remainingDistance<0.1f)
+                IsWalking = false;
+
+            // if (!Bear_naviAgent.pathPending) {
+            //     if (Bear_naviAgent.remainingDistance <= Bear_naviAgent.stoppingDistance) {
+            //         if (!Bear_naviAgent.hasPath || Bear_naviAgent.velocity.sqrMagnitude == 0f)
+            //             IsWalking = false;
+            //     }
+            // }
+            if (Bear_naviAgent.isStopped)
+                IsWalking = false;
+        } else {
+            float dist = Human_naviAgent.remainingDistance;
+            if (dist!=Mathf.Infinity && Human_naviAgent.pathStatus==UnityEngine.AI.NavMeshPathStatus.PathComplete && Human_naviAgent.remainingDistance<0.1f)
+                IsWalking = false;
+            // if (!Human_naviAgent.pathPending) {
+            //     if (Human_naviAgent.remainingDistance <= Human_naviAgent.stoppingDistance) {
+            //         if (!Human_naviAgent.hasPath || Human_naviAgent.velocity.sqrMagnitude == 0f)
+            //             IsWalking = false;
+            //     }
+            // }
+            if (Human_naviAgent.isStopped)
+                IsWalking = false;
         }
-        if (m_naviAgent.isStopped)
-            IsWalking = false;
         PlayerAnim.SetBool("Walking", IsWalking);
+        BearAnim.SetBool("WalkForward", IsWalking);
     }
 
     void FaceTarget() {
-        if (m_naviAgent.velocity != Vector3.zero && !m_naviAgent.isStopped) {
-            transform.eulerAngles = new Vector3(0, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(m_naviAgent.velocity - Vector3.zero), Time.deltaTime * RotationSlerp).eulerAngles.y, 0);
-        } else if (m_naviAgent.isStopped && FacingTarget != Vector3.zero) {
-            transform.eulerAngles = new Vector3(0, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(FacingTarget), Time.deltaTime * RotationSlerp * 2).eulerAngles.y, 0);
+        if (BearMode) {
+            if (Bear_naviAgent.enabled && Bear_naviAgent.velocity != Vector3.zero && !Bear_naviAgent.isStopped) {
+                Bear.transform.eulerAngles = new Vector3(0, Quaternion.Slerp(Bear.transform.rotation, Quaternion.LookRotation(Bear_naviAgent.velocity - Vector3.zero), Time.deltaTime * BearRotationSlerp).eulerAngles.y, 0);
+            } else if (Bear_naviAgent.enabled && Bear_naviAgent.isStopped && FacingTarget != Vector3.zero) {
+                Bear.transform.eulerAngles = new Vector3(0, Quaternion.Slerp(Bear.transform.rotation, Quaternion.LookRotation(FacingTarget), Time.deltaTime * BearRotationSlerp * 2).eulerAngles.y, 0);
+            }
+        } else {
+            if (Human_naviAgent.velocity != Vector3.zero && !Human_naviAgent.isStopped) {
+                Human.transform.eulerAngles = new Vector3(0, Quaternion.Slerp(Human.transform.rotation, Quaternion.LookRotation(Human_naviAgent.velocity - Vector3.zero), Time.deltaTime * RotationSlerp).eulerAngles.y, 0);
+            } else if (Human_naviAgent.isStopped && FacingTarget != Vector3.zero) {
+                Human.transform.eulerAngles = new Vector3(0, Quaternion.Slerp(Human.transform.rotation, Quaternion.LookRotation(FacingTarget), Time.deltaTime * RotationSlerp * 2).eulerAngles.y, 0);
+            }
         }
     }
 
@@ -332,7 +414,7 @@ public class PlayerControl : MonoBehaviour
             newRightGun.transform.localPosition = Vector3.zero;
             newRightGun.transform.localRotation = Quaternion.Euler(-15, 85, -90);
             Vector3 sc = newRightGun.transform.localScale;
-            Vector3 objsc = transform.localScale;
+            Vector3 objsc = Human.transform.localScale;
             sc = new Vector3(sc.x*objsc.x, sc.y*objsc.y, sc.z*objsc.z);
             newRightGun.transform.localScale = sc;
         }
@@ -340,27 +422,73 @@ public class PlayerControl : MonoBehaviour
 
     private bool LightningFiring;
     private float CurLightningAttackSpeed;
+    private int BearAttackCnt;
     void Attack() {
-        if (Input.GetKey(KeyCode.A) && !Firing && !LightningCast) {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Vector3 Target = Vector3.zero;
-            if (Physics.Raycast(ray, out hit)) {
-                Target = hit.point;
+        if (Doing)
+            return;
+        if (!BearMode) {
+            if (Input.GetKey(KeyCode.A) && !Firing && !LightningCast) {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                Vector3 Target = Vector3.zero;
+                if (Physics.Raycast(ray, out hit)) {
+                    Target = hit.point;
+                }
+                Firing = true;
+                FacingTarget = Target - Human.transform.position;
+                ToggleNavi();
+                IEnumerator shoot = ShootBullet(Target);
+                StartCoroutine(shoot);
+                Invoke("ResetFiring", ReloadSpeed);
+            } else if (Input.GetKey(KeyCode.A) && !LightningFiring && LightningCast) {
+                Vector3 ShootDir = GetMousePos();
+                LightningFiring = true;
+                FacingTarget = ShootDir - Human.transform.position;
+                ToggleNavi();
+                StartCoroutine(CastLightning(ShootDir));
+                Invoke("ResetLightningFiring", CurLightningAttackSpeed);
+                CurLightningAttackSpeed += LightningAddAS;
             }
-            Firing = true;
-            FacingTarget = Target - transform.position;
-            ToggleNavi();
-            IEnumerator shoot = ShootBullet(Target);
-            StartCoroutine(shoot);
-            Invoke("ResetFiring", ReloadSpeed);
-        } else if (Input.GetKey(KeyCode.A) && !LightningFiring && LightningCast) {
-            Vector3 ShootDir = GetMousePos();
-            LightningFiring = true;
-            FacingTarget = ShootDir - transform.position;
-            ToggleNavi();
-            StartCoroutine(CastLightning(ShootDir));
-            Invoke("ResetLightningFiring", CurLightningAttackSpeed);
-            CurLightningAttackSpeed += LightningAddAS;
+        } else {
+            if (Input.GetKey(KeyCode.A) && !Firing) {
+                Vector3 Target = GetMousePos();
+                Firing = true;
+                FacingTarget = Target - Bear.transform.position;
+                ToggleNavi();
+                if (BearAttackCnt == 0) {
+                    BearAnim.SetTrigger("Attack1");
+                } else if (BearAttackCnt == 1) {
+                    BearAnim.SetTrigger("Attack2");
+                } else {
+                    BearAnim.SetTrigger("Attack3");
+                }
+                BearAttackCnt++;
+                BearAttackCnt %= 3;
+                Invoke("CheckHit", 0.5f);
+                Invoke("ToggleNavi", 0.8f);
+                Invoke("ResetFiring", BearAttackSpeed);
+            }
+        }
+    }
+
+    void CheckHit() {
+        float damage;
+        if (BearAttackCnt != 0)
+            damage = BearAttackBasicDamage;
+        else
+            damage = BearThirdAttackDamage;
+        RaycastHit[] hit;
+        Dictionary<int, int> enemies = new Dictionary<int, int>();
+        hit = Physics.SphereCastAll(BearFront.position, BearAttackRadius, Bear.transform.forward, BearAttackDis);
+        foreach (var obj in hit) {
+            if (obj.collider.CompareTag("Enemy")) {
+                int hash = obj.transform.root.GetHashCode();
+                if (!enemies.ContainsKey(hash)) {
+                    Debug.Log("Bear Attack On: " + obj.transform.root.name);
+                    DataManager.Instance.takedamage(obj.transform.root, damage);
+                    DataManager.Instance.HealPlayer(damage * BearRegenRate * 0.01f);
+                    enemies.Add(hash, 1);
+                }
+            }
         }
     }
 
@@ -408,12 +536,32 @@ public class PlayerControl : MonoBehaviour
     }
 
     void ToggleNavi() {
-        if (m_naviAgent.isStopped == true) {
-            m_naviAgent.isStopped = false;
+        if (!BearMode) {
+            if (Human_naviAgent.enabled) {
+                if (Human_naviAgent.isStopped == true) {
+                    Human_naviAgent.isStopped = false;
+                } else {
+                    Human_naviAgent.ResetPath();
+                    Human_naviAgent.isStopped = true;
+                }
+            }
         } else {
-            m_naviAgent.ResetPath();
-            m_naviAgent.isStopped = true;
+            if (Bear_naviAgent.enabled) {
+                if (Bear_naviAgent.isStopped == true) {
+                    Bear_naviAgent.isStopped = false;
+                } else {
+                    Bear_naviAgent.ResetPath();
+                    Bear_naviAgent.isStopped = true;
+                }
+            }
         }
+    }
+
+    void ActiveNavi() {
+        if (!BearMode)
+            Human_naviAgent.isStopped = false;
+        else 
+            Bear_naviAgent.isStopped = false;
     }
 
     void ResetAnimDoing() {
@@ -423,10 +571,6 @@ public class PlayerControl : MonoBehaviour
 
     void ResetFiring() {
         Firing = false;
-    }
-
-    public Vector3 PlayerPos() {
-        return transform.position;
     }
 
     Vector3 GetMousePos() {
@@ -441,11 +585,8 @@ public class PlayerControl : MonoBehaviour
         Dashing = true;
         DashEffect.SetActive(true);
         PlayerAnim.SetInteger("Doing", 2);
-        Vector3 dir = GetMousePos() - transform.position;
+        Vector3 dir = GetMousePos() - Human.transform.position;
         ToggleNavi();
-        if (BioLevel == 3) {
-            dir = Target;
-        }
         dir = new Vector3(dir.x, 0f, dir.z);
         dir = dir.normalized;
         FacingTarget = dir;
@@ -473,7 +614,7 @@ public class PlayerControl : MonoBehaviour
     IEnumerator DashMoving(Vector3 dir) {
         float DashAmount = 0f;
         while (DashAmount < DashDistance) {
-            transform.position += Time.deltaTime * DashSpeed * dir;
+            Human.transform.position += Time.deltaTime * DashSpeed * dir;
             DashAmount += Time.deltaTime * DashSpeed;
             yield return null;
         }
@@ -481,6 +622,7 @@ public class PlayerControl : MonoBehaviour
         ResetDoing(0f);
         ToggleNavi();
         Invoke("DashEffectDisabled", 0.3f);
+        DataManager.Instance.SetBiolanceValue(100f);
     }
 
     void DashEffectDisabled() {
@@ -523,7 +665,7 @@ public class PlayerControl : MonoBehaviour
             } else {
                 if (CurHP < OriHP) {
                     audioPlayer.PlayOneShot(hurtSE);
-                    Instantiate(DamagedEffect, transform.position, Quaternion.identity);
+                    Instantiate(DamagedEffect, Human.transform.position, Quaternion.identity);
                     PlayerAnim.SetInteger("Doing", 4);
                     Invoke("ResetAnimDoing", 0.1f);
                 }
@@ -546,10 +688,7 @@ public class PlayerControl : MonoBehaviour
     private bool FrostCD = false;
     private float CurFrostCD;
     void Frost(Vector3 SubTarget) {
-        Vector3 Target = GetMousePos() - transform.position;
-        if (BioLevel == 3) {
-            Target = SubTarget;
-        }
+        Vector3 Target = GetMousePos() - Human.transform.position;
         ToggleNavi();
         FacingTarget = Target;
         FrostCD = true;
@@ -570,7 +709,7 @@ public class PlayerControl : MonoBehaviour
     IEnumerator ShootFrost(Vector3 Target, float wait) {
         yield return new WaitForSeconds(wait);
         Vector3 posi = (rightHand.position + leftHand.position) / 2.0f;
-        posi.y = transform.position.y + 0.2f;
+        posi.y = Human.transform.position.y + 0.2f;
         Instantiate(FrostBeam, posi, Quaternion.LookRotation(Target));
     }
 
@@ -586,18 +725,93 @@ public class PlayerControl : MonoBehaviour
         yield return null;
     }
 
-    private int BioLevel;
+    private bool LastBreathe;
     void BioValDetect() {
         float BioVal = DataManager.Instance.BiolanceValue;
-        if (BioVal >= 90f) {
-            BioLevel = 3;
-        } else if (BioVal >= 60f) {
-            BioLevel = 2;
-        } else if (BioVal >= 20f) {
-            BioLevel = 1;
-        } else {
-            BioLevel = 0;
+        if (!Turning && !LastBreathe && !BearMode && BioVal >= 100f) {
+            BecomeBear();
+            DataManager.Instance.BearTime++;
+            Turning = true;
+            if (DataManager.Instance.BearTime >= MaxInBearMode)
+                LastBreathe = true;
         }
+    }
+
+    private bool Turning;
+    void BecomeBear() {
+        AvoidCasting = true;
+        BearAttackCnt = 0;
+        ToggleNavi();
+        if (LightningCast)
+            ThunderReset();
+        StartCoroutine(BecomeBearAnimation());
+        DataManager.Instance.SetSkillEvent(0, 201);
+        DataManager.Instance.SetSkillEvent(1, 202);
+        DataManager.Instance.SetSkillEvent(2, 203);
+        DataManager.Instance.SetSkillEvent(3, 204);
+        Invoke("BecomeHuman", BecomeBearTime);
+    }
+
+    void BecomeHuman() {
+        ToggleNavi();
+        StartCoroutine(BecomeHumanAnimation());
+        DataManager.Instance.SetSkillEvent(0, 0);
+        DataManager.Instance.SetSkillEvent(1, 1);
+        DataManager.Instance.SetSkillEvent(2, 2);
+        DataManager.Instance.SetSkillEvent(3, 3);
+    }
+
+    IEnumerator BecomeBearAnimation() {
+        CancelInvoke("ToggleNavi");
+        CancelInvoke("ResetAnimDoing");
+        ResetAnimDoing();
+        PlayerAnim.SetInteger("Doing", 10);
+        float dur = 0;
+        Turning = true;
+        GameObject Chprefab = Instantiate(ChargeEffect, Human.transform.position, Quaternion.identity);
+        while (dur < TurnIntoDuration) {
+            dur += Time.deltaTime;
+            yield return null;
+        }
+        Destroy(Chprefab);
+        Human.SetActive(false);
+        PlayerAnim.SetInteger("Doing", 0);
+        Bear.transform.position = Human.transform.position;
+        Bear.SetActive(true);
+        BearMode = true;
+        DataManager.Instance.InBearMode = true;
+        Bear.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        BearAnim.SetTrigger("Buff");
+        Vector3 TurnInto = new Vector3(BearScale, BearScale, BearScale);
+        while (Bear.transform.localScale.x < BearScale * 0.95f) {
+            Bear.transform.localScale = Vector3.Slerp(Bear.transform.localScale, TurnInto, Time.deltaTime*TurnIntoScaler);
+            yield return null;
+        }
+        Bear.transform.localScale = TurnInto;
+        yield return new WaitForSeconds(0.5f);
+        ResetAvoidCasting();
+        ActiveNavi();
+        Turning = false;
+    }
+
+    IEnumerator BecomeHumanAnimation() {
+        CancelInvoke("ToggleNavi");
+        CancelInvoke("ResetAnimDoing");
+        Vector3 TurnInto = new Vector3(HumanScale*BearHumanScaleRatio, HumanScale*BearHumanScaleRatio, HumanScale*BearHumanScaleRatio);
+        while (Bear.transform.localScale.x > HumanScale*BearHumanScaleRatio * 1.1f) {
+            Bear.transform.localScale = Vector3.Slerp(Bear.transform.localScale, TurnInto, Time.deltaTime*TurnIntoScaler);
+            yield return null;
+        }
+        DataManager.Instance.SetBiolanceValue(0f);
+        Bear.SetActive(false);
+        Human.transform.position = Bear.transform.position;
+        Human.SetActive(true);
+        BearMode = false;
+        Turning = false;
+        DataManager.Instance.InBearMode = false;
+        Human.transform.localScale = new Vector3(HumanScale, HumanScale, HumanScale);
+        yield return new WaitForSeconds(1f);
+        ActiveNavi();
     }
 
     private float CurSparkyCD;
@@ -606,7 +820,7 @@ public class PlayerControl : MonoBehaviour
         PlayerAnim.SetInteger("Doing", 7);
         ToggleNavi();
         SparkyCD = true;
-        FacingTarget = GetMousePos() - transform.position;
+        FacingTarget = GetMousePos() - Human.transform.position;
         StartCoroutine(SparkyCharge(key));
     }
 
@@ -632,7 +846,7 @@ public class PlayerControl : MonoBehaviour
         ResetAnimDoing();
         GameObject SparkyBullet = Instantiate(Sparky, rightHand.position, Quaternion.identity);
         SparkyBullet.transform.localScale = scale * SparkyTransScale * new Vector3(0.1f, 0.1f, 0.1f);
-        Vector3 ShootDir = GetMousePos() - transform.position;
+        Vector3 ShootDir = GetMousePos() - Human.transform.position;
         ShootDir.y = 0f;
         yield return new WaitForSeconds(0.25f);
         FacingTarget = ShootDir;
@@ -669,18 +883,22 @@ public class PlayerControl : MonoBehaviour
             Invoke("ResetAnimDoing", 0.2f);
             Invoke("WaitThunderAnim", DisableLightningTime - 0.2f);
         } else {
-            LightningMode.SetActive(false);
-            LightningCast = false;
-            Destroy(LightningManPrefab);
-            StopCoroutine(lightningAround);
-            for (var i = LightningEmt.transform.childCount - 1; i >= 0; i--) {
-                Destroy(LightningEmt.transform.GetChild(i).gameObject);
-            }
-            StartCoroutine(CoolDownCal(LightningCoolDown, (returnVal1, returnVal2) => {
-                CurLightningCD = returnVal1;
-                LightningCD = returnVal2;
-            }));
+            ThunderReset();
         }
+    }
+
+    void ThunderReset() {
+        LightningMode.SetActive(false);
+        LightningCast = false;
+        Destroy(LightningManPrefab);
+        StopCoroutine(lightningAround);
+        for (var i = LightningEmt.transform.childCount - 1; i >= 0; i--) {
+            Destroy(LightningEmt.transform.GetChild(i).gameObject);
+        }
+        StartCoroutine(CoolDownCal(LightningCoolDown, (returnVal1, returnVal2) => {
+            CurLightningCD = returnVal1;
+            LightningCD = returnVal2;
+        }));
     }
 
     IEnumerator TemporarySetMax() {
@@ -707,14 +925,14 @@ public class PlayerControl : MonoBehaviour
             while (LightningFiring)
                 yield return null;
             if (!ResetLE) {
-                LE = Instantiate(LightningEffect, transform.position + new Vector3(0f, 2f, 0f), Quaternion.identity);
-                LE.transform.parent = transform;
+                LE = Instantiate(LightningEffect, Human.transform.position + new Vector3(0f, 2f, 0f), Quaternion.identity);
+                LE.transform.parent = LightningEmt.transform;
                 ResetLE = true;
                 Destroy(LE, 0.5f);
                 yield return new WaitForSeconds(0.5f);
-                FullEnergy1 = Instantiate(LightningRefill1, transform.position + new Vector3(0f, 0.8f, -0.18f), Quaternion.identity);
+                FullEnergy1 = Instantiate(LightningRefill1, Human.transform.position + new Vector3(0f, 0.8f, -0.18f), Quaternion.identity);
                 // yield return new WaitForSeconds(0.2f);
-                FullEnergy2 = Instantiate(LightningRefill2, transform.position + new Vector3(0f, 0.8f, -0.18f), Quaternion.identity);
+                FullEnergy2 = Instantiate(LightningRefill2, Human.transform.position + new Vector3(0f, 0.8f, -0.18f), Quaternion.identity);
                 FullEnergy1.transform.parent = LightningEmt.transform;
                 FullEnergy2.transform.parent = LightningEmt.transform;
             }
@@ -749,11 +967,11 @@ public class PlayerControl : MonoBehaviour
 
     void PutOutBug(int num) {
         if (num == 1) {
-            Instantiate(ExploBugR, transform.position, Quaternion.identity);
+            Instantiate(ExploBugR, Human.transform.position, Quaternion.identity);
         } else if (num == 2) {
-            Instantiate(ExploBugG, transform.position, Quaternion.identity);
+            Instantiate(ExploBugG, Human.transform.position, Quaternion.identity);
         } else if (num == 3) {
-            Instantiate(ExploBugB, transform.position, Quaternion.identity);
+            Instantiate(ExploBugB, Human.transform.position, Quaternion.identity);
         }
     }
 
@@ -797,9 +1015,9 @@ public class PlayerControl : MonoBehaviour
         bool inParallel = DataManager.Instance.InParallel;
         if (OriInParrallel != inParallel) {
             if(inParallel) {
-                m_naviAgent.Warp(new Vector3(transform.position.x, 50, transform.position.z));
+                Human_naviAgent.Warp(new Vector3(Human.transform.position.x, 50, Human.transform.position.z));
             } else {
-                m_naviAgent.Warp(new Vector3(transform.position.x, 0, transform.position.z));
+                Human_naviAgent.Warp(new Vector3(Human.transform.position.x, 0, Human.transform.position.z));
             }
             ToggleNavi();
             Switching = true;
@@ -811,5 +1029,119 @@ public class PlayerControl : MonoBehaviour
 
     void ResetSwitching() {
         Switching = false;
+    }
+
+    private bool BearJumpCD;
+    private float CurBearJumpCD;
+    void BearJump() {
+        Doing = true;
+        BearJumpCD = true;
+        AvoidCasting = true;
+        ToggleNavi();
+        FacingTarget = GetMousePos() - Bear.transform.position;
+        StartCoroutine(CoolDownCal(BearJumpCoolDown, (returnVal1, returnVal2) => {
+            CurBearJumpCD = returnVal1;
+            BearJumpCD = returnVal2;
+        }));
+        Vector3 Pos = GetMousePos();
+        Vector3 JumpDis = new Vector3(Pos.x, 0f, Pos.z) - new Vector3(Bear.transform.position.x, 0f, Bear.transform.position.z);
+        if (JumpDis.sqrMagnitude > MaxBearJumpDis*MaxBearJumpDis)
+            JumpDis = JumpDis * (MaxBearJumpDis / JumpDis.magnitude);
+        StartCoroutine(Jumping(JumpDis));
+    }
+
+    IEnumerator Jumping(Vector3 diff) {
+        float gSquared = Physics.gravity.sqrMagnitude;
+        float b = BearJumpSpeed * BearJumpSpeed + Vector3.Dot(diff, Physics.gravity);
+        float discriminant = b * b - gSquared * diff.sqrMagnitude;
+        if(discriminant < 0) {
+            // Target is too far away to hit at this speed.
+            Debug.Log("Too Far");
+            ResetBearJumpArgs();
+        } else {
+            BearAnim.SetBool("Jump", true);
+            float discRoot = Mathf.Sqrt(discriminant);
+            // Highest shot with the given max speed:
+            float T_max = Mathf.Sqrt((b + discRoot) * 2f / gSquared);
+
+            // Most direct shot with the given max speed:
+            float T_min = Mathf.Sqrt((b - discRoot) * 2f / gSquared);
+
+            // Lowest-speed arc available:
+            float T_lowEnergy = Mathf.Sqrt(Mathf.Sqrt(diff.sqrMagnitude * 4f/gSquared));
+
+            float T = T_max;
+
+            Vector3 velocity = diff / T - Physics.gravity * T / 2f;
+            BearRb.velocity = Vector3.zero;
+            yield return new WaitForSeconds(0.1f);
+            Bear_naviAgent.updatePosition = false;
+            Bear_naviAgent.updateRotation = false;
+            BearRb.AddForce(velocity, ForceMode.VelocityChange);
+            
+            Invoke("ResetBearJumpArgs", T);
+        }
+    }
+
+    void ResetBearJumpArgs() {
+        BearAnim.SetBool("Jump", false);
+        ToggleNavi();
+        Bear_naviAgent.SetDestination(Bear.transform.position);
+        Bear_naviAgent.updatePosition = true;
+        Bear_naviAgent.updateRotation = true;
+        Doing = false;
+        AvoidCasting = false;
+    }
+
+    private bool KnockFloorCD;
+    private float CurKnockFloorCD;
+    void BearKnockFloor() {
+        Doing = true;
+        AvoidCasting = true;
+        ToggleNavi();
+        StartCoroutine(CoolDownCal(KnockFloorCoolDown, (returnVal1, returnVal2) => {
+            CurKnockFloorCD = returnVal1;
+            KnockFloorCD = returnVal2;
+        }));
+        StartCoroutine(KnockOnFloor());
+    }
+
+    IEnumerator KnockOnFloor() {
+        FacingTarget = GetMousePos() - Bear.transform.position;
+        FacingTarget.y = 0;
+        BearAnim.SetFloat("Attack5Speed", 1f);
+        BearAnim.SetBool("Attack5", true);
+        yield return new WaitForSeconds(AnimKnockWait);
+        BearAnim.SetBool("Attack5", false);
+        Vector3 InsPos = Bear.transform.position + Bear.transform.forward * KnockForwardScaler;
+        InsPos.y = Bear.transform.position.y + 0.1f;
+        Instantiate(EarthQuakeEffect, InsPos, Quaternion.Euler(90, 0, 0));
+        yield return new WaitForSeconds(FirstKnockWait);
+        BearAnim.SetFloat("Attack5Speed", 1f);
+        BearAnim.SetBool("Attack5", true);
+        yield return new WaitForSeconds(AnimKnockWait);
+        yield return new WaitForSeconds(0.2f);
+        BearAnim.SetBool("Attack5", false);
+        InsPos = Bear.transform.position + Bear.transform.forward * KnockForwardScaler;
+        InsPos.y = Bear.transform.position.y + 0.1f;
+        Instantiate(EarthQuakeEffect, InsPos, Quaternion.Euler(90, 0, 0));
+        yield return new WaitForSeconds(SecondKnockWait);
+        BearAnim.SetFloat("Attack5Speed", Attack5AnimSpeed);
+        BearAnim.SetBool("Attack5", true);
+        yield return new WaitForSeconds(AnimKnockWait*(1/Attack5AnimSpeed));
+        BearAnim.SetBool("Attack5", false);
+        InsPos = Bear.transform.position + Bear.transform.forward * KnockForwardScaler;
+        InsPos.y = Bear.transform.position.y + 0.1f;
+        Instantiate(EarthQuakeEffect, InsPos, Quaternion.Euler(90, 0, 0));
+        BearAnim.SetFloat("Attack5Speed", 1f);
+        yield return new WaitForSeconds(ThirdKnockWait);
+        Doing = false;
+        AvoidCasting = false;
+        ToggleNavi();
+    }
+
+    void BearShield() {
+        ToggleNavi();
+        Doing = true;
     }
 }
