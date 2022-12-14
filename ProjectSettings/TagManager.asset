@@ -9,6 +9,8 @@ TagManager:
   - Medkit
   - Ground
   - DataManager
+  - Bullet
+  - People
   layers:
   - Default
   - TransparentFX
