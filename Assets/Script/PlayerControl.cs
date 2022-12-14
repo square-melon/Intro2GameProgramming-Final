@@ -124,6 +124,7 @@ public class PlayerControl : MonoBehaviour
     public float ShieldRemainTime;
     public float ShieldUpCoolDown;
     public float ShieldDarkerScaler;
+    public float ShieldBlockDamagePercent;
 
     [Header("Debug")]
     public int Skill1;
@@ -786,7 +787,7 @@ public class PlayerControl : MonoBehaviour
             dur += Time.deltaTime;
             yield return null;
         }
-        Destroy(Chprefab);
+        Destroy(Chprefab, 0.5f);
         Human.SetActive(false);
         PlayerAnim.SetInteger("Doing", 0);
         Bear.transform.position = Human.transform.position;
@@ -1141,7 +1142,7 @@ public class PlayerControl : MonoBehaviour
         yield return new WaitForSeconds(SecondKnockWait);
         BearAnim.SetFloat("Attack5Speed", Attack5AnimSpeed);
         BearAnim.SetBool("Attack5", true);
-        yield return new WaitForSeconds(AnimKnockWait*(1/Attack5AnimSpeed));
+        yield return new WaitForSeconds(AnimKnockWait*(1/Attack5AnimSpeed)+0.2f);
         BearAnim.SetBool("Attack5", false);
         InsPos = Bear.transform.position + Bear.transform.forward * KnockForwardScaler;
         InsPos.y = Bear.transform.position.y + 0.1f;
@@ -1159,6 +1160,7 @@ public class PlayerControl : MonoBehaviour
         DataManager.Instance.ShieldUp = true;
         DataManager.Instance.ShieldStored = 0f;
         DataManager.Instance.ShieldBlockPer = ShieldBlockPercent;
+        DataManager.Instance.ShieldBlockDamagePer = ShieldBlockDamagePercent;
         DataManager.Instance.MaxShieldStored = MaxShieldStored;
         StartCoroutine(CoolDownCal(ShieldUpCoolDown, (returnVal1, returnVal2) => {
             CurBearShieldCD = returnVal1;
