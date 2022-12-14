@@ -7,7 +7,6 @@ public class StatBar : MonoBehaviour
 
     [Header("References")]
     public Transform cam;
-    public Transform player;
 
     [Header("Settings")]
     public float upper = 0.5f;
@@ -21,7 +20,7 @@ public class StatBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = player.position + new Vector3(0, upper, 0);
+        transform.position = DataManager.Instance.PlayerPos + new Vector3(0, upper, 0);
     }
 
     void LateUpdate() {

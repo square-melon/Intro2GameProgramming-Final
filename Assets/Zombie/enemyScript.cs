@@ -16,7 +16,7 @@ public class enemyScript : MonoBehaviour
     private GameController GameController;
     private NavMeshAgent naviAgent;
     private Animator ZombieAnim;
-    private UnityEngine.AI.NavMeshAgent nav;
+    //private UnityEngine.AI.NavMeshAgent nav;
     private int  hp=2;
     private bool first=true;
     public GameObject damagetext;
