@@ -143,6 +143,11 @@ public class DataManager : MonoBehaviour
         Zombie3script ee2 = enemy.GetComponent<Zombie3script>();
         Wizard e3 = enemy.GetComponent<Wizard>();
         Scene2Boss ee = enemy.GetComponent<Scene2Boss>();
+        EnemySpider e4 = enemy.GetComponent<EnemySpider>();
+        if(e4) {
+            e4.DamageA();
+            print("joikokij");
+        }
         if (e1)
             e1.Damage();
         else if (e2)

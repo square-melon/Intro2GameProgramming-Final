@@ -32,7 +32,7 @@ public class EnemyAI : MonoBehaviour
     }
     void Start() {
         animator.SetTrigger("Roar");
-        audiosource.PlayOneShot(aclip);
+        //audiosource.PlayOneShot(aclip);
     }
     void Death() {
         if(health <= 0.0f) {

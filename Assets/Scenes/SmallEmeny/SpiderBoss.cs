@@ -35,7 +35,7 @@ public class SpiderBoss : MonoBehaviour
     }
     void Start() {
         animator.SetTrigger("Roar");
-        audiosource.PlayOneShot(aclip);
+        //audiosource.PlayOneShot(aclip);
     }
     void Death() {
         if(health <= 0.0f) {
@@ -47,6 +47,7 @@ public class SpiderBoss : MonoBehaviour
         //Check for sight and attack range
         float dis = Vector3.Distance(player.position,transform.position);
         //AttackPlayer();
+        transform.LookAt(player);
         if(dis < sightRange) {
             playerInSightRange = true;
         } else {
@@ -110,7 +111,7 @@ public class SpiderBoss : MonoBehaviour
         //Make sure enemy doesn't move
         agent.SetDestination(transform.position);
 
-        transform.LookAt(player);
+        
         Vector3 Face = player.transform.position - transform.position;
         Vector3 position = new Vector3(transform.position.x,transform.position.y+0.5f,transform.position.z);
         Vector3 newface = new Vector3(Face.x,Face.y+0.5f,Face.z);

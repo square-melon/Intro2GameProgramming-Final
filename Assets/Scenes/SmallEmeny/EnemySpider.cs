@@ -17,13 +17,14 @@ public class EnemySpider : MonoBehaviour
     public float timeBetweenAttacks;
     bool alreadyAttacked;
     //public GameObject projectile;
-    public float health;
+    private float health = 70.0f;
     //States
     public float sightRange = 10.0f;
     public float attackRange = 5.0f;
     public bool playerInSightRange, playerInAttackRange;
     public LayerMask whatground;
     public Animator animator;
+    private int dead = 0;
     private void Awake()
     {
         player = GameObject.Find("Player").transform;
@@ -31,13 +32,9 @@ public class EnemySpider : MonoBehaviour
     }
     void Start() {
         animator.SetTrigger("Roar");
-        audiosource.PlayOneShot(aclip);
+        //audiosource.PlayOneShot(aclip);
     }
-    void Death() {
-        if(health <= 0.0f) {
-            animator.SetTrigger("Die");
-        }
-    }
+    
     private void Update()
     {
         //Check for sight and attack range
@@ -55,21 +52,36 @@ public class EnemySpider : MonoBehaviour
         }
 
         if (!playerInSightRange && !playerInAttackRange) {
-            print(1);
             animator.SetBool("Move Forward Fast",true);
-            //atroling();
+            //patroling();
         }
         if (playerInSightRange && !playerInAttackRange) {
-            print(2);
             ChasePlayer();
         }
         if (playerInAttackRange && playerInSightRange) {
-            print(3);
             //animator.SetBool("Move Forward Fast",false);
             AttackPlayer();
         }
+        Death();
     }
-
+    public void DamageA() {
+        //print(damage);
+        health -= 30;
+        Debug.Log(health);
+    }
+    void Death() {
+        if(dead == 0) {
+            if(health <= 0.0f) {
+                animator.SetTrigger("Die");
+                Invoke("ClearSpider",0.7f);
+                agent.SetDestination(transform.position);
+                dead = 1;
+            }
+        }
+    }
+    private void ClearSpider() {
+        gameObject.SetActive(false);
+    }
     private void Patroling()
     {
         if (!walkPointSet) SearchWalkPoint();
