@@ -28,6 +28,7 @@ public class DataManager : MonoBehaviour
     public bool InBearMode;
     public float ShieldStored;
     public float ShieldBlockPer;
+    public float ShieldBlockDamagePer;
     public float MaxShieldStored;
     public bool ShieldUp;
     private void Awake()
@@ -60,8 +61,8 @@ public class DataManager : MonoBehaviour
 
     public void PlayerOnHit(float damage) {
         if (ShieldUp) {
-            _HP -= damage;
-            ShieldStored += ShieldBlockPer * damage;
+            _HP -= ShieldBlockDamagePer * damage * 0.01f;
+            ShieldStored += ShieldBlockPer * damage * 0.01f;
             if (ShieldStored > MaxShieldStored)
                 ShieldStored = MaxShieldStored;
         }
