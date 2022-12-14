@@ -8645,7 +8645,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 1150106545565667534}
-  player: {fileID: 7590669230502268143}
   upper: 2
 --- !u!224 &2114965384824744991
 RectTransform:
@@ -24524,21 +24523,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Filter: {fileID: 4615730155317148247}
-  Vines:
-  - {fileID: 4615730154381199905}
-  - {fileID: 4615730155178458161}
-  - {fileID: 4615730154165808885}
-  - {fileID: 4615730154545312297}
-  - {fileID: 4615730154703316687}
-  - {fileID: 4615730155334468212}
-  - {fileID: 4615730154333185210}
-  - {fileID: 4615730153389250392}
-  - {fileID: 4615730154703717004}
-  - {fileID: 4615730154514012512}
   FilterAlpha: 0.26
-  VineSpeed: 4
-  BreathSpeed: 6
-  BreathSpace: 2
+  FilterSpeed: 0
 --- !u!1 &4615730154118608668
 GameObject:
   m_ObjectHideFlags: 0
@@ -61100,6 +61086,21 @@ MonoBehaviour:
   ExploBugR: {fileID: 0}
   ExploBugB: {fileID: 0}
   ExploBugG: {fileID: 0}
+  Human: {fileID: 7592687065049618541}
+  Bear: {fileID: 0}
+  BearFront: {fileID: 0}
+  BearLHand: {fileID: 0}
+  BearRHand: {fileID: 0}
+  BearShieldUp: {fileID: 0}
+  PlayerAnim: {fileID: 0}
+  BearAnim: {fileID: 0}
+  BearScale: 0
+  HumanScale: 0
+  TurnIntoScaler: 0
+  TurnIntoDuration: 0
+  BearHumanScaleRatio: 0
+  HumanNavSpeed: 0
+  BearNavSpeed: 0
   Bullet: {fileID: 8808765177973143126, guid: 8e2eb7e848cd3604482fdc88390cd376, type: 3}
   FrostBeam: {fileID: 2545011683520402149, guid: 0deeff9108d9f1b46aad5ff46b911ee8,
     type: 3}
@@ -61122,6 +61123,9 @@ MonoBehaviour:
   LightningRefill2: {fileID: 8329973824666607375, guid: 6054ebf6bed41ac4a9636c93f381beff,
     type: 3}
   LightningMode: {fileID: 1271364613703247187}
+  EarthQuakeEffect: {fileID: 0}
+  Shield: {fileID: 0}
+  ShieldBreakCircle: {fileID: 0}
   audioPlayer: {fileID: 230890040}
   shootSE: {fileID: 8300000, guid: 7575dc366f03a8046850f97855376936, type: 3}
   walkSE: {fileID: 8300000, guid: 450f20958c8db4541a8a2c24d89b58cd, type: 3}
@@ -61132,6 +61136,7 @@ MonoBehaviour:
   frostSE: {fileID: 8300000, guid: cf64e25e41f797045bd7371f8e125191, type: 3}
   SpawnPoint: {x: 0, y: 0, z: 0}
   RotationSlerp: 10
+  BearRotationSlerp: 0
   ReloadSpeed: 0.8
   ShootForce: 1200
   ShootWaitingTime: 0.2
@@ -61157,6 +61162,31 @@ MonoBehaviour:
   BugCircularChoosingTime: 0
   SwitchingParallelTime: 1.5
   RootedTime: 0
+  LightningAutoAttackRange: 0
+  LightningAutoAttackReload: 0
+  BecomeBearTime: 0
+  MaxInBearMode: 0
+  BearAttackSpeed: 0
+  BearAttackRadius: 0
+  BearAttackDis: 0
+  BearAttackBasicDamage: 0
+  BearThirdAttackDamage: 0
+  BearRegenRate: 0
+  BearJumpCoolDown: 0
+  BearJumpSpeed: 0
+  MaxBearJumpDis: 0
+  KnockFloorCoolDown: 0
+  AnimKnockWait: 0
+  Attack5AnimSpeed: 0
+  FirstKnockWait: 0
+  SecondKnockWait: 0
+  ThirdKnockWait: 0
+  KnockForwardScaler: 0
+  MaxShieldStored: 0
+  ShieldBlockPercent: 0
+  ShieldRemainTime: 0
+  ShieldUpCoolDown: 0
+  ShieldDarkerScaler: 0
   Skill1: 0
   Skill2: 1
   Skill3: 2
@@ -65532,6 +65562,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IncreaseBioValRate: 0
   IsPausing: 0
+  BearTime: 0
+  InBearMode: 0
+  ShieldStored: 0
+  ShieldBlockPer: 0
+  MaxShieldStored: 0
+  ShieldUp: 0
 --- !u!1 &7723150886198336847
 GameObject:
   m_ObjectHideFlags: 0
