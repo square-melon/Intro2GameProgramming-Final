@@ -776,6 +776,7 @@ public class PlayerControl : MonoBehaviour
     }
 
     IEnumerator BecomeBearAnimation() {
+        DataManager.Instance.InBearMode = true;
         CancelInvoke("ToggleNavi");
         CancelInvoke("ResetAnimDoing");
         ResetAnimDoing();
@@ -793,7 +794,6 @@ public class PlayerControl : MonoBehaviour
         Bear.transform.position = Human.transform.position;
         Bear.SetActive(true);
         BearMode = true;
-        DataManager.Instance.InBearMode = true;
         Bear.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         BearAnim.SetTrigger("Buff");
         Vector3 TurnInto = new Vector3(BearScale, BearScale, BearScale);
@@ -822,10 +822,10 @@ public class PlayerControl : MonoBehaviour
         Human.SetActive(true);
         BearMode = false;
         Turning = false;
-        DataManager.Instance.InBearMode = false;
         Human.transform.localScale = new Vector3(HumanScale, HumanScale, HumanScale);
         yield return new WaitForSeconds(1f);
         ActiveNavi();
+        DataManager.Instance.InBearMode = false;
     }
 
     private float CurSparkyCD;

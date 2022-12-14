@@ -8,6 +8,9 @@ TagManager:
   - Enemy
   - Medkit
   - Ground
+  - DataManager
+  - Bullet
+  - People
   layers:
   - Default
   - TransparentFX
@@ -15,7 +18,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Wall
   - CameraCollide
   - Lighting
   - Ground
