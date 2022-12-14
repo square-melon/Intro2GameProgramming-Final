@@ -9,6 +9,15 @@ Doing
 7 => Sparky
 8 => LightningCastBasicAttack
 9 => LightningCharge
+10 => TurnIntoBear
+
+Beast Doing
+0 => Idle
+1 => Third Attack
+2 => Jump(Q)
+3 => Knock On Floor(W1)
+4 => Rush Onto Enemy(W2)
+5 => Arm Cleave(E)
 
 Skill Key
 0 => Dash
@@ -22,3 +31,8 @@ Skill Key
 101 => ExploBugR
 102 => ExploBugG
 103 => ExploBugB
+201 => Jump
+202 => Knock On Floor
+203 => Rush Onto Enemy
+204 => Arm Cleave
+205 => Back To Human
