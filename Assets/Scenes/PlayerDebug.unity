@@ -12839,6 +12839,7 @@ MonoBehaviour:
   BearFront: {fileID: 4787678817738221727}
   BearLHand: {fileID: 8385687601882232110}
   BearRHand: {fileID: 1940952594190480286}
+  BearShieldUp: {fileID: 1257387429}
   PlayerAnim: {fileID: 4870221790982276293}
   BearAnim: {fileID: 6415557976806012833}
   BearScale: 1
@@ -12872,6 +12873,8 @@ MonoBehaviour:
   LightningMode: {fileID: 4196222757868003949}
   EarthQuakeEffect: {fileID: 4675135448239549534, guid: 7da20bfeeec02b9449e7971d65a56f27,
     type: 3}
+  Shield: {fileID: 0}
+  ShieldBreakCircle: {fileID: 0}
   audioPlayer: {fileID: 390378357}
   shootSE: {fileID: 8300000, guid: 7575dc366f03a8046850f97855376936, type: 3}
   walkSE: {fileID: 8300000, guid: 450f20958c8db4541a8a2c24d89b58cd, type: 3}
@@ -12912,7 +12915,7 @@ MonoBehaviour:
   LightningAutoAttackReload: 0
   BecomeBearTime: 30
   MaxInBearMode: 5
-  BearAttackSpeed: 2.5
+  BearAttackSpeed: 1.2
   BearAttackRadius: 1.8
   BearAttackDis: 0.5
   BearAttackBasicDamage: 20
@@ -12928,6 +12931,11 @@ MonoBehaviour:
   SecondKnockWait: 1
   ThirdKnockWait: 1
   KnockForwardScaler: 2.2
+  MaxShieldStored: 0
+  ShieldBlockPercent: 0
+  ShieldRemainTime: 0
+  ShieldUpCoolDown: 0
+  ShieldDarkerScaler: 0
   Skill1: 0
   Skill2: 1
   Skill3: 2
@@ -13186,6 +13194,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1213655568}
   m_CullTransparentMesh: 1
+--- !u!1 &1257387428
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1257387429}
+  m_Layer: 0
+  m_Name: ShieldUp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1257387429
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257387428}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.5535913, y: 2.1567888, z: 0.18727677}
+  m_LocalScale: {x: 1.1111112, y: 1.1111112, z: 1.1111112}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1146323514208284123}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1278291915
 GameObject:
   m_ObjectHideFlags: 0
@@ -14893,6 +14932,10 @@ MonoBehaviour:
   IsPausing: 0
   BearTime: 0
   InBearMode: 0
+  ShieldStored: 0
+  ShieldBlockPer: 0
+  MaxShieldStored: 0
+  ShieldUp: 0
 --- !u!4 &1703814320
 Transform:
   m_ObjectHideFlags: 0
@@ -25686,6 +25729,7 @@ Transform:
   m_Children:
   - {fileID: 8311492597992668485}
   - {fileID: 385896204892415499}
+  - {fileID: 1257387429}
   m_Father: {fileID: 1174537945}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

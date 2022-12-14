@@ -26,6 +26,10 @@ public class DataManager : MonoBehaviour
     public int[] BearSkill { get; private set; }
     public int BearTime;
     public bool InBearMode;
+    public float ShieldStored;
+    public float ShieldBlockPer;
+    public float MaxShieldStored;
+    public bool ShieldUp;
     private void Awake()
     {   
         if (Instance != null && Instance != this) {
@@ -55,7 +59,14 @@ public class DataManager : MonoBehaviour
     }
 
     public void PlayerOnHit(float damage) {
-        _HP -= damage;
+        if (ShieldUp) {
+            _HP -= damage;
+            ShieldStored += ShieldBlockPer * damage;
+            if (ShieldStored > MaxShieldStored)
+                ShieldStored = MaxShieldStored;
+        }
+        else
+            _HP -= damage;
         BiolanceValue += damage * IncreaseBioValRate;
         if (BiolanceValue >= 100f)
             BiolanceValue = 100f;

@@ -26,6 +26,7 @@ public class PlayerControl : MonoBehaviour
     public Transform BearFront;
     public Transform BearLHand;
     public Transform BearRHand;
+    public Transform BearShieldUp;
 
     [Header("BearSettings")]
     public Animator PlayerAnim;
@@ -56,6 +57,8 @@ public class PlayerControl : MonoBehaviour
     public GameObject LightningRefill2;
     public GameObject LightningMode;
     public GameObject EarthQuakeEffect;
+    public GameObject Shield;
+    public GameObject ShieldBreakCircle;
 
     [Header("Sounds")]
     public AudioSource audioPlayer;
@@ -116,6 +119,11 @@ public class PlayerControl : MonoBehaviour
     public float SecondKnockWait;
     public float ThirdKnockWait;
     public float KnockForwardScaler;
+    public float MaxShieldStored;
+    public float ShieldBlockPercent;
+    public float ShieldRemainTime;
+    public float ShieldUpCoolDown;
+    public float ShieldDarkerScaler;
 
     [Header("Debug")]
     public int Skill1;
@@ -252,6 +260,7 @@ public class PlayerControl : MonoBehaviour
 
             case 201: return CurBearJumpCD;
             case 202: return CurKnockFloorCD;
+            case 203: return CurBearShieldCD;
 
             default: return 0.0f;
         }
@@ -271,6 +280,7 @@ public class PlayerControl : MonoBehaviour
 
             case 201: return BearJumpCoolDown;
             case 202: return KnockFloorCoolDown;
+            case 203: return ShieldUpCoolDown;
 
             default: return 0.0f;
         }
@@ -297,6 +307,7 @@ public class PlayerControl : MonoBehaviour
                 case 4: return ExploCD;
                 case 201: return BearJumpCD;
                 case 202: return KnockFloorCD;
+                case 203: return BearShieldCD;
             }
         } else {
             switch(skillNum) {
@@ -307,6 +318,7 @@ public class PlayerControl : MonoBehaviour
                 case 4: return true;
                 case 201: return true;
                 case 202: return true;
+                case 203: return true;
             }
         }
         return true;
@@ -325,6 +337,7 @@ public class PlayerControl : MonoBehaviour
 
             case 201: BearJump(); break;
             case 202: BearKnockFloor(); break;
+            case 203: BearShield(); break;
             default: break;
         }
     }
@@ -1140,8 +1153,39 @@ public class PlayerControl : MonoBehaviour
         ToggleNavi();
     }
 
+    private bool BearShieldCD;
+    private float CurBearShieldCD;
     void BearShield() {
-        ToggleNavi();
-        Doing = true;
+        DataManager.Instance.ShieldUp = true;
+        DataManager.Instance.ShieldStored = 0f;
+        DataManager.Instance.ShieldBlockPer = ShieldBlockPercent;
+        DataManager.Instance.MaxShieldStored = MaxShieldStored;
+        StartCoroutine(CoolDownCal(ShieldUpCoolDown, (returnVal1, returnVal2) => {
+            CurBearShieldCD = returnVal1;
+            BearShieldCD = returnVal2;
+        }));
+        StartCoroutine(ShieldBreak());
+    }
+
+    IEnumerator ShieldBreak() {
+        Vector3 Pos = Bear.transform.position + new Vector3(0f, 1f, 0f);
+        GameObject ShieldPrefab = Instantiate(Shield, Pos, Quaternion.identity);
+        ShieldPrefab.transform.parent = BearShieldUp;
+        float time = 0;
+        while(time < ShieldRemainTime) {
+            time += Time.deltaTime;
+            ParticleSystem.MainModule ps = ShieldPrefab.GetComponent<ParticleSystem>().main;
+            Color c = ps.startColor.color;
+            c.r *= ShieldDarkerScaler;
+            c.g *= ShieldDarkerScaler;
+            c.b *= ShieldDarkerScaler;
+            ps.startColor = Color.Lerp(ps.startColor.color, c, Time.deltaTime);
+            yield return null;
+        }
+        for (var i = BearShieldUp.transform.childCount - 1; i >= 0; i--) {
+            Destroy(BearShieldUp.transform.GetChild(i).gameObject);
+        }
+        Instantiate(ShieldBreakCircle, Bear.transform.position, Quaternion.identity);
+        DataManager.Instance.ShieldUp = false;
     }
 }
