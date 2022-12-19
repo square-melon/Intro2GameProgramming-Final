@@ -34,8 +34,8 @@ public class Scene2Enemy : MonoBehaviour
 
         DetectDead();
         
-        Face = player.transform.position - enemy.transform.position;
-        dis = Vector3.Distance(player.transform.position, enemy.transform.position);
+        Face = DataManager.Instance.PlayerPos - transform.position;
+        dis = Vector3.Distance(DataManager.Instance.PlayerPos, transform.position);
         
         if(dis < 12.0f) {
             Quaternion rotation = Quaternion.LookRotation(Face, Vector3.up);
@@ -80,7 +80,7 @@ public class Scene2Enemy : MonoBehaviour
             
     }
     public void CreateArrow() {
-        Face = player.transform.position - enemy.transform.position;
+        Face = DataManager.Instance.PlayerPos - enemy.transform.position;
         //Face = new Vector3(Face.x, 0f, Face.z).normalized;
         //Quaternion rotation = Quaternion.LookRotation(Face, Vector3.up);
 
