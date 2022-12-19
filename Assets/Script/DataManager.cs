@@ -31,6 +31,8 @@ public class DataManager : MonoBehaviour
     public float ShieldBlockDamagePer;
     public float MaxShieldStored;
     public bool ShieldUp;
+    public float Scaling;
+    public bool ShootOnSB;
     private void Awake()
     {   
         if (Instance != null && Instance != this) {
@@ -155,6 +157,7 @@ public class DataManager : MonoBehaviour
 
     public void takedamage(Transform enemy, float damage) {
         Debug.Log(enemy.name);
+        ShootOnSB = true;
         Scene2Enemy e1 = enemy.GetComponent<Scene2Enemy>();
         enemyScript e2 = enemy.GetComponent<enemyScript>();
         Zombie3script ee2 = enemy.GetComponent<Zombie3script>();
