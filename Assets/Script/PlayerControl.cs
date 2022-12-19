@@ -222,7 +222,7 @@ public class PlayerControl : MonoBehaviour
             DataManager.Instance.SetSkillEvent(3, Skill4);
             DataManager.Instance.SetSkillLevel(0, SkillLevel1);
             DataManager.Instance.SetSkillLevel(1, SkillLevel2);
-            DataManager.Instance.SetSkillLevel(0, SkillLevel3);
+            DataManager.Instance.SetSkillLevel(2, SkillLevel3);
             DataManager.Instance.SetSkillLevel(3, SkillLevel4);
         }
         Firing = false;
@@ -370,6 +370,7 @@ public class PlayerControl : MonoBehaviour
                 case 2: return true;
                 case 3: return LightningCD;
                 case 4: return true;
+                case 5: return PlacingTotemCD;
 
                 case 201: return true;
                 case 202: return true;
