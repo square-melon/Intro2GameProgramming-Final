@@ -29,6 +29,7 @@ public class PlayerControl : MonoBehaviour
     public Transform BearRHand;
     public Transform BearShieldUp;
     public GameObject Totem;
+    public GameObject FallingThunder;
 
     [Header("BearSettings")]
     public Animator PlayerAnim;
@@ -143,6 +144,12 @@ public class PlayerControl : MonoBehaviour
     public float HealingPlaceCreatedTime;
     public float HealingPlaceAmount;
     public float HealingFrequency;
+    public float LightningTotemAmount;
+    public float LightningTotemChargedDis;
+    public float RandomThunderCoolDown;
+    public float RandomThunderAddCD;
+    public int RandomThunderTime;
+    public float ThunderInterval;
 
     [Header("Debug")]
     public int Skill1;
@@ -242,7 +249,11 @@ public class PlayerControl : MonoBehaviour
     void CheckDamaged() {
         if (DataManager.Instance.ShootOnSB) {
             DataManager.Instance.ShootOnSB = false;
-            ChargingTotem(ChargedTotemAmount);
+            if (LightningCast) {
+                ChargingTotem(LightningTotemAmount);
+            } else {
+                ChargingTotem(ChargedTotemAmount);
+            }
         }
     }
 
@@ -293,6 +304,7 @@ public class PlayerControl : MonoBehaviour
             case 202: return CurKnockFloorCD;
             case 203: return CurBearShieldCD;
 
+            case 301: return CurRandomThunderCD;
             case 302: return CurThunderCastCD;
 
             default: return 0.0f;
@@ -316,6 +328,7 @@ public class PlayerControl : MonoBehaviour
             case 202: return KnockFloorCoolDown;
             case 203: return ShieldUpCoolDown;
 
+            case 301: return LastRandomThunderCD;
             case 302: return LastThunderCastCD;
 
             default: return 0.0f;
@@ -347,6 +360,7 @@ public class PlayerControl : MonoBehaviour
                 case 202: return KnockFloorCD;
                 case 203: return BearShieldCD;
 
+                case 301: return RandomThunderCD;
                 case 302: return ThunderCastCD;
             }
         } else {
@@ -361,6 +375,7 @@ public class PlayerControl : MonoBehaviour
                 case 202: return true;
                 case 203: return true;
 
+                case 301: return RandomThunderCD;
                 case 302: return ThunderCastCD;
             }
         }
@@ -383,6 +398,7 @@ public class PlayerControl : MonoBehaviour
             case 202: BearKnockFloor(); break;
             case 203: BearShield(); break;
 
+            case 301: RandomThunder(); break;
             case 302: ThunderCast(); break;
             default: break;
         }
@@ -1072,6 +1088,8 @@ public class PlayerControl : MonoBehaviour
         DataManager.Instance.SetSkillEvent(2, 5);
         CurThunderCastMaxCD = ThunderCastCoolDown;
         LastThunderCastCD = ThunderCastCoolDown;
+        CurRandomThunderMaxCD = RandomThunderCoolDown;
+        LastRandomThunderCD = RandomThunderCoolDown;
         TotemCharged = 0;
         ToggleNavi();
         lightningAround = StartCoroutine(LightningAround());
@@ -1389,7 +1407,9 @@ public class PlayerControl : MonoBehaviour
     private float CurPlacingTotemCD;
     private float TotemCharged;
     private GameObject TotemPrefab;
+    private bool TotemNotChanged;
     void PlacingTotem() {
+        TotemNotChanged = false;
         if (TotemPrefab != null) {
             Destroy(TotemPrefab);
         }
@@ -1398,6 +1418,7 @@ public class PlayerControl : MonoBehaviour
             PlacingTotemCD = returnVal2;
         }));
         TotemPrefab = Instantiate(Totem, Human.transform.position, Quaternion.identity);
+        TotemPrefab.transform.localScale *= Scaling;
         TotemCharged = 0;
     }
 
@@ -1408,12 +1429,18 @@ public class PlayerControl : MonoBehaviour
         if (HealingPlaceCreated)
             return;
         if (LightningCast) {
-
-        } else {
-            if (Vector3.Distance(TotemPrefab.transform.position, Human.transform.position) <= TotemChargedDis) {
+            if (Vector3.Distance(TotemPrefab.transform.position, Human.transform.position) <= LightningTotemChargedDis * Scaling) {
                 TotemCharged += amount;
             }
             if (TotemCharged >= 100f) {
+                TotemCharged = 0;
+            }
+        } else {
+            if (Vector3.Distance(TotemPrefab.transform.position, Human.transform.position) <= TotemChargedDis * Scaling) {
+                TotemCharged += amount;
+            }
+            if (TotemCharged >= 100f) {
+                TotemNotChanged = true;
                 HealingPlaceCreated = true;
                 StartCoroutine(CreateHealingPlace());
                 TotemCharged = 0;
@@ -1423,8 +1450,8 @@ public class PlayerControl : MonoBehaviour
 
     IEnumerator CreateHealingPlace() {
         float dur = 0;
-        while (!LightningCast && dur < HealingPlaceCreatedTime) {
-            if (Vector3.Distance(TotemPrefab.transform.position, Human.transform.position) <= TotemChargedDis)
+        while (!LightningCast && dur < HealingPlaceCreatedTime && TotemNotChanged) {
+            if (Vector3.Distance(TotemPrefab.transform.position, Human.transform.position) <= TotemChargedDis * Scaling)
                 DataManager.Instance.HealPlayer(HealingPlaceAmount);
             dur += HealingFrequency;
             yield return new WaitForSeconds(HealingFrequency);
@@ -1437,8 +1464,31 @@ public class PlayerControl : MonoBehaviour
     private float CurRandomThunderMaxCD;
     private float LastRandomThunderCD; 
     void RandomThunder() {
+        TotemNotChanged = true;
         if (TotemPrefab == null)
             return;
-        
+        StartCoroutine(RandomThundering());
+    }
+
+    IEnumerator RandomThundering() {
+        int ThunderTimes = 0;
+        while (ThunderTimes < RandomThunderTime && LightningCast && TotemNotChanged) {
+            CastThunder();
+            ThunderTimes++;
+            yield return new WaitForSeconds(ThunderInterval);
+        }
+        StartCoroutine(CoolDownCal(CurRandomThunderMaxCD, (returnVal1, returnVal2) => {
+            CurRandomThunderCD = returnVal1;
+            RandomThunderCD = returnVal2;
+        }));
+        LastRandomThunderCD = CurRandomThunderMaxCD;
+        CurRandomThunderMaxCD += RandomThunderAddCD;
+    }
+
+    void CastThunder() {
+        float RandomX = UnityEngine.Random.Range(0, LightningTotemChargedDis);
+        float RandomZ = Mathf.Sqrt(LightningTotemChargedDis*LightningTotemChargedDis - RandomX * RandomX);
+        GameObject ThunderPrefab = Instantiate(FallingThunder, TotemPrefab.transform.position + new Vector3(RandomX, 0, RandomZ), Quaternion.identity);
+        ThunderPrefab.transform.localScale *= Scaling;
     }
 }
