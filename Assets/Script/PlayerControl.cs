@@ -918,7 +918,6 @@ public class PlayerControl : MonoBehaviour
         Bear.transform.position = Human.transform.position;
         Bear.SetActive(true);
         BearMode = true;
-        DataManager.Instance.InBearMode = true;
         Bear.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         BearAnim.SetTrigger("Buff");
         Vector3 TurnInto = new Vector3(BearScale, BearScale, BearScale);
@@ -929,6 +928,7 @@ public class PlayerControl : MonoBehaviour
         }
         Bear.transform.localScale = TurnInto;
         yield return new WaitForSeconds(0.5f);
+        DataManager.Instance.InBearMode = true;
         ResetAvoidCasting();
         ActiveNavi();
         BearOnCast = false;
@@ -956,10 +956,10 @@ public class PlayerControl : MonoBehaviour
         Human.SetActive(true);
         BearMode = false;
         Turning = false;
-        DataManager.Instance.InBearMode = false;
         Human.transform.localScale = new Vector3(HumanScale*Scaling, HumanScale*Scaling, HumanScale*Scaling);
         yield return new WaitForSeconds(1f);
         ActiveNavi();
+        DataManager.Instance.InBearMode = false;
         DataManager.Instance.SetSkillEvent(0, 0);
         DataManager.Instance.SetSkillEvent(1, 1);
         DataManager.Instance.SetSkillEvent(2, 2);
