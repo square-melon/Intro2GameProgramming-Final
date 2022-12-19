@@ -9924,7 +9924,7 @@ GameObject:
   - component: {fileID: 6127340340417848234}
   m_Layer: 0
   m_Name: Bullet4
-  m_TagString: Untagged
+  m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14855,5 +14855,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ExistTime: 0.4
+  Damage: 0
   ExplodeEffect: {fileID: 1379937177039864406, guid: f6ea86ddd07550a46936e51f4f6d28ab,
+    type: 3}
+  damagetext: {fileID: 2043656377152561074, guid: ecf95b3d39e3aa445811bb3eecdbb59f,
     type: 3}

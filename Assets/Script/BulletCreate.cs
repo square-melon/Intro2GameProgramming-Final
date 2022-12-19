@@ -7,9 +7,9 @@ public class BulletCreate : MonoBehaviour
 
     [Header("Settings")]
     public float ExistTime;
-    public float Damage;
+    public float Damage = 30.0f;
     public GameObject ExplodeEffect;
-    
+    public GameObject damagetext;
     void Start()
     {
         Destroy(gameObject, ExistTime);
@@ -25,9 +25,13 @@ public class BulletCreate : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 0.5f)) {
             if (hit.collider.CompareTag("Enemy")) {
+                
                 Instantiate(ExplodeEffect, hit.point, Quaternion.identity);
                 DataManager.Instance.takedamage(hit.transform.root, Damage);
                 Destroy(gameObject);
+                if(damagetext) {
+                    ShowDamage();
+                }
             }
         }
     }
@@ -40,5 +44,9 @@ public class BulletCreate : MonoBehaviour
             }
             Destroy(gameObject);
         }
+    }
+    void ShowDamage() {
+        var go = Instantiate(damagetext, transform.position, Quaternion.identity);
+        go.GetComponent<TextMesh>().text = "30";
     }
 }

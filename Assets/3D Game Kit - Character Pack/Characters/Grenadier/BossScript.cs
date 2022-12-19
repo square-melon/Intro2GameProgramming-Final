@@ -10,10 +10,10 @@ public class BossScript : MonoBehaviour
     private GameObject ArcaneSprayPrefab;
     public GameObject FrostRain;
     private GameObject FrostRainPrefab;
-
-    [Header("Settings")]
     public float RotationSlerp;
     private Animator BossAnim;
+
+    [Header("Settings")]
     private UnityEngine.AI.NavMeshAgent naviAgent;
     private int  hp=2;
     private int skill=1;
@@ -55,7 +55,6 @@ public class BossScript : MonoBehaviour
                 Attack();
         }
     }
-
     private bool skill1CD;
     private bool skill2CD;
     private bool casting;
@@ -99,7 +98,6 @@ public class BossScript : MonoBehaviour
         FrostRainPrefab = Instantiate(FrostRain, pos,Quaternion.LookRotation(Target));
         Destroy(FrostRainPrefab,4.0f);
     }
-
     void Track(Vector3 Target){
         naviAgent.speed = 1.0f;
         BossAnim.SetFloat("Speed", 1.0f);
@@ -130,13 +128,6 @@ public class BossScript : MonoBehaviour
     }
     void FaceTarget(Vector3 FacingTarget){
         transform.eulerAngles = new Vector3
-        (0, 
-        Quaternion.Slerp
-        (transform.rotation,
-        Quaternion.LookRotation(FacingTarget), 
-        Time.deltaTime * RotationSlerp * 2).eulerAngles.y,
-        0);
+        (0,Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(FacingTarget), Time.deltaTime * RotationSlerp * 2).eulerAngles.y,0);
     }
-    
-    
 }

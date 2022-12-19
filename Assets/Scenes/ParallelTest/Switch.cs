@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.AI;
 using UnityEngine;
 
 public class Switch : MonoBehaviour
@@ -19,6 +20,12 @@ public class Switch : MonoBehaviour
     // TRUE: in switching process, we can't do another transition
     private bool inTransition = false;
 
+    private GameObject People;
+    private GameObject Monster;
+    private NavMeshAgent E_naviAgent;
+    private NavMeshAgent P_naviAgent;
+    private NavMeshAgent M_naviAgent;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +37,7 @@ public class Switch : MonoBehaviour
     {
         // print(player.transform.position);
         if(Input.GetKeyDown(KeyCode.LeftShift)) {
-            if(!inTransition) {
+            if(!inTransition && !DataManager.Instance.InBearMode) {
                 // inTransition = true;
                 toParallel = !toParallel;
                 FindAllEnemy();
@@ -50,26 +57,44 @@ public class Switch : MonoBehaviour
     IEnumerator ToParallel() {
         canvasAnimator.SetTrigger("Switch");
         yield return new WaitForSeconds(1);
-        ppos = player.transform.position;
         DataManager.Instance.ToggleInParallel();
-        // player.transform.position = new Vector3(ppos.x, 51, ppos.z);
         foreach (GameObject enemy in enemies)
         {
-            epos = enemy.transform.position;
-            enemy.transform.position = new Vector3(epos.x, 51, epos.z);
+            People = enemy.transform.GetChild(0).gameObject;
+            Monster = enemy.transform.GetChild(1).gameObject;
+
+            epos = Monster.transform.position;
+
+            P_naviAgent = People.GetComponent<NavMeshAgent>();
+            P_naviAgent.Warp(new Vector3(epos.x, 51, epos.z));
+
+            M_naviAgent = Monster.GetComponent<NavMeshAgent>();
+            M_naviAgent.Warp(new Vector3(epos.x, 51, epos.z));
+
+            People.SetActive(true);
+            Monster.SetActive(false);
         }
     }
 
     IEnumerator ToOrigin() {
         canvasAnimator.SetTrigger("PSwitch");
         yield return new WaitForSeconds(1);
-        ppos = player.transform.position;
         DataManager.Instance.ToggleInParallel();
-        // player.transform.position = new Vector3(ppos.x, 1, ppos.z);
         foreach (GameObject enemy in enemies)
         {
-            epos = enemy.transform.position;
-            enemy.transform.position = new Vector3(epos.x, 1, epos.z);
+            People = enemy.transform.GetChild(0).gameObject;
+            Monster = enemy.transform.GetChild(1).gameObject;
+
+            epos = People.transform.position;
+
+            P_naviAgent = People.GetComponent<NavMeshAgent>();
+            P_naviAgent.Warp(new Vector3(epos.x, 1, epos.z));
+
+            M_naviAgent = Monster.GetComponent<NavMeshAgent>();
+            M_naviAgent.Warp(new Vector3(epos.x, 1, epos.z));
+
+            People.SetActive(false);
+            Monster.SetActive(true);
         }
     }
 

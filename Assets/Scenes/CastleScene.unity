@@ -134,6 +134,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: base-japan-edge_medium (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010765723874, guid: de09fa98fc2774c0f84eeef51ca1a189, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000014000411040, guid: de09fa98fc2774c0f84eeef51ca1a189, type: 3}
       propertyPath: m_RootOrder
       value: 14
@@ -202,6 +206,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: tower-medieval-wood (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000014058324306, guid: c2ac66008f7d0834daea19a4f6304170, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012725874464, guid: c2ac66008f7d0834daea19a4f6304170, type: 3}
       propertyPath: m_RootOrder
       value: 68
@@ -265,6 +273,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 36
@@ -327,6 +339,10 @@ PrefabInstance:
     - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_Name
       value: wall-japan_medium (22)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
@@ -396,6 +412,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: tower-japan_small (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010811651022, guid: 0f0611592335d4331b8912ef17f33e20, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000013124157314, guid: 0f0611592335d4331b8912ef17f33e20, type: 3}
       propertyPath: m_RootOrder
       value: 85
@@ -463,6 +483,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (33)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -532,6 +556,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-japan_medium (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
       value: 56
@@ -599,6 +627,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -668,6 +700,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: tower-castle_square (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011395365872, guid: 7b58ecd3ff4501c478c9cf533c4d78b0, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012204094974, guid: 7b58ecd3ff4501c478c9cf533c4d78b0, type: 3}
       propertyPath: m_RootOrder
       value: 55
@@ -731,6 +767,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 33
@@ -793,6 +833,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (34)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -863,7 +907,7 @@ GameObject:
   - component: {fileID: 152320172}
   m_Layer: 0
   m_Name: JCastle
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1023,6 +1067,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: marketplace-stand_simple (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010603781670, guid: df5a7769ecea71448afa8a4da8528c88, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012432857720, guid: df5a7769ecea71448afa8a4da8528c88, type: 3}
       propertyPath: m_RootOrder
       value: 59
@@ -1085,6 +1133,10 @@ PrefabInstance:
     - target: {fileID: 1000011912620618, guid: 9459b496fc2b92646b85f1c632841ece, type: 3}
       propertyPath: m_Name
       value: flag-medieval
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011912620618, guid: 9459b496fc2b92646b85f1c632841ece, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000012136721376, guid: 9459b496fc2b92646b85f1c632841ece, type: 3}
       propertyPath: m_RootOrder
@@ -1149,6 +1201,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: house-medieval_big
       objectReference: {fileID: 0}
+    - target: {fileID: 1000012191212250, guid: 02b6852f899a15d44957b934349e7e9a, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000013531716824, guid: 02b6852f899a15d44957b934349e7e9a, type: 3}
       propertyPath: m_RootOrder
       value: 13
@@ -1211,6 +1267,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -1280,6 +1340,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: base-japan_medium (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
       value: 15
@@ -1347,6 +1411,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -1416,6 +1484,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: base-japan_medium (27)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
       value: 36
@@ -1483,6 +1555,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (28)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -1552,6 +1628,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-japan_medium (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
       value: 46
@@ -1620,6 +1700,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (20)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 53
@@ -1683,6 +1767,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: gate-medieval_small
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010953333484, guid: 86a412f8e720a6d4f91b55d9cf02760f, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012664692268, guid: 86a412f8e720a6d4f91b55d9cf02760f, type: 3}
       propertyPath: m_RootOrder
       value: 24
@@ -1745,6 +1833,10 @@ PrefabInstance:
     - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_Name
       value: wall-japan_medium (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
@@ -1813,6 +1905,10 @@ PrefabInstance:
     - target: {fileID: 1000011420057828, guid: 4623bab9673b83c4a9ad439737cf6aee, type: 3}
       propertyPath: m_Name
       value: tower-castle_round (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011420057828, guid: 4623bab9673b83c4a9ad439737cf6aee, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000012474253342, guid: 4623bab9673b83c4a9ad439737cf6aee, type: 3}
       propertyPath: m_RootOrder
@@ -1885,6 +1981,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 52
@@ -1948,6 +2048,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: drawbridge-medieval
       objectReference: {fileID: 0}
+    - target: {fileID: 1730283663836284, guid: bfe1b26631f664dbf9baf3c8591ec048, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4029837457598628, guid: bfe1b26631f664dbf9baf3c8591ec048, type: 3}
       propertyPath: m_RootOrder
       value: 30
@@ -2010,6 +2114,10 @@ PrefabInstance:
     - target: {fileID: 1000011420057828, guid: 4623bab9673b83c4a9ad439737cf6aee, type: 3}
       propertyPath: m_Name
       value: tower-castle_round (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011420057828, guid: 4623bab9673b83c4a9ad439737cf6aee, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000012474253342, guid: 4623bab9673b83c4a9ad439737cf6aee, type: 3}
       propertyPath: m_RootOrder
@@ -2082,6 +2190,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-japan-edge_medium (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011780370550, guid: ed85d8adc74f643d4a83781c0a04f55d, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011803837326, guid: ed85d8adc74f643d4a83781c0a04f55d, type: 3}
       propertyPath: m_RootOrder
       value: 39
@@ -2149,6 +2261,10 @@ PrefabInstance:
     - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_Name
       value: wall-japan_medium (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
@@ -2218,6 +2334,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: base-japan-edge_medium
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010765723874, guid: de09fa98fc2774c0f84eeef51ca1a189, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000014000411040, guid: de09fa98fc2774c0f84eeef51ca1a189, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -2285,6 +2405,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -2354,6 +2478,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: marketplace-stand_simple
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010603781670, guid: df5a7769ecea71448afa8a4da8528c88, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012432857720, guid: df5a7769ecea71448afa8a4da8528c88, type: 3}
       propertyPath: m_RootOrder
       value: 18
@@ -2417,6 +2545,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: stakes-snow (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010649495702, guid: a31d4aa5defa33444bda5d8651423f68, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011674268728, guid: a31d4aa5defa33444bda5d8651423f68, type: 3}
       propertyPath: m_RootOrder
       value: 63
@@ -2479,6 +2611,10 @@ PrefabInstance:
     - target: {fileID: 1000013023640250, guid: 3acd616ac07b34f59a8a40fbe7b29afb, type: 3}
       propertyPath: m_Name
       value: building-japan (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013023640250, guid: 3acd616ac07b34f59a8a40fbe7b29afb, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000010132223496, guid: 3acd616ac07b34f59a8a40fbe7b29afb, type: 3}
       propertyPath: m_RootOrder
@@ -2548,6 +2684,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: building-japan_large
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013834420554, guid: da60228ec1ec546469cadd6471328e53, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000014210398972, guid: da60228ec1ec546469cadd6471328e53, type: 3}
       propertyPath: m_RootOrder
       value: 79
@@ -2615,6 +2755,10 @@ PrefabInstance:
     - target: {fileID: 1000011403282256, guid: 0889b564a64f84d42a9abf098b79255e, type: 3}
       propertyPath: m_Name
       value: church-medieval
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011403282256, guid: 0889b564a64f84d42a9abf098b79255e, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000010077991856, guid: 0889b564a64f84d42a9abf098b79255e, type: 3}
       propertyPath: m_RootOrder
@@ -2691,6 +2835,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-japan_medium (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
       value: 62
@@ -2758,6 +2906,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (31)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -2911,6 +3063,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: base-japan_medium (22)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
       value: 27
@@ -2978,6 +3134,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -3047,6 +3207,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: base-japan_medium (29)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
       value: 34
@@ -3114,6 +3278,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (17)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -3183,6 +3351,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 34
@@ -3246,6 +3418,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 47
@@ -3308,6 +3484,10 @@ PrefabInstance:
     - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_Name
       value: wall-japan_medium (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
@@ -3376,6 +3556,10 @@ PrefabInstance:
     - target: {fileID: 1759109321266988, guid: 8f787f0f9fb214859ad48a6fcce3d46d, type: 3}
       propertyPath: m_Name
       value: bridge-japan
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759109321266988, guid: 8f787f0f9fb214859ad48a6fcce3d46d, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4184636855678336, guid: 8f787f0f9fb214859ad48a6fcce3d46d, type: 3}
       propertyPath: m_RootOrder
@@ -3449,6 +3633,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: tower-castle_round
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011420057828, guid: 4623bab9673b83c4a9ad439737cf6aee, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012474253342, guid: 4623bab9673b83c4a9ad439737cf6aee, type: 3}
       propertyPath: m_RootOrder
       value: 27
@@ -3520,6 +3708,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: cannonballs (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010273211032, guid: f4808d357de31a347a39ac43e834eaf1, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000013434657030, guid: f4808d357de31a347a39ac43e834eaf1, type: 3}
       propertyPath: m_RootOrder
       value: 16
@@ -3582,6 +3774,10 @@ PrefabInstance:
     - target: {fileID: 1000012757635934, guid: 214b8a6ba0c92a9449f27b489959e15d, type: 3}
       propertyPath: m_Name
       value: stakes
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012757635934, guid: 214b8a6ba0c92a9449f27b489959e15d, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014246037622, guid: 214b8a6ba0c92a9449f27b489959e15d, type: 3}
       propertyPath: m_RootOrder
@@ -3646,6 +3842,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (18)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 50
@@ -3708,6 +3908,10 @@ PrefabInstance:
     - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_Name
       value: wall-japan_medium (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
@@ -3777,6 +3981,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: base-japan_medium (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
       value: 18
@@ -3844,6 +4052,10 @@ PrefabInstance:
     - target: {fileID: 1000011420057828, guid: 4623bab9673b83c4a9ad439737cf6aee, type: 3}
       propertyPath: m_Name
       value: tower-castle_round (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011420057828, guid: 4623bab9673b83c4a9ad439737cf6aee, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000012474253342, guid: 4623bab9673b83c4a9ad439737cf6aee, type: 3}
       propertyPath: m_RootOrder
@@ -3916,6 +4128,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-wood (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013265577500, guid: 02a4a6df6ce5d82468957911b0be5933, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012218975936, guid: 02a4a6df6ce5d82468957911b0be5933, type: 3}
       propertyPath: m_RootOrder
       value: 66
@@ -3978,6 +4194,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (30)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -4047,6 +4267,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: base-japan_medium (20)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
       value: 25
@@ -4115,6 +4339,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 32
@@ -4178,6 +4406,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: marketplace-stand_simple (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010603781670, guid: df5a7769ecea71448afa8a4da8528c88, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012432857720, guid: df5a7769ecea71448afa8a4da8528c88, type: 3}
       propertyPath: m_RootOrder
       value: 60
@@ -4240,6 +4472,10 @@ PrefabInstance:
     - target: {fileID: 1000012794297646, guid: e24b7843564a14c21abbb71c929145a4, type: 3}
       propertyPath: m_Name
       value: gate-japan
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012794297646, guid: e24b7843564a14c21abbb71c929145a4, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014218911078, guid: e24b7843564a14c21abbb71c929145a4, type: 3}
       propertyPath: m_RootOrder
@@ -4309,6 +4545,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: house-medieval_small
       objectReference: {fileID: 0}
+    - target: {fileID: 1000012625864402, guid: d9f771127f198ea40869d419a85f3b89, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011493586018, guid: d9f771127f198ea40869d419a85f3b89, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -4372,6 +4612,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-wood (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013265577500, guid: 02a4a6df6ce5d82468957911b0be5933, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012218975936, guid: 02a4a6df6ce5d82468957911b0be5933, type: 3}
       propertyPath: m_RootOrder
       value: 67
@@ -4434,6 +4678,10 @@ PrefabInstance:
     - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_Name
       value: wall-japan_medium (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
@@ -4503,6 +4751,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 31
@@ -4565,6 +4817,10 @@ PrefabInstance:
     - target: {fileID: 1000011780370550, guid: ed85d8adc74f643d4a83781c0a04f55d, type: 3}
       propertyPath: m_Name
       value: wall-japan-edge_medium
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011780370550, guid: ed85d8adc74f643d4a83781c0a04f55d, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000011803837326, guid: ed85d8adc74f643d4a83781c0a04f55d, type: 3}
       propertyPath: m_RootOrder
@@ -4634,6 +4890,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-japan_medium (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
       value: 47
@@ -4702,6 +4962,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: stables-medieval
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010698760126, guid: 4c81bb4e8d182a44f9fc33f2936fbc6b, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000010309697220, guid: 4c81bb4e8d182a44f9fc33f2936fbc6b, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -4764,6 +5028,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -4833,6 +5101,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: marketplace-stand_simple (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010603781670, guid: df5a7769ecea71448afa8a4da8528c88, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012432857720, guid: df5a7769ecea71448afa8a4da8528c88, type: 3}
       propertyPath: m_RootOrder
       value: 58
@@ -4895,6 +5167,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -4964,6 +5240,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 41
@@ -5026,6 +5306,10 @@ PrefabInstance:
     - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_Name
       value: wall-medieval-stone (19)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
@@ -5184,6 +5468,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: base-japan_medium (24)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
       value: 29
@@ -5251,6 +5539,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (19)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -5320,6 +5612,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: gate-medieval_medium
       objectReference: {fileID: 0}
+    - target: {fileID: 1000014249576186, guid: 44d51e6fdcc5e59409985a881e96ffc2, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000010018891638, guid: 44d51e6fdcc5e59409985a881e96ffc2, type: 3}
       propertyPath: m_RootOrder
       value: 28
@@ -5382,6 +5678,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (21)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -5451,6 +5751,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 37
@@ -5514,6 +5818,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: cannonballs (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010273211032, guid: f4808d357de31a347a39ac43e834eaf1, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000013434657030, guid: f4808d357de31a347a39ac43e834eaf1, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -5576,6 +5884,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (32)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -5645,6 +5957,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: stakes-snow
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010649495702, guid: a31d4aa5defa33444bda5d8651423f68, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011674268728, guid: a31d4aa5defa33444bda5d8651423f68, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -5708,6 +6024,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 29
@@ -5770,6 +6090,10 @@ PrefabInstance:
     - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_Name
       value: wall-japan_medium (19)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
@@ -5839,6 +6163,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: base-japan_medium (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -5906,6 +6234,10 @@ PrefabInstance:
     - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_Name
       value: wall-japan_medium (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
@@ -5975,6 +6307,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: stakes (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000012757635934, guid: 214b8a6ba0c92a9449f27b489959e15d, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000014246037622, guid: 214b8a6ba0c92a9449f27b489959e15d, type: 3}
       propertyPath: m_RootOrder
       value: 57
@@ -6037,6 +6373,10 @@ PrefabInstance:
     - target: {fileID: 1000012049685074, guid: 92c69339f858e4a91a7c32b35b5fbb7b, type: 3}
       propertyPath: m_Name
       value: wall-japan-elbow_small (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012049685074, guid: 92c69339f858e4a91a7c32b35b5fbb7b, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000011307347916, guid: 92c69339f858e4a91a7c32b35b5fbb7b, type: 3}
       propertyPath: m_RootOrder
@@ -6106,6 +6446,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: tower-japan_small (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010811651022, guid: 0f0611592335d4331b8912ef17f33e20, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000013124157314, guid: 0f0611592335d4331b8912ef17f33e20, type: 3}
       propertyPath: m_RootOrder
       value: 73
@@ -6174,6 +6518,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: cannonballs
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010273211032, guid: f4808d357de31a347a39ac43e834eaf1, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000013434657030, guid: f4808d357de31a347a39ac43e834eaf1, type: 3}
       propertyPath: m_RootOrder
       value: 17
@@ -6236,6 +6584,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (16)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -6305,6 +6657,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: base-japan-edge_medium (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010765723874, guid: de09fa98fc2774c0f84eeef51ca1a189, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000014000411040, guid: de09fa98fc2774c0f84eeef51ca1a189, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -6372,6 +6728,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (23)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -6441,6 +6801,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-japan_medium (23)
       objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
       value: 69
@@ -6509,6 +6873,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: flag-medieval_big
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011605502392, guid: 4f15b107783d8d24d815cfb400cbd125, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000010571907084, guid: 4f15b107783d8d24d815cfb400cbd125, type: 3}
       propertyPath: m_RootOrder
       value: 14
@@ -6572,6 +6940,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: marketplace-stand_simple (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010603781670, guid: df5a7769ecea71448afa8a4da8528c88, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012432857720, guid: df5a7769ecea71448afa8a4da8528c88, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -6634,6 +7006,10 @@ PrefabInstance:
     - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_Name
       value: wall-japan_medium (26)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
@@ -6703,6 +7079,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: japan-tree-tall
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013034193654, guid: 3ba8722acc6ed407ba69d7d7d4d5f832, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000010053083938, guid: 3ba8722acc6ed407ba69d7d7d4d5f832, type: 3}
       propertyPath: m_RootOrder
       value: 76
@@ -6771,6 +7151,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 46
@@ -6833,6 +7217,10 @@ PrefabInstance:
     - target: {fileID: 1000011780370550, guid: ed85d8adc74f643d4a83781c0a04f55d, type: 3}
       propertyPath: m_Name
       value: wall-japan-edge_medium (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011780370550, guid: ed85d8adc74f643d4a83781c0a04f55d, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000011803837326, guid: ed85d8adc74f643d4a83781c0a04f55d, type: 3}
       propertyPath: m_RootOrder
@@ -6902,6 +7290,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: tower-castle_square
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011395365872, guid: 7b58ecd3ff4501c478c9cf533c4d78b0, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012204094974, guid: 7b58ecd3ff4501c478c9cf533c4d78b0, type: 3}
       propertyPath: m_RootOrder
       value: 23
@@ -6965,6 +7357,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: stables-medieval (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010698760126, guid: 4c81bb4e8d182a44f9fc33f2936fbc6b, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000010309697220, guid: 4c81bb4e8d182a44f9fc33f2936fbc6b, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -7027,6 +7423,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -7096,6 +7496,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: tower-japan_small (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010811651022, guid: 0f0611592335d4331b8912ef17f33e20, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000013124157314, guid: 0f0611592335d4331b8912ef17f33e20, type: 3}
       propertyPath: m_RootOrder
       value: 74
@@ -7163,6 +7567,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -7232,6 +7640,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (21)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 54
@@ -7295,6 +7707,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ladder-wood (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013702636600, guid: 1586ff18fb4d70e4e9b0403f75a07a5e, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011879400878, guid: 1586ff18fb4d70e4e9b0403f75a07a5e, type: 3}
       propertyPath: m_RootOrder
       value: 48
@@ -7357,6 +7773,10 @@ PrefabInstance:
     - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_Name
       value: wall-japan_medium (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
@@ -7426,6 +7846,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: base-japan_medium (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -7494,6 +7918,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-japan_medium (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
       value: 52
@@ -7558,9 +7986,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2065562772}
     m_Modifications:
+    - target: {fileID: 1000010136866332, guid: 284774c8a70dd3d4bb3dd96b18d0a4a3, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 1000010139385872, guid: 284774c8a70dd3d4bb3dd96b18d0a4a3, type: 3}
       propertyPath: m_Name
       value: catapult
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010139385872, guid: 284774c8a70dd3d4bb3dd96b18d0a4a3, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011342670616, guid: 284774c8a70dd3d4bb3dd96b18d0a4a3, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011381001554, guid: 284774c8a70dd3d4bb3dd96b18d0a4a3, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 1480221433330756, guid: 284774c8a70dd3d4bb3dd96b18d0a4a3, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000011474957796, guid: 284774c8a70dd3d4bb3dd96b18d0a4a3, type: 3}
       propertyPath: m_RootOrder
@@ -7625,6 +8073,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ladder-wood
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013702636600, guid: 1586ff18fb4d70e4e9b0403f75a07a5e, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011879400878, guid: 1586ff18fb4d70e4e9b0403f75a07a5e, type: 3}
       propertyPath: m_RootOrder
       value: 25
@@ -7687,6 +8139,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (26)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -7756,6 +8212,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: base-japan_medium (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
       value: 19
@@ -7823,6 +8283,10 @@ PrefabInstance:
     - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_Name
       value: wall-japan_medium (24)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
@@ -7892,6 +8356,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (17)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 51
@@ -7954,6 +8422,10 @@ PrefabInstance:
     - target: {fileID: 1000012383013900, guid: be44107002abe0046a8a7f08bbf0eef1, type: 3}
       propertyPath: m_Name
       value: house-medieval_medium (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012383013900, guid: be44107002abe0046a8a7f08bbf0eef1, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000012221078848, guid: be44107002abe0046a8a7f08bbf0eef1, type: 3}
       propertyPath: m_RootOrder
@@ -8021,6 +8493,10 @@ PrefabInstance:
     - target: {fileID: 1000013834420554, guid: da60228ec1ec546469cadd6471328e53, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013834420554, guid: da60228ec1ec546469cadd6471328e53, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014210398972, guid: da60228ec1ec546469cadd6471328e53, type: 3}
       propertyPath: m_RootOrder
@@ -8090,6 +8566,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-japan_medium
       objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
       value: 43
@@ -8157,6 +8637,10 @@ PrefabInstance:
     - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_Name
       value: wall-japan_medium (17)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
@@ -8226,6 +8710,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: castle-japan
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010570835818, guid: 2395914613c154ee18e773bea78311b6, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000010753392570, guid: 2395914613c154ee18e773bea78311b6, type: 3}
       propertyPath: m_RootOrder
       value: 82
@@ -8293,6 +8781,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (25)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -8362,6 +8854,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 40
@@ -8425,6 +8921,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: stakes (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000012757635934, guid: 214b8a6ba0c92a9449f27b489959e15d, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000014246037622, guid: 214b8a6ba0c92a9449f27b489959e15d, type: 3}
       propertyPath: m_RootOrder
       value: 56
@@ -8487,6 +8987,10 @@ PrefabInstance:
     - target: {fileID: 1000013023640250, guid: 3acd616ac07b34f59a8a40fbe7b29afb, type: 3}
       propertyPath: m_Name
       value: building-japan
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013023640250, guid: 3acd616ac07b34f59a8a40fbe7b29afb, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000010132223496, guid: 3acd616ac07b34f59a8a40fbe7b29afb, type: 3}
       propertyPath: m_RootOrder
@@ -8559,7 +9063,7 @@ GameObject:
   - component: {fileID: 1712483256}
   m_Layer: 0
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -8654,6 +9158,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: well
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013729230236, guid: a95afc340b7d21348a22207edba026df, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012174342246, guid: a95afc340b7d21348a22207edba026df, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -8716,6 +9224,10 @@ PrefabInstance:
     - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_Name
       value: wall-japan_medium (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
@@ -8785,6 +9297,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: base-japan_medium (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -8852,6 +9368,10 @@ PrefabInstance:
     - target: {fileID: 1000010811651022, guid: 0f0611592335d4331b8912ef17f33e20, type: 3}
       propertyPath: m_Name
       value: tower-japan_small
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010811651022, guid: 0f0611592335d4331b8912ef17f33e20, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000013124157314, guid: 0f0611592335d4331b8912ef17f33e20, type: 3}
       propertyPath: m_RootOrder
@@ -8921,6 +9441,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 35
@@ -8983,6 +9507,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -9052,6 +9580,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-wood
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013265577500, guid: 02a4a6df6ce5d82468957911b0be5933, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012218975936, guid: 02a4a6df6ce5d82468957911b0be5933, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -9114,6 +9646,10 @@ PrefabInstance:
     - target: {fileID: 1000013265577500, guid: 02a4a6df6ce5d82468957911b0be5933, type: 3}
       propertyPath: m_Name
       value: wall-medieval-wood (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013265577500, guid: 02a4a6df6ce5d82468957911b0be5933, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000012218975936, guid: 02a4a6df6ce5d82468957911b0be5933, type: 3}
       propertyPath: m_RootOrder
@@ -9178,6 +9714,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: carriage
       objectReference: {fileID: 0}
+    - target: {fileID: 1000012876869458, guid: 45464fb6ed9125b4f9cf7fc6307a71ce, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013662212468, guid: 45464fb6ed9125b4f9cf7fc6307a71ce, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 1547757372922220, guid: 45464fb6ed9125b4f9cf7fc6307a71ce, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011363751446, guid: 45464fb6ed9125b4f9cf7fc6307a71ce, type: 3}
       propertyPath: m_RootOrder
       value: 20
@@ -9241,6 +9789,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 26
@@ -9303,6 +9855,10 @@ PrefabInstance:
     - target: {fileID: 1000010765723874, guid: de09fa98fc2774c0f84eeef51ca1a189, type: 3}
       propertyPath: m_Name
       value: base-japan-edge_medium (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010765723874, guid: de09fa98fc2774c0f84eeef51ca1a189, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014000411040, guid: de09fa98fc2774c0f84eeef51ca1a189, type: 3}
       propertyPath: m_RootOrder
@@ -9372,6 +9928,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-japan_medium (21)
       objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
       value: 66
@@ -9439,6 +9999,10 @@ PrefabInstance:
     - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_Name
       value: wall-japan_medium (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
@@ -9508,6 +10072,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: stakes-snow (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010649495702, guid: a31d4aa5defa33444bda5d8651423f68, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011674268728, guid: a31d4aa5defa33444bda5d8651423f68, type: 3}
       propertyPath: m_RootOrder
       value: 62
@@ -9570,6 +10138,10 @@ PrefabInstance:
     - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_Name
       value: wall-japan_medium (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
@@ -9639,6 +10211,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: tower-medieval-wood
       objectReference: {fileID: 0}
+    - target: {fileID: 1000014058324306, guid: c2ac66008f7d0834daea19a4f6304170, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012725874464, guid: c2ac66008f7d0834daea19a4f6304170, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -9701,6 +10277,10 @@ PrefabInstance:
     - target: {fileID: 1000012049685074, guid: 92c69339f858e4a91a7c32b35b5fbb7b, type: 3}
       propertyPath: m_Name
       value: wall-japan-elbow_small
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012049685074, guid: 92c69339f858e4a91a7c32b35b5fbb7b, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000011307347916, guid: 92c69339f858e4a91a7c32b35b5fbb7b, type: 3}
       propertyPath: m_RootOrder
@@ -9770,6 +10350,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-japan-edge_medium (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011780370550, guid: ed85d8adc74f643d4a83781c0a04f55d, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011803837326, guid: ed85d8adc74f643d4a83781c0a04f55d, type: 3}
       propertyPath: m_RootOrder
       value: 72
@@ -9838,6 +10422,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 39
@@ -9901,6 +10489,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: marketplace-stand_simple (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010603781670, guid: df5a7769ecea71448afa8a4da8528c88, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012432857720, guid: df5a7769ecea71448afa8a4da8528c88, type: 3}
       propertyPath: m_RootOrder
       value: 61
@@ -9963,6 +10555,10 @@ PrefabInstance:
     - target: {fileID: 1000010811651022, guid: 0f0611592335d4331b8912ef17f33e20, type: 3}
       propertyPath: m_Name
       value: tower-japan_small (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010811651022, guid: 0f0611592335d4331b8912ef17f33e20, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000013124157314, guid: 0f0611592335d4331b8912ef17f33e20, type: 3}
       propertyPath: m_RootOrder
@@ -10032,6 +10628,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 43
@@ -10094,6 +10694,10 @@ PrefabInstance:
     - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_Name
       value: base-japan_medium (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013290870384, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000014211599254, guid: bec2beb100d7f4acd8e01c090cc72469, type: 3}
       propertyPath: m_RootOrder
@@ -10163,6 +10767,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: stakes-snow (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010649495702, guid: a31d4aa5defa33444bda5d8651423f68, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011674268728, guid: a31d4aa5defa33444bda5d8651423f68, type: 3}
       propertyPath: m_RootOrder
       value: 64
@@ -10225,6 +10833,10 @@ PrefabInstance:
     - target: {fileID: 1000010273211032, guid: f4808d357de31a347a39ac43e834eaf1, type: 3}
       propertyPath: m_Name
       value: cannonballs (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010273211032, guid: f4808d357de31a347a39ac43e834eaf1, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000013434657030, guid: f4808d357de31a347a39ac43e834eaf1, type: 3}
       propertyPath: m_RootOrder
@@ -10289,6 +10901,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: castle-medieval
       objectReference: {fileID: 0}
+    - target: {fileID: 1000012212852136, guid: afff660f44fc4744c8f53b8d12ba2382, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012049836688, guid: afff660f44fc4744c8f53b8d12ba2382, type: 3}
       propertyPath: m_RootOrder
       value: 22
@@ -10351,6 +10967,10 @@ PrefabInstance:
     - target: {fileID: 1000010811651022, guid: 0f0611592335d4331b8912ef17f33e20, type: 3}
       propertyPath: m_Name
       value: tower-japan_small
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010811651022, guid: 0f0611592335d4331b8912ef17f33e20, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000013124157314, guid: 0f0611592335d4331b8912ef17f33e20, type: 3}
       propertyPath: m_RootOrder
@@ -10420,7 +11040,7 @@ GameObject:
   - component: {fileID: 2065562772}
   m_Layer: 0
   m_Name: MCastle
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -10520,6 +11140,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: gate-japan
       objectReference: {fileID: 0}
+    - target: {fileID: 1000012794297646, guid: e24b7843564a14c21abbb71c929145a4, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000014218911078, guid: e24b7843564a14c21abbb71c929145a4, type: 3}
       propertyPath: m_RootOrder
       value: 42
@@ -10587,6 +11211,10 @@ PrefabInstance:
     - target: {fileID: 1000010375850444, guid: 5ecde3e63a2f64f7d8ab8f189a52c8c0, type: 3}
       propertyPath: m_Name
       value: tree-bonsai
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010375850444, guid: 5ecde3e63a2f64f7d8ab8f189a52c8c0, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4000012652921196, guid: 5ecde3e63a2f64f7d8ab8f189a52c8c0, type: 3}
       propertyPath: m_RootOrder
@@ -10656,6 +11284,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-japan_medium (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
       value: 51
@@ -10723,6 +11355,10 @@ PrefabInstance:
     - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_Name
       value: wall-japan_medium (25)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder
@@ -10792,6 +11428,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall-medieval-stone (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000011559155444, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011200677274, guid: 567dfb72480da8e48abb7433b13ade24, type: 3}
       propertyPath: m_RootOrder
       value: 42
@@ -10854,6 +11494,10 @@ PrefabInstance:
     - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_Name
       value: wall-japan_medium (20)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839058256954206, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 4451662892578032, guid: 40e9248e0b04844ae99e5593b63d1156, type: 3}
       propertyPath: m_RootOrder

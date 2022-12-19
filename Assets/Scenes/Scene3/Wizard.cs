@@ -52,7 +52,6 @@ public class Wizard : MonoBehaviour
             animator.SetBool("Dead", true);
             Fire.SetActive(false);
         }
-        tf.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
 
     void FixedUpdate()
