@@ -22,24 +22,6 @@ public class LightningManager : MonoBehaviour
         } else {
             Lightning.Add(hash, 1);
         }
-        takedamage(obj.transform, BasicDamage + (Lightning[hash] - 1) * AdditionalDamage);
-    }
-
-    private void takedamage(Transform enemy, float damage) {
-        Scene2Enemy e1 = enemy.GetComponent<Scene2Enemy>();
-        enemyScript e2 = enemy.GetComponent<enemyScript>();
-        Zombie3script ee2 = enemy.GetComponent<Zombie3script>();
-        Wizard e3 = enemy.GetComponent<Wizard>();
-        Scene2Boss ee = enemy.GetComponent<Scene2Boss>();
-        if (e1)
-            e1.Damage();
-        else if (e2)
-            e2.Damage();
-        else if (e3)
-            e3.Damage();
-        else if (ee)
-            ee.Damage();
-        else if (ee2)
-            ee2.Damage();
+        DataManager.Instance.takedamage(obj.transform, BasicDamage + (Lightning[hash] - 1) * AdditionalDamage);
     }
 }

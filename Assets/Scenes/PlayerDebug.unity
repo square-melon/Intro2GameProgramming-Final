@@ -12847,6 +12847,7 @@ MonoBehaviour:
   BearRHand: {fileID: 1940952594190480286}
   BearShieldUp: {fileID: 1257387429}
   Totem: {fileID: 685540900}
+  FallingThunder: {fileID: 0}
   PlayerAnim: {fileID: 4870221790982276293}
   BearAnim: {fileID: 6415557976806012833}
   BearScale: 1
@@ -12962,6 +12963,12 @@ MonoBehaviour:
   HealingPlaceCreatedTime: 10
   HealingPlaceAmount: 5
   HealingFrequency: 1
+  LightningTotemAmount: 0
+  LightningTotemChargedDis: 0
+  RandomThunderCoolDown: 0
+  RandomThunderAddCD: 0
+  RandomThunderTime: 0
+  ThunderInterval: 0
   Skill1: 0
   Skill2: 1
   Skill3: 5
@@ -14965,6 +14972,9 @@ MonoBehaviour:
   ShieldUp: 0
   Scaling: 0
   ShootOnSB: 0
+  damagetext: {fileID: 2043656377152561074, guid: ecf95b3d39e3aa445811bb3eecdbb59f,
+    type: 3}
+  cam: {fileID: 390378352}
 --- !u!4 &1703814320
 Transform:
   m_ObjectHideFlags: 0
