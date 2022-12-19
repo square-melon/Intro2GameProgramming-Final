@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -27,6 +28,8 @@ public class PlayerControl : MonoBehaviour
     public Transform BearLHand;
     public Transform BearRHand;
     public Transform BearShieldUp;
+    public GameObject Totem;
+    public GameObject FallingThunder;
 
     [Header("BearSettings")]
     public Animator PlayerAnim;
@@ -59,6 +62,7 @@ public class PlayerControl : MonoBehaviour
     public GameObject EarthQuakeEffect;
     public GameObject Shield;
     public GameObject ShieldBreakCircle;
+    public GameObject Lightning;
 
     [Header("Sounds")]
     public AudioSource audioPlayer;
@@ -71,9 +75,11 @@ public class PlayerControl : MonoBehaviour
     public AudioClip frostSE;
 
     [Header("Settings")]
+    public float Scaling;
     public Vector3 SpawnPoint;
     public float RotationSlerp;
     public float BearRotationSlerp;
+    public float AttackAnimWait;
     public float ReloadSpeed;
     public float ShootForce;
     public float ShootWaitingTime;
@@ -91,16 +97,20 @@ public class PlayerControl : MonoBehaviour
     public float SparkyShootForce;
     public float SparkyTransScale;
     public float LightningCoolDown;
-    public float DisableLightningTime;
-    public float CastLightningWaitingTime;
-    public float LightningBasicAS;
-    public float LightningAddAS;
     public float ExploCoolDown;
     public float BugCircularChoosingTime;
     public float SwitchingParallelTime;
     public float RootedTime;
-    public float LightningAutoAttackRange;
-    public float LightningAutoAttackReload;
+    public float DisableLightningTime;
+    public float LightningAAWait;
+    public float LightningAARange;
+    public float LightningAAReload;
+    public float LightningAAIncAS;
+    public float LightningAAWaitB;
+    public int LightningCurvePts;
+    public float LightningCurveDis;
+    public float LightningGlowingTimes;
+    public float LightningGlowingWait;
     public float BecomeBearTime;
     public float MaxInBearMode;
     public float BearAttackSpeed;
@@ -125,6 +135,21 @@ public class PlayerControl : MonoBehaviour
     public float ShieldUpCoolDown;
     public float ShieldDarkerScaler;
     public float ShieldBlockDamagePercent;
+    public float CastLightningWaitingTime;
+    public float ThunderCastCoolDown;
+    public float ThunderCastAddCD;
+    public float PlacingTotemCoolDown;
+    public float ChargedTotemAmount;
+    public float TotemChargedDis;
+    public float HealingPlaceCreatedTime;
+    public float HealingPlaceAmount;
+    public float HealingFrequency;
+    public float LightningTotemAmount;
+    public float LightningTotemChargedDis;
+    public float RandomThunderCoolDown;
+    public float RandomThunderAddCD;
+    public int RandomThunderTime;
+    public float ThunderInterval;
 
     [Header("Debug")]
     public int Skill1;
@@ -178,6 +203,7 @@ public class PlayerControl : MonoBehaviour
                 ToggleInParallel();
             }
             DeadDetect();
+            CheckDamaged();
             UpdateControlValue();
             UpdateValue();
         } else {
@@ -196,7 +222,7 @@ public class PlayerControl : MonoBehaviour
             DataManager.Instance.SetSkillEvent(3, Skill4);
             DataManager.Instance.SetSkillLevel(0, SkillLevel1);
             DataManager.Instance.SetSkillLevel(1, SkillLevel2);
-            DataManager.Instance.SetSkillLevel(2, SkillLevel3);
+            DataManager.Instance.SetSkillLevel(0, SkillLevel3);
             DataManager.Instance.SetSkillLevel(3, SkillLevel4);
         }
         Firing = false;
@@ -205,6 +231,9 @@ public class PlayerControl : MonoBehaviour
         AvoidCasting = false;
         Human.SetActive(true);
         Bear.SetActive(false);
+        DataManager.Instance.Scaling = Scaling;
+        Human.transform.localScale = new Vector3(HumanScale * Scaling, HumanScale * Scaling, HumanScale * Scaling);
+        Bear.transform.localScale = new Vector3(BearScale * Scaling, BearScale * Scaling, BearScale * Scaling);
         transform.position = SpawnPoint;
         Human.transform.position = SpawnPoint;
         Human_naviAgent.isStopped = false;
@@ -215,6 +244,17 @@ public class PlayerControl : MonoBehaviour
         DataManager.Instance.PlayerDead(false);
         OriHP = DataManager.Instance.HP();
         ResetAnimDoing();
+    }
+
+    void CheckDamaged() {
+        if (DataManager.Instance.ShootOnSB) {
+            DataManager.Instance.ShootOnSB = false;
+            if (LightningCast) {
+                ChargingTotem(LightningTotemAmount);
+            } else {
+                ChargingTotem(ChargedTotemAmount);
+            }
+        }
     }
 
     void UpdateSkill() {
@@ -236,7 +276,7 @@ public class PlayerControl : MonoBehaviour
         if (OriIsRooted != IsRooted && OriIsRooted == false) {
             ToggleNavi();
             PlayerAnim.SetBool("Walking", false);
-            //PlayerAnim.SetInteger("Doing", 4);
+            PlayerAnim.SetInteger("Doing", 4);
             Invoke("ResetAnimDoing", 0.3f);
             Invoke("ResetRooted", DataManager.Instance.RootedTime);
         }
@@ -254,6 +294,7 @@ public class PlayerControl : MonoBehaviour
             case 2: return CurSparkyCD;
             case 3: return CurLightningCD;
             case 4: return CurExploCD;
+            case 5: return CurPlacingTotemCD;
 
             case 101: return CurExploCD;
             case 102: return CurExploCD;
@@ -262,6 +303,9 @@ public class PlayerControl : MonoBehaviour
             case 201: return CurBearJumpCD;
             case 202: return CurKnockFloorCD;
             case 203: return CurBearShieldCD;
+
+            case 301: return CurRandomThunderCD;
+            case 302: return CurThunderCastCD;
 
             default: return 0.0f;
         }
@@ -274,6 +318,7 @@ public class PlayerControl : MonoBehaviour
             case 2: return SparkyCoolDown;
             case 3: return LightningCoolDown;
             case 4: return ExploCoolDown;
+            case 5: return PlacingTotemCoolDown;
 
             case 101: return ExploCoolDown;
             case 102: return ExploCoolDown;
@@ -283,6 +328,9 @@ public class PlayerControl : MonoBehaviour
             case 202: return KnockFloorCoolDown;
             case 203: return ShieldUpCoolDown;
 
+            case 301: return LastRandomThunderCD;
+            case 302: return LastThunderCastCD;
+
             default: return 0.0f;
         }
     }
@@ -291,7 +339,7 @@ public class PlayerControl : MonoBehaviour
     void Skills() {
         for (int i = 0; i < 4; i++) {
             if (Input.GetKey(SkillKey[i]) && !CheckSkillState(SkillEvent[i])) {
-                if (!AvoidCasting) {
+                if (!AvoidCasting && !Turning) {
                     StartCoroutine(CastSkill(SkillEvent[i], new Vector3(0, 0, 0), 0f, SkillKey[i], i));
                 }
             }
@@ -306,9 +354,14 @@ public class PlayerControl : MonoBehaviour
                 case 2: return SparkyCD;
                 case 3: return LightningCD;
                 case 4: return ExploCD;
+                case 5: return PlacingTotemCD;
+
                 case 201: return BearJumpCD;
                 case 202: return KnockFloorCD;
                 case 203: return BearShieldCD;
+
+                case 301: return RandomThunderCD;
+                case 302: return ThunderCastCD;
             }
         } else {
             switch(skillNum) {
@@ -317,9 +370,13 @@ public class PlayerControl : MonoBehaviour
                 case 2: return true;
                 case 3: return LightningCD;
                 case 4: return true;
+
                 case 201: return true;
                 case 202: return true;
                 case 203: return true;
+
+                case 301: return RandomThunderCD;
+                case 302: return ThunderCastCD;
             }
         }
         return true;
@@ -335,10 +392,14 @@ public class PlayerControl : MonoBehaviour
             case 2: ShootSparky(key); break;
             case 3: Thunder(); break;
             case 4: ExplosiveBug(keyid, key); break;
+            case 5: PlacingTotem(); break;
 
             case 201: BearJump(); break;
             case 202: BearKnockFloor(); break;
             case 203: BearShield(); break;
+
+            case 301: RandomThunder(); break;
+            case 302: ThunderCast(); break;
             default: break;
         }
     }
@@ -442,6 +503,7 @@ public class PlayerControl : MonoBehaviour
             return;
         if (!BearMode) {
             if (Input.GetKey(KeyCode.A) && !Firing && !LightningCast) {
+                AvoidCasting = true;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 Vector3 Target = Vector3.zero;
                 if (Physics.Raycast(ray, out hit)) {
@@ -454,16 +516,22 @@ public class PlayerControl : MonoBehaviour
                 StartCoroutine(shoot);
                 Invoke("ResetFiring", ReloadSpeed);
             } else if (Input.GetKey(KeyCode.A) && !LightningFiring && LightningCast) {
-                Vector3 ShootDir = GetMousePos();
+                // Vector3 ShootDir = GetMousePos();
+                AvoidCasting = true;
+                GameObject Ene = FindNearestEnemy();
+                if (Ene == null)
+                    return;
+                FacingTarget = Ene.transform.position - Human.transform.position;
+                FacingTarget.y = 0;
                 LightningFiring = true;
-                FacingTarget = ShootDir - Human.transform.position;
                 ToggleNavi();
-                StartCoroutine(CastLightning(ShootDir));
+                StartCoroutine(LightningAA(Ene));
                 Invoke("ResetLightningFiring", CurLightningAttackSpeed);
-                CurLightningAttackSpeed += LightningAddAS;
+                CurLightningAttackSpeed += LightningAAIncAS;
             }
         } else {
             if (Input.GetKey(KeyCode.A) && !Firing) {
+                AvoidCasting = true;
                 Vector3 Target = GetMousePos();
                 Firing = true;
                 FacingTarget = Target - Bear.transform.position;
@@ -480,8 +548,29 @@ public class PlayerControl : MonoBehaviour
                 Invoke("CheckHit", 0.5f);
                 Invoke("ToggleNavi", 0.8f);
                 Invoke("ResetFiring", BearAttackSpeed);
+                Invoke("ResetAvoidCasting", 0.8f);
             }
         }
+    }
+
+    GameObject FindNearestEnemy() {
+        GameObject[] Enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        float ShortestDis = LightningAARange;
+        GameObject ClosetEnemy = null;
+        foreach (var obj in Enemies) {
+            Vector3 a = obj.transform.root.position;
+            Vector3 b = Human.transform.position;
+            a.y = 0;
+            b.y = 0;
+            float dis = Vector3.Distance(a, b);
+            if (dis <= LightningAARange && ClosetEnemy == null) {
+                ClosetEnemy = obj.transform.root.gameObject;
+            } else if (dis < ShortestDis) {
+                ClosetEnemy = obj.transform.root.gameObject;
+                ShortestDis = dis;
+            }
+        }
+        return ClosetEnemy;
     }
 
     void CheckHit() {
@@ -492,7 +581,7 @@ public class PlayerControl : MonoBehaviour
             damage = BearThirdAttackDamage;
         RaycastHit[] hit;
         Dictionary<int, int> enemies = new Dictionary<int, int>();
-        hit = Physics.SphereCastAll(BearFront.position, BearAttackRadius, Bear.transform.forward, BearAttackDis);
+        hit = Physics.SphereCastAll(BearFront.position, BearAttackRadius * Scaling, Bear.transform.forward, BearAttackDis * Scaling);
         foreach (var obj in hit) {
             if (obj.collider.CompareTag("Enemy")) {
                 int hash = obj.transform.root.GetHashCode();
@@ -511,21 +600,70 @@ public class PlayerControl : MonoBehaviour
         ResetLE = false;
     }
 
-    IEnumerator CastLightning(Vector3 Target) {
+    IEnumerator LightningAA(GameObject Enemy) {
         while (PlayerAnim.IsInTransition(0)) {
             yield return null;
         }
         PlayerAnim.SetInteger("Doing", 8);
-        Invoke("ResetAnimDoing", 0.1f);
-        yield return new WaitForSeconds(CastLightningWaitingTime);
+        Invoke("ResetAnimDoing", 0.2f);
+        yield return new WaitForSeconds(LightningAAWait);
         for (var i = LightningEmt.transform.childCount - 1; i >= 0; i--) {
             Destroy(LightningEmt.transform.GetChild(i).gameObject);
         }
-        Vector3 ShootDir = Target - (rightHand.position + leftHand.position) / 2;
-        ShootDir.y = 0;
-        ShootDir = ShootDir.normalized;
-        Instantiate(LightningBullet, (rightHand.position + leftHand.position) / 2, Quaternion.LookRotation(ShootDir));
-        Invoke("ToggleNavi", 0.15f);
+        StartCoroutine(LightningInstantiate(Enemy));
+        if (LightningManager.Instance != null)
+            LightningManager.Instance.HitOn(Enemy.transform);
+        Invoke("ToggleNavi", LightningAAWaitB);
+        AvoidCasting = false;
+    }
+
+    IEnumerator LightningInstantiate(GameObject Target) {
+        var curvept = new Vector3[LightningCurvePts+2];
+        var v2 = new float[LightningCurvePts+2];
+        float[] lenV = new float[LightningCurvePts+2];
+        lenV[0] = 0;
+        lenV[LightningCurvePts+1] = 1;
+        for (var i = 1; i < LightningCurvePts+1; i++) 
+            lenV[i] = UnityEngine.Random.value;
+        Array.Sort(lenV);
+        for (var i = 1; i < LightningCurvePts+1; i++)
+            v2[i] = UnityEngine.Random.Range(0, 360);
+        GameObject LightningPrefab = Instantiate(Lightning, rightHand.position, Quaternion.identity);
+        LineRenderer LR = LightningPrefab.GetComponent<LineRenderer>();
+        int glowtimes = 0;
+        int StopGlow = 5;
+        while (glowtimes < LightningGlowingTimes) {
+            Vector3 TargetP = Target.transform.position;
+            TargetP.y += HumanScale * Scaling;
+            Vector3 Toward = TargetP - rightHand.position;
+            Vector3 TowardNorm = Toward.normalized;
+            float alpha = UnityEngine.Random.value;
+            Color s = LR.startColor;
+            Color e = LR.endColor;
+            if (glowtimes % StopGlow == 0) {
+                s.a = 0;
+                e.a = 0;
+            } else {
+                s.a = alpha;
+                e.a = alpha;
+            }
+            LR.startColor = s;
+            LR.endColor = e;
+            Vector3 Basis = Vector3.Cross(Toward, transform.up);
+            Basis *= LightningCurveDis / Basis.magnitude;
+            Vector3[] curvept2 = new Vector3[LightningCurvePts+2];
+            curvept[0] = rightHand.position;
+            curvept[LightningCurvePts+1] = Target.transform.position;
+            for (var i = 1; i < LightningCurvePts+1; i++) {
+                Vector3 BasisR = Quaternion.AngleAxis(v2[i], TowardNorm) * Basis;
+                curvept[i] = rightHand.position + Toward * lenV[i] + BasisR;
+            }
+            LR.positionCount = LightningCurvePts+2;
+            LR.SetPositions(curvept);
+            glowtimes++;
+            yield return new WaitForSeconds(LightningGlowingWait);
+        }
+        Destroy(LightningPrefab);
     }
 
     void DisableFireEffect() {
@@ -544,9 +682,11 @@ public class PlayerControl : MonoBehaviour
         ShootDir = new Vector3(ShootDir.x, 0f, ShootDir.z).normalized;
         FireEffect.SetActive(true);
         BulletPrefab = Instantiate(Bullet, rightHand.position, Quaternion.identity);
+        BulletPrefab.transform.localScale *= Scaling;
         BulletPrefab.GetComponent<Rigidbody>().AddForce(ShootDir * ShootForce);
         Invoke("DisableFireEffect", FireEffectStop);
-        Invoke("ToggleNavi", 0.15f);
+        Invoke("ToggleNavi", AttackAnimWait);
+        Invoke("ResetAvoidCasting", AttackAnimWait);
     }
 
     void ToggleNavi() {
@@ -576,6 +716,13 @@ public class PlayerControl : MonoBehaviour
             Human_naviAgent.isStopped = false;
         else 
             Bear_naviAgent.isStopped = false;
+    }
+
+    void DeactiveNavi() {
+        if (!BearMode)
+            Human_naviAgent.isStopped = true;
+        else 
+            Bear_naviAgent.isStopped = true;
     }
 
     void ResetAnimDoing() {
@@ -636,7 +783,8 @@ public class PlayerControl : MonoBehaviour
         ResetDoing(0f);
         ToggleNavi();
         Invoke("DashEffectDisabled", 0.3f);
-        DataManager.Instance.SetBiolanceValue(100f);
+        DataManager.Instance.PlayerOnHit(50f);
+        DataManager.Instance.SetBiolanceValue(10f);
     }
 
     void DashEffectDisabled() {
@@ -724,7 +872,8 @@ public class PlayerControl : MonoBehaviour
         yield return new WaitForSeconds(wait);
         Vector3 posi = (rightHand.position + leftHand.position) / 2.0f;
         posi.y = Human.transform.position.y + 0.2f;
-        Instantiate(FrostBeam, posi, Quaternion.LookRotation(Target));
+        GameObject FrostPre = Instantiate(FrostBeam, posi, Quaternion.LookRotation(Target));
+        FrostPre.transform.localScale *= Scaling;
     }
 
     IEnumerator CoolDownCal(float coolDown, System.Action<float, bool> callback) {
@@ -755,35 +904,26 @@ public class PlayerControl : MonoBehaviour
     void BecomeBear() {
         AvoidCasting = true;
         BearAttackCnt = 0;
-        ToggleNavi();
         if (LightningCast)
             ThunderReset();
         StartCoroutine(BecomeBearAnimation());
-        DataManager.Instance.SetSkillEvent(0, 201);
-        DataManager.Instance.SetSkillEvent(1, 202);
-        DataManager.Instance.SetSkillEvent(2, 203);
-        DataManager.Instance.SetSkillEvent(3, 204);
         Invoke("BecomeHuman", BecomeBearTime);
     }
 
     void BecomeHuman() {
-        ToggleNavi();
         StartCoroutine(BecomeHumanAnimation());
-        DataManager.Instance.SetSkillEvent(0, 0);
-        DataManager.Instance.SetSkillEvent(1, 1);
-        DataManager.Instance.SetSkillEvent(2, 2);
-        DataManager.Instance.SetSkillEvent(3, 3);
     }
 
     IEnumerator BecomeBearAnimation() {
-        DataManager.Instance.InBearMode = true;
         CancelInvoke("ToggleNavi");
         CancelInvoke("ResetAnimDoing");
+        DeactiveNavi();
         ResetAnimDoing();
         PlayerAnim.SetInteger("Doing", 10);
         float dur = 0;
         Turning = true;
         GameObject Chprefab = Instantiate(ChargeEffect, Human.transform.position, Quaternion.identity);
+        Chprefab.transform.localScale *= Scaling;
         while (dur < TurnIntoDuration) {
             dur += Time.deltaTime;
             yield return null;
@@ -797,22 +937,32 @@ public class PlayerControl : MonoBehaviour
         Bear.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         BearAnim.SetTrigger("Buff");
         Vector3 TurnInto = new Vector3(BearScale, BearScale, BearScale);
-        while (Bear.transform.localScale.x < BearScale * 0.95f) {
+        TurnInto *= Scaling;
+        while (Bear.transform.localScale.x < BearScale * Scaling * 0.95f) {
             Bear.transform.localScale = Vector3.Slerp(Bear.transform.localScale, TurnInto, Time.deltaTime*TurnIntoScaler);
             yield return null;
         }
         Bear.transform.localScale = TurnInto;
         yield return new WaitForSeconds(0.5f);
+        DataManager.Instance.InBearMode = true;
         ResetAvoidCasting();
         ActiveNavi();
+        BearOnCast = false;
         Turning = false;
+        DataManager.Instance.SetSkillEvent(0, 201);
+        DataManager.Instance.SetSkillEvent(1, 202);
+        DataManager.Instance.SetSkillEvent(2, 203);
+        DataManager.Instance.SetSkillEvent(3, 204);
     }
 
     IEnumerator BecomeHumanAnimation() {
+        while (BearOnCast)
+            yield return null;
         CancelInvoke("ToggleNavi");
         CancelInvoke("ResetAnimDoing");
-        Vector3 TurnInto = new Vector3(HumanScale*BearHumanScaleRatio, HumanScale*BearHumanScaleRatio, HumanScale*BearHumanScaleRatio);
-        while (Bear.transform.localScale.x > HumanScale*BearHumanScaleRatio * 1.1f) {
+        DeactiveNavi();
+        Vector3 TurnInto = new Vector3(HumanScale*BearHumanScaleRatio*Scaling, HumanScale*BearHumanScaleRatio*Scaling, HumanScale*BearHumanScaleRatio*Scaling);
+        while (Bear.transform.localScale.x > HumanScale*BearHumanScaleRatio*Scaling * 1.1f) {
             Bear.transform.localScale = Vector3.Slerp(Bear.transform.localScale, TurnInto, Time.deltaTime*TurnIntoScaler);
             yield return null;
         }
@@ -822,10 +972,14 @@ public class PlayerControl : MonoBehaviour
         Human.SetActive(true);
         BearMode = false;
         Turning = false;
-        Human.transform.localScale = new Vector3(HumanScale, HumanScale, HumanScale);
+        Human.transform.localScale = new Vector3(HumanScale*Scaling, HumanScale*Scaling, HumanScale*Scaling);
         yield return new WaitForSeconds(1f);
         ActiveNavi();
         DataManager.Instance.InBearMode = false;
+        DataManager.Instance.SetSkillEvent(0, 0);
+        DataManager.Instance.SetSkillEvent(1, 1);
+        DataManager.Instance.SetSkillEvent(2, 2);
+        DataManager.Instance.SetSkillEvent(3, 3);
     }
 
     private float CurSparkyCD;
@@ -891,7 +1045,7 @@ public class PlayerControl : MonoBehaviour
                 LightningCD = returnVal2;
             }));
             LightningManPrefab = Instantiate(LightningMan);
-            CurLightningAttackSpeed = LightningBasicAS;
+            CurLightningAttackSpeed = LightningAAReload;
             PlayerAnim.SetInteger("Doing", 9);
             ResetLE = false;
             Invoke("ResetAnimDoing", 0.2f);
@@ -913,6 +1067,9 @@ public class PlayerControl : MonoBehaviour
             CurLightningCD = returnVal1;
             LightningCD = returnVal2;
         }));
+        DataManager.Instance.SetSkillEvent(0, 0);
+        DataManager.Instance.SetSkillEvent(1, 1);
+        DataManager.Instance.SetSkillEvent(2, 5);
     }
 
     IEnumerator TemporarySetMax() {
@@ -926,6 +1083,14 @@ public class PlayerControl : MonoBehaviour
         LightningCast = true;
         LightningFiring = false;
         LightningMode.SetActive(true);
+        DataManager.Instance.SetSkillEvent(0, 301);
+        DataManager.Instance.SetSkillEvent(1, 302);
+        DataManager.Instance.SetSkillEvent(2, 5);
+        CurThunderCastMaxCD = ThunderCastCoolDown;
+        LastThunderCastCD = ThunderCastCoolDown;
+        CurRandomThunderMaxCD = RandomThunderCoolDown;
+        LastRandomThunderCD = RandomThunderCoolDown;
+        TotemCharged = 0;
         ToggleNavi();
         lightningAround = StartCoroutine(LightningAround());
     }
@@ -964,7 +1129,7 @@ public class PlayerControl : MonoBehaviour
                 CurExploCD = returnVal1;
                 ExploCD = returnVal2;
             }));
-            int BugNum = Random.Range(1, 4);
+            int BugNum = UnityEngine.Random.Range(1, 4);
             PutOutBug(BugNum);
         } else if (ExploLevel == 1) {
             StartCoroutine(ChoosingBug(keyid, key));
@@ -991,7 +1156,7 @@ public class PlayerControl : MonoBehaviour
 
     private int ChoosingBugNum;
     IEnumerator ChoosingBug(int id, KeyCode key) {
-        ChoosingBugNum = Random.Range(1, 4);
+        ChoosingBugNum = UnityEngine.Random.Range(1, 4);
         Coroutine Switching = StartCoroutine(ChangingBugNum(id));
         yield return new WaitForSeconds(0.1f);
         while (true) {
@@ -1045,12 +1210,14 @@ public class PlayerControl : MonoBehaviour
         Switching = false;
     }
 
+    private bool BearOnCast;
     private bool BearJumpCD;
     private float CurBearJumpCD;
     void BearJump() {
         Doing = true;
         BearJumpCD = true;
         AvoidCasting = true;
+        BearOnCast = true;
         ToggleNavi();
         FacingTarget = GetMousePos() - Bear.transform.position;
         StartCoroutine(CoolDownCal(BearJumpCoolDown, (returnVal1, returnVal2) => {
@@ -1087,10 +1254,10 @@ public class PlayerControl : MonoBehaviour
             float T = T_max;
 
             Vector3 velocity = diff / T - Physics.gravity * T / 2f;
-            BearRb.velocity = Vector3.zero;
-            yield return new WaitForSeconds(0.1f);
             Bear_naviAgent.updatePosition = false;
             Bear_naviAgent.updateRotation = false;
+            BearRb.velocity = Vector3.zero;
+            yield return new WaitForSeconds(0.1f);
             BearRb.AddForce(velocity, ForceMode.VelocityChange);
             
             Invoke("ResetBearJumpArgs", T);
@@ -1104,6 +1271,7 @@ public class PlayerControl : MonoBehaviour
         Bear_naviAgent.updatePosition = true;
         Bear_naviAgent.updateRotation = true;
         Doing = false;
+        BearOnCast = false;
         AvoidCasting = false;
     }
 
@@ -1111,6 +1279,7 @@ public class PlayerControl : MonoBehaviour
     private float CurKnockFloorCD;
     void BearKnockFloor() {
         Doing = true;
+        BearOnCast = true;
         AvoidCasting = true;
         ToggleNavi();
         StartCoroutine(CoolDownCal(KnockFloorCoolDown, (returnVal1, returnVal2) => {
@@ -1125,11 +1294,13 @@ public class PlayerControl : MonoBehaviour
         FacingTarget.y = 0;
         BearAnim.SetFloat("Attack5Speed", 1f);
         BearAnim.SetBool("Attack5", true);
+        GameObject Knock;
         yield return new WaitForSeconds(AnimKnockWait);
         BearAnim.SetBool("Attack5", false);
         Vector3 InsPos = Bear.transform.position + Bear.transform.forward * KnockForwardScaler;
         InsPos.y = Bear.transform.position.y + 0.1f;
-        Instantiate(EarthQuakeEffect, InsPos, Quaternion.Euler(90, 0, 0));
+        Knock = Instantiate(EarthQuakeEffect, InsPos, Quaternion.Euler(90, 0, 0));
+        Knock.transform.localScale *= Scaling;
         yield return new WaitForSeconds(FirstKnockWait);
         BearAnim.SetFloat("Attack5Speed", 1f);
         BearAnim.SetBool("Attack5", true);
@@ -1138,7 +1309,8 @@ public class PlayerControl : MonoBehaviour
         BearAnim.SetBool("Attack5", false);
         InsPos = Bear.transform.position + Bear.transform.forward * KnockForwardScaler;
         InsPos.y = Bear.transform.position.y + 0.1f;
-        Instantiate(EarthQuakeEffect, InsPos, Quaternion.Euler(90, 0, 0));
+        Knock = Instantiate(EarthQuakeEffect, InsPos, Quaternion.Euler(90, 0, 0));
+        Knock.transform.localScale *= Scaling;
         yield return new WaitForSeconds(SecondKnockWait);
         BearAnim.SetFloat("Attack5Speed", Attack5AnimSpeed);
         BearAnim.SetBool("Attack5", true);
@@ -1146,17 +1318,20 @@ public class PlayerControl : MonoBehaviour
         BearAnim.SetBool("Attack5", false);
         InsPos = Bear.transform.position + Bear.transform.forward * KnockForwardScaler;
         InsPos.y = Bear.transform.position.y + 0.1f;
-        Instantiate(EarthQuakeEffect, InsPos, Quaternion.Euler(90, 0, 0));
+        Knock = Instantiate(EarthQuakeEffect, InsPos, Quaternion.Euler(90, 0, 0));
+        Knock.transform.localScale *= Scaling;
         BearAnim.SetFloat("Attack5Speed", 1f);
         yield return new WaitForSeconds(ThirdKnockWait);
         Doing = false;
         AvoidCasting = false;
+        BearOnCast = false;
         ToggleNavi();
     }
 
     private bool BearShieldCD;
     private float CurBearShieldCD;
     void BearShield() {
+        BearOnCast = true;
         DataManager.Instance.ShieldUp = true;
         DataManager.Instance.ShieldStored = 0f;
         DataManager.Instance.ShieldBlockPer = ShieldBlockPercent;
@@ -1173,6 +1348,7 @@ public class PlayerControl : MonoBehaviour
         Vector3 Pos = Bear.transform.position + new Vector3(0f, 1f, 0f);
         GameObject ShieldPrefab = Instantiate(Shield, Pos, Quaternion.identity);
         ShieldPrefab.transform.parent = BearShieldUp;
+        ShieldPrefab.transform.localScale *= Scaling;
         float time = 0;
         while(time < ShieldRemainTime) {
             time += Time.deltaTime;
@@ -1187,7 +1363,132 @@ public class PlayerControl : MonoBehaviour
         for (var i = BearShieldUp.transform.childCount - 1; i >= 0; i--) {
             Destroy(BearShieldUp.transform.GetChild(i).gameObject);
         }
-        Instantiate(ShieldBreakCircle, Bear.transform.position, Quaternion.identity);
+        GameObject Break = Instantiate(ShieldBreakCircle, Bear.transform.position, Quaternion.identity);
+        Break.transform.localScale *= Scaling;
         DataManager.Instance.ShieldUp = false;
+        BearOnCast = false;
+    }
+
+    private bool ThunderCastCD;
+    private float CurThunderCastCD;
+    private float CurThunderCastMaxCD;
+    private float LastThunderCastCD;
+    void ThunderCast() {
+        Doing = true;
+        ToggleNavi();
+        AvoidCasting = true;
+        StartCoroutine(CoolDownCal(CurThunderCastMaxCD, (returnVal1, returnVal2) => {
+            CurThunderCastCD = returnVal1;
+            ThunderCastCD = returnVal2;
+        }));
+        LastThunderCastCD = CurThunderCastMaxCD;
+        CurThunderCastMaxCD += ThunderCastAddCD;
+        Vector3 Target = GetMousePos();
+        FacingTarget = Target - Human.transform.position;
+        FacingTarget.y = 0f;
+        StartCoroutine(CastLightning(GetMousePos()));
+    }
+
+    IEnumerator CastLightning(Vector3 Target) {
+        PlayerAnim.SetInteger("Doing", 8);
+        Invoke("ResetAnimDoing", 0.3f);
+        yield return new WaitForSeconds(CastLightningWaitingTime);
+        Vector3 ShootDir = Target - (rightHand.position + leftHand.position) / 2;
+        ShootDir.y = 0;
+        ShootDir = ShootDir.normalized;
+        GameObject LightningB = Instantiate(LightningBullet, (rightHand.position + leftHand.position) / 2, Quaternion.LookRotation(ShootDir));
+        LightningB.transform.localScale *= Scaling;
+        Invoke("ToggleNavi", 0.7f);
+        Doing = false;
+        AvoidCasting = false;
+    }
+
+    private bool PlacingTotemCD;
+    private float CurPlacingTotemCD;
+    private float TotemCharged;
+    private GameObject TotemPrefab;
+    private bool TotemNotChanged;
+    void PlacingTotem() {
+        TotemNotChanged = false;
+        if (TotemPrefab != null) {
+            Destroy(TotemPrefab);
+        }
+        StartCoroutine(CoolDownCal(PlacingTotemCoolDown, (returnVal1, returnVal2) => {
+            CurPlacingTotemCD = returnVal1;
+            PlacingTotemCD = returnVal2;
+        }));
+        TotemPrefab = Instantiate(Totem, Human.transform.position, Quaternion.identity);
+        TotemPrefab.transform.localScale *= Scaling;
+        TotemCharged = 0;
+    }
+
+    private bool HealingPlaceCreated;
+    void ChargingTotem(float amount) {
+        if (TotemPrefab == null)
+            return;
+        if (HealingPlaceCreated)
+            return;
+        if (LightningCast) {
+            if (Vector3.Distance(TotemPrefab.transform.position, Human.transform.position) <= LightningTotemChargedDis * Scaling) {
+                TotemCharged += amount;
+            }
+            if (TotemCharged >= 100f) {
+                TotemCharged = 0;
+            }
+        } else {
+            if (Vector3.Distance(TotemPrefab.transform.position, Human.transform.position) <= TotemChargedDis * Scaling) {
+                TotemCharged += amount;
+            }
+            if (TotemCharged >= 100f) {
+                TotemNotChanged = true;
+                HealingPlaceCreated = true;
+                StartCoroutine(CreateHealingPlace());
+                TotemCharged = 0;
+            }
+        }
+    }
+
+    IEnumerator CreateHealingPlace() {
+        float dur = 0;
+        while (!LightningCast && dur < HealingPlaceCreatedTime && TotemNotChanged) {
+            if (Vector3.Distance(TotemPrefab.transform.position, Human.transform.position) <= TotemChargedDis * Scaling)
+                DataManager.Instance.HealPlayer(HealingPlaceAmount);
+            dur += HealingFrequency;
+            yield return new WaitForSeconds(HealingFrequency);
+        }
+        HealingPlaceCreated = false;
+    }
+
+    private bool RandomThunderCD;
+    private float CurRandomThunderCD;
+    private float CurRandomThunderMaxCD;
+    private float LastRandomThunderCD; 
+    void RandomThunder() {
+        TotemNotChanged = true;
+        if (TotemPrefab == null)
+            return;
+        StartCoroutine(RandomThundering());
+    }
+
+    IEnumerator RandomThundering() {
+        int ThunderTimes = 0;
+        while (ThunderTimes < RandomThunderTime && LightningCast && TotemNotChanged) {
+            CastThunder();
+            ThunderTimes++;
+            yield return new WaitForSeconds(ThunderInterval);
+        }
+        StartCoroutine(CoolDownCal(CurRandomThunderMaxCD, (returnVal1, returnVal2) => {
+            CurRandomThunderCD = returnVal1;
+            RandomThunderCD = returnVal2;
+        }));
+        LastRandomThunderCD = CurRandomThunderMaxCD;
+        CurRandomThunderMaxCD += RandomThunderAddCD;
+    }
+
+    void CastThunder() {
+        float RandomX = UnityEngine.Random.Range(0, LightningTotemChargedDis);
+        float RandomZ = Mathf.Sqrt(LightningTotemChargedDis*LightningTotemChargedDis - RandomX * RandomX);
+        GameObject ThunderPrefab = Instantiate(FallingThunder, TotemPrefab.transform.position + new Vector3(RandomX, 0, RandomZ), Quaternion.identity);
+        ThunderPrefab.transform.localScale *= Scaling;
     }
 }

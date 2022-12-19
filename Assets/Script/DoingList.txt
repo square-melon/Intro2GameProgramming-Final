@@ -10,6 +10,7 @@ Doing
 8 => LightningCastBasicAttack
 9 => LightningCharge
 10 => TurnIntoBear
+11 => LightningAutoAttack
 
 Beast Doing
 0 => Idle
@@ -26,13 +27,15 @@ Skill Key
 3 => LightningSkill
 4 => ExploBug
 
-
-
 101 => ExploBugR
 102 => ExploBugG
 103 => ExploBugB
+
 201 => Jump
 202 => Knock On Floor
 203 => Rush Onto Enemy
 204 => Arm Cleave
-205 => Back To Human
+
+301 => Random Thunder
+302 => LightningCast
+303 => Chain-Lightning
