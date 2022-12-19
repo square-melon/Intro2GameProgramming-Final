@@ -10,7 +10,7 @@ public class Scene2Enemy : MonoBehaviour
     //public 
     //public GameObject ExplodeEffect;
     public GameObject enemy;
-    public GameObject player;
+    //public GameObject player;
     private UnityEngine.AI.NavMeshAgent m_naviAgent;
     private GameObject ArrowPrefab;
     public GameObject Arrow;
