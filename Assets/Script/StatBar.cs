@@ -20,7 +20,7 @@ public class StatBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = DataManager.Instance.PlayerPos + new Vector3(0, upper, 0);
+        transform.position = DataManager.Instance.PlayerPos + new Vector3(0, upper, 0) * DataManager.Instance.Scaling;
     }
 
     void LateUpdate() {
