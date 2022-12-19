@@ -10,11 +10,13 @@ public class LightningBulletCreate : MonoBehaviour
     public float RayRadius;
     public float Angle;
 
+    private float Scaling;
     private Physics physics;
     public Dictionary<int, bool> HitEnemy;
 
     void Start()
     {
+        Scaling = DataManager.Instance.Scaling;
         HitEnemy = new Dictionary<int, bool>();
         Destroy(gameObject, ExistTime);
     }
@@ -25,7 +27,7 @@ public class LightningBulletCreate : MonoBehaviour
     }
 
     void DetectShootOn() {
-        RaycastHit[] hit = physics.ConeCastAll(transform.position, RayRadius, transform.forward, RayLength, Angle);
+        RaycastHit[] hit = physics.ConeCastAll(transform.position, RayRadius*Scaling, transform.forward, RayLength*Scaling, Angle);
         foreach (var obj in hit) {
             if (obj.collider.gameObject.CompareTag("Enemy")) {
                 int hash = obj.collider.transform.root.GetHashCode();
