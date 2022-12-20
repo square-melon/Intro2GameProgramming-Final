@@ -44,3 +44,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d47469631b959645bc73782c76366f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IncreaseBioValRate: 0
+  IsPausing: 0
+  BearTime: 0
+  InBearMode: 0
+  ShieldStored: 0
+  ShieldBlockPer: 0
+  ShieldBlockDamagePer: 0
+  MaxShieldStored: 0
+  ShieldUp: 0
+  Scaling: 0
+  ShootOnSB: 0
+  damagetext: {fileID: 2043656377152561074, guid: ecf95b3d39e3aa445811bb3eecdbb59f,
+    type: 3}

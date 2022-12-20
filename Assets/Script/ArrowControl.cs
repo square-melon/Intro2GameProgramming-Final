@@ -7,7 +7,7 @@ public class ArrowControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Destroy(gameObject,8);
+        Destroy(gameObject,7);
     }
 
     // Update is called once per frame
@@ -20,7 +20,7 @@ public class ArrowControl : MonoBehaviour
         if(col.gameObject.tag == "Player") {
             Destroy(gameObject);
             //扣寫
-            DataManager.Instance.PlayerOnHit(50.0f);
+            DataManager.Instance.PlayerOnHit(10.0f);
             print(DataManager.Instance._HP);
         }
         

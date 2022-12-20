@@ -31,6 +31,10 @@ public class DataManager : MonoBehaviour
     public float ShieldBlockDamagePer;
     public float MaxShieldStored;
     public bool ShieldUp;
+    public float Scaling;
+    public bool ShootOnSB;
+    public GameObject damagetext;
+    public GameObject cam;
     private void Awake()
     {   
         if (Instance != null && Instance != this) {
@@ -155,6 +159,7 @@ public class DataManager : MonoBehaviour
 
     public void takedamage(Transform enemy, float damage) {
         Debug.Log(enemy.name);
+        ShootOnSB = true;
         Scene2Enemy e1 = enemy.GetComponent<Scene2Enemy>();
         enemyScript e2 = enemy.GetComponent<enemyScript>();
         Zombie3script ee2 = enemy.GetComponent<Zombie3script>();
@@ -175,5 +180,14 @@ public class DataManager : MonoBehaviour
             ee.Damage();
         else if (ee2)
             ee2.Damage();
+        if(damagetext) {
+            ShowDamage(enemy, damage);
+        }
+    }
+
+    void ShowDamage(Transform enemy, float damage) {
+        var go = Instantiate(damagetext, enemy.transform.position, Quaternion.identity);
+        go.GetComponent<TextMesh>().text = damage.ToString("N1");
+        go.transform.LookAt(go.transform.position + cam.transform.forward);
     }
 }

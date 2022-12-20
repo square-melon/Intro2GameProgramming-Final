@@ -78,8 +78,12 @@ public class peopleScript : MonoBehaviour
     }
     void Run(){
         Vector3 target = new Vector3(-40.0f,16.0f,92.0f);
+        peopleAnim.SetBool("scared",true);
         naviAgent.SetDestination(target);
-        naviAgent.speed = 10.0f;
+        Invoke("RunSpeed",1f);
+    }
+    void RunSpeed(){
+        naviAgent.speed = 5.0f;
     }
     void InstantiateR(){
         Vector3 pos = transform.position;

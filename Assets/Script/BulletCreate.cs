@@ -29,9 +29,7 @@ public class BulletCreate : MonoBehaviour
                 Instantiate(ExplodeEffect, hit.point, Quaternion.identity);
                 DataManager.Instance.takedamage(hit.transform.root, Damage);
                 Destroy(gameObject);
-                if(damagetext) {
-                    ShowDamage();
-                }
+                
             }
         }
     }
