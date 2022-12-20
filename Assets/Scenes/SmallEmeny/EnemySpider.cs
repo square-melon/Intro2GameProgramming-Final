@@ -27,11 +27,11 @@ public class EnemySpider : MonoBehaviour
     private int dead = 0;
     private void Awake()
     {
-        player = GameObject.Find("Player").transform;
+        player = GameObject.Find("Human").transform;
         agent = GetComponent<NavMeshAgent>();
     }
     void Start() {
-        animator.SetTrigger("Roar");
+        //animator.SetTrigger("Roar");
         //audiosource.PlayOneShot(aclip);
     }
     
@@ -39,7 +39,7 @@ public class EnemySpider : MonoBehaviour
     {
         //Check for sight and attack range
         float dis = Vector3.Distance(player.position,transform.position);
-       
+        print(dis);
         if(dis < sightRange) {
             playerInSightRange = true;
         } else {
@@ -53,9 +53,10 @@ public class EnemySpider : MonoBehaviour
 
         if (!playerInSightRange && !playerInAttackRange) {
             animator.SetBool("Move Forward Fast",true);
-            //patroling();
+            Patroling();
         }
         if (playerInSightRange && !playerInAttackRange) {
+            print("yes");
             ChasePlayer();
         }
         if (playerInAttackRange && playerInSightRange) {

@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefab/man-soldier-us_Rig.prefab.meta
 guid: ce040d5ee16db8b45a1a36ebdb3425c4
 PrefabImporter:
+========
+guid: 2c299b1162740664ba55a2fd6c2a8aee
+DefaultImporter:
+>>>>>>>> josh:Assets/LowPolyRPGWeapons_Lite/LowPolyRPGWeaponsLite_2020.3.0_URP_v1.0.unitypackage.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
