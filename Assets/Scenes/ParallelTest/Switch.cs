@@ -66,16 +66,17 @@ public class Switch : MonoBehaviour
         DataManager.Instance.ToggleInParallel();
         foreach (GameObject enemy in enemies)
         {
+            print(enemy.name);
             People = enemy.transform.GetChild(0).gameObject;
             Monster = enemy.transform.GetChild(1).gameObject;
 
             epos = Monster.transform.position;
 
             P_naviAgent = People.GetComponent<NavMeshAgent>();
-            P_naviAgent.Warp(new Vector3(epos.x, 51, epos.z));
+            P_naviAgent.Warp(new Vector3(epos.x, epos.y + 55, epos.z));
 
             M_naviAgent = Monster.GetComponent<NavMeshAgent>();
-            M_naviAgent.Warp(new Vector3(epos.x, 51, epos.z));
+            M_naviAgent.Warp(new Vector3(epos.x, epos.y + 55, epos.z));
 
             People.SetActive(true);
             Monster.SetActive(false);
@@ -91,16 +92,17 @@ public class Switch : MonoBehaviour
         DataManager.Instance.ToggleInParallel();
         foreach (GameObject enemy in enemies)
         {
+            print(enemy.name);
             People = enemy.transform.GetChild(0).gameObject;
             Monster = enemy.transform.GetChild(1).gameObject;
 
             epos = People.transform.position;
 
             P_naviAgent = People.GetComponent<NavMeshAgent>();
-            P_naviAgent.Warp(new Vector3(epos.x, 1, epos.z));
+            P_naviAgent.Warp(new Vector3(epos.x, epos.y - 55, epos.z));
 
             M_naviAgent = Monster.GetComponent<NavMeshAgent>();
-            M_naviAgent.Warp(new Vector3(epos.x, 1, epos.z));
+            M_naviAgent.Warp(new Vector3(epos.x, epos.y - 55, epos.z));
 
             People.SetActive(false);
             Monster.SetActive(true);
