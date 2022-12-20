@@ -800,7 +800,7 @@ public class PlayerControl : MonoBehaviour
 
     IEnumerator DashMoving(Vector3 dir) {
         float DashAmount = 0f;
-        while (DashAmount < DashDistance) {
+        while (DashAmount < DashDistance * Scaling) {
             Human.transform.position += Time.deltaTime * DashSpeed * dir;
             DashAmount += Time.deltaTime * DashSpeed;
             yield return null;
