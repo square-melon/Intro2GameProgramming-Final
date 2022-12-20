@@ -141,6 +141,7 @@ public class PlayerControl : MonoBehaviour
     public float PlacingTotemCoolDown;
     public float ChargedTotemAmount;
     public float TotemChargedDis;
+    public float HealingPlaceDis;
     public float HealingPlaceCreatedTime;
     public float HealingPlaceAmount;
     public float HealingFrequency;
@@ -148,8 +149,13 @@ public class PlayerControl : MonoBehaviour
     public float LightningTotemChargedDis;
     public float RandomThunderCoolDown;
     public float RandomThunderAddCD;
+    public float RandomThunderDis;
     public int RandomThunderTime;
     public float ThunderInterval;
+    public float ChainDis;
+    public float ChainingWaiting;
+    public float ChainLightningTime;
+
 
     [Header("Debug")]
     public int Skill1;
@@ -363,6 +369,22 @@ public class PlayerControl : MonoBehaviour
                 case 301: return RandomThunderCD;
                 case 302: return ThunderCastCD;
             }
+        } else if (DataManager.Instance.InParallel) {
+            switch(skillNum) {
+                case 0: return Dashing;
+                case 1: return true;
+                case 2: return true;
+                case 3: return true;
+                case 4: return true;
+                case 5: return true;
+
+                case 201: return true;
+                case 202: return true;
+                case 203: return true;
+
+                case 301: return true;
+                case 302: return true;
+            }
         } else {
             switch(skillNum) {
                 case 0: return true;
@@ -410,6 +432,9 @@ public class PlayerControl : MonoBehaviour
             DataManager.Instance.SetPlayerPos(Bear.transform.position);
         else
             DataManager.Instance.SetPlayerPos(Human.transform.position);
+        DataManager.Instance.TotemCharged = TotemCharged;
+        DataManager.Instance.HealingPlaceCreated = HealingPlaceCreated;
+        DataManager.Instance.ChainLightning = ChLightning;
     }
 
     public Vector3 PlayerPos() {
@@ -784,8 +809,6 @@ public class PlayerControl : MonoBehaviour
         ResetDoing(0f);
         ToggleNavi();
         Invoke("DashEffectDisabled", 0.3f);
-        DataManager.Instance.PlayerOnHit(50f);
-        DataManager.Instance.SetBiolanceValue(10f);
     }
 
     void DashEffectDisabled() {
@@ -979,7 +1002,7 @@ public class PlayerControl : MonoBehaviour
         DataManager.Instance.InBearMode = false;
         DataManager.Instance.SetSkillEvent(0, 0);
         DataManager.Instance.SetSkillEvent(1, 1);
-        DataManager.Instance.SetSkillEvent(2, 2);
+        DataManager.Instance.SetSkillEvent(2, 5);
         DataManager.Instance.SetSkillEvent(3, 3);
     }
 
@@ -1411,6 +1434,7 @@ public class PlayerControl : MonoBehaviour
     private bool TotemNotChanged;
     void PlacingTotem() {
         TotemNotChanged = false;
+        PlacingTotemCD = true;
         if (TotemPrefab != null) {
             Destroy(TotemPrefab);
         }
@@ -1424,16 +1448,20 @@ public class PlayerControl : MonoBehaviour
     }
 
     private bool HealingPlaceCreated;
+    private bool ChLightning;
     void ChargingTotem(float amount) {
         if (TotemPrefab == null)
             return;
-        if (HealingPlaceCreated)
+        if (HealingPlaceCreated || ChLightning)
             return;
         if (LightningCast) {
             if (Vector3.Distance(TotemPrefab.transform.position, Human.transform.position) <= LightningTotemChargedDis * Scaling) {
                 TotemCharged += amount;
             }
             if (TotemCharged >= 100f) {
+                TotemNotChanged = true;
+                ChLightning = true;
+                StartCoroutine(ChainLightning());
                 TotemCharged = 0;
             }
         } else {
@@ -1452,7 +1480,7 @@ public class PlayerControl : MonoBehaviour
     IEnumerator CreateHealingPlace() {
         float dur = 0;
         while (!LightningCast && dur < HealingPlaceCreatedTime && TotemNotChanged) {
-            if (Vector3.Distance(TotemPrefab.transform.position, Human.transform.position) <= TotemChargedDis * Scaling)
+            if (Vector3.Distance(TotemPrefab.transform.position, Human.transform.position) <= HealingPlaceDis * Scaling)
                 DataManager.Instance.HealPlayer(HealingPlaceAmount);
             dur += HealingFrequency;
             yield return new WaitForSeconds(HealingFrequency);
@@ -1466,6 +1494,11 @@ public class PlayerControl : MonoBehaviour
     private float LastRandomThunderCD; 
     void RandomThunder() {
         TotemNotChanged = true;
+        RandomThunderCD = true;
+        StartCoroutine(CoolDownCal(CurRandomThunderMaxCD, (returnVal1, returnVal2) => {
+            CurRandomThunderCD = returnVal1;
+            RandomThunderCD = returnVal2;
+        }));
         if (TotemPrefab == null)
             return;
         StartCoroutine(RandomThundering());
@@ -1478,18 +1511,95 @@ public class PlayerControl : MonoBehaviour
             ThunderTimes++;
             yield return new WaitForSeconds(ThunderInterval);
         }
-        StartCoroutine(CoolDownCal(CurRandomThunderMaxCD, (returnVal1, returnVal2) => {
-            CurRandomThunderCD = returnVal1;
-            RandomThunderCD = returnVal2;
-        }));
         LastRandomThunderCD = CurRandomThunderMaxCD;
         CurRandomThunderMaxCD += RandomThunderAddCD;
     }
 
     void CastThunder() {
-        float RandomX = UnityEngine.Random.Range(0, LightningTotemChargedDis);
-        float RandomZ = Mathf.Sqrt(LightningTotemChargedDis*LightningTotemChargedDis - RandomX * RandomX);
-        GameObject ThunderPrefab = Instantiate(FallingThunder, TotemPrefab.transform.position + new Vector3(RandomX, 0, RandomZ), Quaternion.identity);
+        float RandomX = UnityEngine.Random.Range(-RandomThunderDis*Scaling, RandomThunderDis*Scaling);
+        float RandomZ = Mathf.Sqrt(RandomThunderDis*Scaling*RandomThunderDis*Scaling - RandomX * RandomX);
+        float sign = UnityEngine.Random.value;
+        if (sign < 0.5)
+            RandomZ = -RandomZ;
+        GameObject ThunderPrefab = Instantiate(FallingThunder, TotemPrefab.transform.position + new Vector3(RandomX, 0.2f, RandomZ), Quaternion.Euler(-90, 0, 0));
         ThunderPrefab.transform.localScale *= Scaling;
+    }
+
+    IEnumerator ChainLightning() {
+        int ChainedTime = 0;
+        GameObject Last = TotemPrefab;
+        Dictionary<int, bool> Chained = new Dictionary<int, bool>();
+        while (ChainedTime < ChainLightningTime && TotemNotChanged && LightningCast) {
+            float ShortestDis = ChainDis;
+            GameObject Closet = null;
+            int ClosetHash = -1;
+            GameObject[] Objects = GameObject.FindGameObjectsWithTag("Enemy");
+            foreach (var obj in Objects) {
+                int hash = obj.transform.root.GetHashCode();
+                if (!Chained.ContainsKey(hash)) {
+                    if (Vector3.Distance(TotemPrefab.transform.position, obj.transform.root.position) < ShortestDis) {
+                        ShortestDis = Vector3.Distance(TotemPrefab.transform.position, obj.transform.root.position);
+                        Closet = obj.transform.root.gameObject;
+                        ClosetHash = hash;
+                    }
+                }
+            }
+            if (Closet == null)
+                break;
+            Chained.Add(ClosetHash, true);
+            StartCoroutine(LightningInstantiateFromA(Last, Closet));
+            Last = Closet;
+            ChainedTime++;
+            yield return new WaitForSeconds(ChainingWaiting);
+        }
+        ChLightning = false;
+    }
+
+    IEnumerator LightningInstantiateFromA(GameObject A, GameObject B) {
+        var curvept = new Vector3[LightningCurvePts+2];
+        var v2 = new float[LightningCurvePts+2];
+        float[] lenV = new float[LightningCurvePts+2];
+        lenV[0] = 0;
+        lenV[LightningCurvePts+1] = 1;
+        for (var i = 1; i < LightningCurvePts+1; i++) 
+            lenV[i] = UnityEngine.Random.value;
+        Array.Sort(lenV);
+        for (var i = 1; i < LightningCurvePts+1; i++)
+            v2[i] = UnityEngine.Random.Range(0, 360);
+        GameObject LightningPrefab = Instantiate(Lightning, rightHand.position, Quaternion.identity);
+        LineRenderer LR = LightningPrefab.GetComponent<LineRenderer>();
+        int glowtimes = 0;
+        int StopGlow = 5;
+        while (glowtimes < LightningGlowingTimes) {
+            Vector3 TargetP = B.transform.position;
+            Vector3 Toward = TargetP - A.transform.position;
+            Vector3 TowardNorm = Toward.normalized;
+            float alpha = UnityEngine.Random.value;
+            Color s = LR.startColor;
+            Color e = LR.endColor;
+            if (glowtimes % StopGlow == 0) {
+                s.a = 0;
+                e.a = 0;
+            } else {
+                s.a = alpha;
+                e.a = alpha;
+            }
+            LR.startColor = s;
+            LR.endColor = e;
+            Vector3 Basis = Vector3.Cross(Toward, transform.up);
+            Basis *= LightningCurveDis / Basis.magnitude;
+            Vector3[] curvept2 = new Vector3[LightningCurvePts+2];
+            curvept[0] = A.transform.position + new Vector3(0, HumanScale*Scaling, 0);
+            curvept[LightningCurvePts+1] = B.transform.position + new Vector3(0, HumanScale*Scaling, 0);
+            for (var i = 1; i < LightningCurvePts+1; i++) {
+                Vector3 BasisR = Quaternion.AngleAxis(v2[i], TowardNorm) * Basis;
+                curvept[i] = A.transform.position + new Vector3(0, HumanScale*Scaling, 0) + Toward * lenV[i] + BasisR;
+            }
+            LR.positionCount = LightningCurvePts+2;
+            LR.SetPositions(curvept);
+            glowtimes++;
+            yield return new WaitForSeconds(LightningGlowingWait);
+        }
+        Destroy(LightningPrefab);
     }
 }

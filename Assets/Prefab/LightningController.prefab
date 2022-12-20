@@ -45,4 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BasicDamage: 5
-  AdditionalDamage: 25
+  AdditionalDamage: 15
