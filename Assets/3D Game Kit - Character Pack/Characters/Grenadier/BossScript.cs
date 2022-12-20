@@ -14,24 +14,33 @@ public class BossScript : MonoBehaviour
     private Animator BossAnim;
     public float ExistTime;
     public float RayRadius;
+    public float RainRadius;
     public float RayLength;
-    public float Damage;
+    public float SprayDamage;
+    public float RainDamage;
     private bool HitPlayer;
+    private bool RHitPlayer;
 
     [Header("Settings")]
     private UnityEngine.AI.NavMeshAgent naviAgent;
-    private int  hp=2;
-    private int skill=1;
+    private float  hp=30;
+    private float skill=1;
 
     [Header("Player")]
     public GameObject Player;
+    public GameObject Bear;
     private UnityEngine.AI.NavMeshAgent playerNaviAgent;
+    private UnityEngine.AI.NavMeshAgent bearNaviAgent;
     private Vector3 FacingTarget;
     public Transform shootspot;
     private Coroutine ResetCasting;
+    private bool Spraying = false;
+    private bool Rainning = false;
     void Start()
     {
         naviAgent = this.GetComponent<UnityEngine.AI.NavMeshAgent>();
+        playerNaviAgent = Player.GetComponent<UnityEngine.AI.NavMeshAgent>();
+        bearNaviAgent = Bear.GetComponent<UnityEngine.AI.NavMeshAgent>();
         BossAnim = GetComponent<Animator>();
         HitPlayer = false;
     }
@@ -54,10 +63,40 @@ public class BossScript : MonoBehaviour
                 naviAgent.ResetPath();
                 naviAgent.isStopped = true;
             }
-            BossAnim.SetFloat("Speed", 0.0f);
-            // Debug.Log(Vector3.Dot(transform.forward, (DataManager.Instance.PlayerPos - transform.position).normalized));
+            BossAnim.SetFloat("Speed", 0.0f); 
             if (Vector3.Dot(transform.forward, (DataManager.Instance.PlayerPos - transform.position).normalized) >= 0.998)
                 Attack();
+        }
+        if(Spraying){
+            RaycastHit[] hit = Physics.SphereCastAll(transform.position, RayRadius, transform.forward, RayLength);
+            foreach (var obj in hit) {
+                if (obj.collider.CompareTag("Player")){
+                    if(HitPlayer==false){
+                        HitPlayer=true;
+                        DataManager.Instance.PlayerOnHit(SprayDamage);
+                        Invoke("ResetHitPlayer",0.2f);
+                    }
+                }
+            }
+        }
+        if(Rainning){
+            RaycastHit[] hit = Physics.SphereCastAll(FrostRainPrefab.transform.position, RainRadius, transform.forward, 0);
+            foreach (var obj in hit) {
+                if (obj.collider.CompareTag("Player")){
+                    playerNaviAgent.speed = 1.5f;
+                    if(RHitPlayer==false){
+                        RHitPlayer=true;
+                        DataManager.Instance.PlayerOnHit(RainDamage);
+                        Invoke("ResetHitPlayerR",0.4f);
+                    }
+                }
+            }
+        }else{
+            playerNaviAgent.speed = 3.0f;
+        }
+        if(hp<=0){
+            BossAnim.SetBool("Dead", true);
+            Destroy(this,2.0f);
         }
     }
     private bool skill1CD;
@@ -72,8 +111,15 @@ public class BossScript : MonoBehaviour
             skill1CD = true;
             casting = true;
         }else if(skill==2 && !skill2CD && !casting){
-            if(playerNaviAgent.velocity.magnitude != 0){
-                BossPrediction();
+            if(DataManager.Instance.InBearMode){
+                if(bearNaviAgent.velocity.magnitude != 0){
+                    BossPrediction();
+                }
+            }
+            if(DataManager.Instance.InBearMode==false){
+                if(playerNaviAgent.velocity.magnitude != 0){
+                    BossPrediction();
+                }
             }
             BossAnim.SetBool("Attack2",true);
             Invoke("ResetAnimAttack2",4.0f);
@@ -90,25 +136,32 @@ public class BossScript : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(b_a);
     }
     void Spray(){
+        Spraying = true;
         Vector3 pos = shootspot.position; 
         ArcaneSprayPrefab = Instantiate(ArcaneSpray, pos, Quaternion.LookRotation(transform.forward));
-        
-        RaycastHit[] hit = Physics.SphereCastAll(transform.position, RayRadius, transform.forward, RayLength);
-        foreach (var obj in hit) {
-            if (obj.collider.CompareTag("Player")){
-                if(HitPlayer==false){
-                    
-                }
-            }
-        }
-        Destroy(ArcaneSprayPrefab,3.0f);
+        Invoke("DestroyArcaneSpray",2.0f);
+    }
+    void DestroyArcaneSpray(){
+        Spraying = false;
+        Destroy(ArcaneSprayPrefab);
+    }
+    void ResetHitPlayer(){
+        HitPlayer = false;
     }
     void Rain(){
+        Rainning = true;
         Vector3 Target = new Vector3(0,1,0);
-        Vector3 pos = DataManager.Instance.PlayerPos; 
+        Vector3 pos = DataManager.Instance.PlayerPos;
         FrostRainPrefab = Instantiate(FrostRain, pos,Quaternion.LookRotation(Target));
-        Destroy(FrostRainPrefab,4.0f);
+        Invoke("DestroyRain",3.5f);
     }
+    void DestroyRain(){
+        Rainning = false;
+        Destroy(FrostRainPrefab);
+    }
+    void ResetHitPlayerR(){
+        RHitPlayer = false;
+    }   
     void Track(Vector3 Target){
         naviAgent.speed = 1.0f;
         BossAnim.SetFloat("Speed", 1.0f);
@@ -118,7 +171,7 @@ public class BossScript : MonoBehaviour
         BossAnim.SetBool("Attack1",false);
         casting = false;
         skill1CD = false;
-        skill=2;
+        skill = 2;
         naviAgent.isStopped = false;
     }
 
@@ -140,5 +193,8 @@ public class BossScript : MonoBehaviour
     void FaceTarget(Vector3 FacingTarget){
         transform.eulerAngles = new Vector3
         (0,Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(FacingTarget), Time.deltaTime * RotationSlerp * 2).eulerAngles.y,0);
+    }
+    public void Damage(float damage) {
+        hp-=damage;
     }
 }
