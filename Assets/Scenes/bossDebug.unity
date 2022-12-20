@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.029894436, g: 0.052629482, b: 0.10071663, a: 1}
+  m_IndirectSpecularColor: {r: 0.029894523, g: 0.052629635, b: 0.10071688, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1258,8 +1258,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.66176474, g: 0.8210318, b: 1, a: 1}
-  m_Intensity: 2
-  m_Range: 15
+  m_Intensity: 1
+  m_Range: 20
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -11941,7 +11941,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1753525824543530943}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.0362616, y: 0.021811247, z: -10.750008}
+  m_LocalPosition: {x: 5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12034,7 +12034,7 @@ MonoBehaviour:
   hurtSE: {fileID: 8300000, guid: aad4338833a3bc646ba6824e8d809cbd, type: 3}
   frostSE: {fileID: 8300000, guid: cf64e25e41f797045bd7371f8e125191, type: 3}
   Scaling: 1.2
-  SpawnPoint: {x: 0, y: 0, z: 0}
+  SpawnPoint: {x: 5, y: 0, z: 0}
   RotationSlerp: 7
   BearRotationSlerp: 6
   AttackAnimWait: 0.4
@@ -32823,7 +32823,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 1.05e-43, y: NaN, z: 4.757186e+30, w: 6.890596e+22}
+  m_BoundingSphereOverride: {x: 0, y: 1.57e-43, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
