@@ -125,6 +125,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spider Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 8355537733776478016, guid: f6d4fad076d9845229f7992842ea97b4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 8358620838286080324, guid: f6d4fad076d9845229f7992842ea97b4,
         type: 3}
       propertyPath: m_RootOrder

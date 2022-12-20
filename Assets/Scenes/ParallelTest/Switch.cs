@@ -73,10 +73,10 @@ public class Switch : MonoBehaviour
             epos = Monster.transform.position;
 
             P_naviAgent = People.GetComponent<NavMeshAgent>();
-            P_naviAgent.Warp(new Vector3(epos.x, epos.y + 55, epos.z));
+            P_naviAgent.Warp(new Vector3(epos.x, epos.y + 50, epos.z));
 
             M_naviAgent = Monster.GetComponent<NavMeshAgent>();
-            M_naviAgent.Warp(new Vector3(epos.x, epos.y + 55, epos.z));
+            M_naviAgent.Warp(new Vector3(epos.x, epos.y + 50, epos.z));
 
             People.SetActive(true);
             Monster.SetActive(false);
