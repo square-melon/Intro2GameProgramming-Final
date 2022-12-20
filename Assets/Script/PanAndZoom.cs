@@ -22,22 +22,29 @@ public class PanAndZoom : MonoBehaviour
     private GameController gam;
     private bool Switching;
     private bool Lock;
+    private bool first;
 
     void Start()
     {
         VirtualCamera = GetComponent<CinemachineVirtualCamera>();
         CameraTransform = VirtualCamera.VirtualCameraGameObject.transform;
         Init();
+        first = false;
     }
 
     void Init() {
         Center();
+        StartCoroutine(CenterAfterHalfSec());
         Switching = false;
         Lock = false;
     }
 
     void Update()
     {
+        if (first == false) {
+            Center();
+            first = true;
+        }
         if (DataManager.Instance.IsPlayerDead) {
             Center();
         } else if (DataManager.Instance.InParallel != Switching) {

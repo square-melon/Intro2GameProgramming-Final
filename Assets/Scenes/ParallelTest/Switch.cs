@@ -45,7 +45,7 @@ public class Switch : MonoBehaviour
             if(!inTransition && !DataManager.Instance.InBearMode) {
                 inTransition = true;
                 toParallel = !toParallel;
-                FindAllEnemy();
+                FindAllMonster();
                 if(toParallel) {
                     StartCoroutine(ToParallel());
                 } else {
@@ -55,8 +55,8 @@ public class Switch : MonoBehaviour
         }
     }
 
-    void FindAllEnemy() {
-        enemies = GameObject.FindGameObjectsWithTag("Enemy");
+    void FindAllMonster() {
+        enemies = GameObject.FindGameObjectsWithTag("Monster");
     }
 
     IEnumerator ToParallel() {

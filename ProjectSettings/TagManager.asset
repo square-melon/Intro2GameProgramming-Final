@@ -11,6 +11,7 @@ TagManager:
   - DataManager
   - Bullet
   - People
+  - Monster
   layers:
   - Default
   - TransparentFX

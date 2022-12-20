@@ -581,9 +581,31 @@ public class PlayerControl : MonoBehaviour
 
     GameObject FindNearestEnemy() {
         GameObject[] Enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject[] Monsters = GameObject.FindGameObjectsWithTag("Monster");
+        for (int i = 0; i < Monsters.Length; i++) {
+            for (int j = Monsters[i].transform.childCount - 1; j >= 0; j--) {
+                if (Monsters[i].transform.GetChild(j).CompareTag("Enemy")) {
+                    Monsters[i] = Monsters[i].transform.GetChild(j).gameObject;
+                    break;
+                }
+            }
+        }
         float ShortestDis = LightningAARange;
         GameObject ClosetEnemy = null;
         foreach (var obj in Enemies) {
+            Vector3 a = obj.transform.root.position;
+            Vector3 b = Human.transform.position;
+            a.y = 0;
+            b.y = 0;
+            float dis = Vector3.Distance(a, b);
+            if (dis <= LightningAARange && ClosetEnemy == null) {
+                ClosetEnemy = obj.transform.root.gameObject;
+            } else if (dis < ShortestDis) {
+                ClosetEnemy = obj.transform.root.gameObject;
+                ShortestDis = dis;
+            }
+        }
+        foreach (var obj in Monsters) {
             Vector3 a = obj.transform.root.position;
             Vector3 b = Human.transform.position;
             a.y = 0;
