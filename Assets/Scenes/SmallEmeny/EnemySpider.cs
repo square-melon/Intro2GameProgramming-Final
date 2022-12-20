@@ -6,7 +6,7 @@ public class EnemySpider : MonoBehaviour
 {
     // Start is called before the first frame update
     private NavMeshAgent agent;
-    private Transform player;
+    private Vector3 player;
     //Patroling
     public Vector3 walkPoint;
     bool walkPointSet;
@@ -25,9 +25,10 @@ public class EnemySpider : MonoBehaviour
     public LayerMask whatground;
     public Animator animator;
     private int dead = 0;
+    public GameObject ExplodeEffect;
     private void Awake()
     {
-        player = GameObject.Find("Human").transform;
+        //player = DataManager.Instance.PlayerPos;
         agent = GetComponent<NavMeshAgent>();
     }
     void Start() {
@@ -38,8 +39,8 @@ public class EnemySpider : MonoBehaviour
     private void Update()
     {
         //Check for sight and attack range
-        float dis = Vector3.Distance(player.position,transform.position);
-        // print(dis);
+        float dis = Vector3.Distance(DataManager.Instance.PlayerPos,transform.position);
+        print(dis);
         if(dis < sightRange) {
             playerInSightRange = true;
         } else {
@@ -111,7 +112,7 @@ public class EnemySpider : MonoBehaviour
 
     private void ChasePlayer()
     {
-        agent.SetDestination(player.position);
+        agent.SetDestination(DataManager.Instance.PlayerPos);
     }
 
     private void AttackPlayer()
@@ -119,7 +120,7 @@ public class EnemySpider : MonoBehaviour
         //Make sure enemy doesn't move
         agent.SetDestination(transform.position);
 
-        transform.LookAt(player);
+        transform.LookAt(DataManager.Instance.PlayerPos);
 
         if (!alreadyAttacked)
         {
@@ -129,6 +130,9 @@ public class EnemySpider : MonoBehaviour
             // rb.AddForce(transform.up * 8f, ForceMode.Impulse);
             ///End of attack code
             animator.SetTrigger("Claw Attack");
+            Instantiate(ExplodeEffect, player, Quaternion.identity);
+            DataManager.Instance.PlayerOnHit(30.0f);
+
             //animator.SetTrigger("Cast Spell");
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
