@@ -10,13 +10,13 @@ public class Scene2Enemy : MonoBehaviour
     //public 
     //public GameObject ExplodeEffect;
     public GameObject enemy;
-    public GameObject player;
+    //public GameObject player;
     private UnityEngine.AI.NavMeshAgent m_naviAgent;
     private GameObject ArrowPrefab;
     public GameObject Arrow;
     private float dis;
     private Vector3 Face;
-    private float hp = 2;
+    private float hp = 1;
     public AudioSource audioPlayer;
     public AudioSource deadPlayer;
     public AudioClip attackSE;
@@ -34,10 +34,10 @@ public class Scene2Enemy : MonoBehaviour
 
         DetectDead();
         
-        Face = player.transform.position - enemy.transform.position;
-        dis = Vector3.Distance(player.transform.position, enemy.transform.position);
+        Face = DataManager.Instance.PlayerPos - transform.position;
+        dis = Vector3.Distance(DataManager.Instance.PlayerPos, transform.position);
         
-        if(dis < 12.0f) {
+        if(dis < 9.0f) {
             Quaternion rotation = Quaternion.LookRotation(Face, Vector3.up);
             transform.rotation = rotation;
             
@@ -80,13 +80,13 @@ public class Scene2Enemy : MonoBehaviour
             
     }
     public void CreateArrow() {
-        Face = player.transform.position - enemy.transform.position;
+        Face = DataManager.Instance.PlayerPos - enemy.transform.position;
         //Face = new Vector3(Face.x, 0f, Face.z).normalized;
         //Quaternion rotation = Quaternion.LookRotation(Face, Vector3.up);
 
         ArrowPrefab = Instantiate(Arrow, new Vector3(enemy.transform.position.x, enemy.transform.position.y + 1, enemy.transform.position.z), Quaternion.LookRotation(Face) * Quaternion.Euler(90, 0, 0));
         
-        ArrowPrefab.GetComponent<Rigidbody>().AddForce(Face * 200.0f);
+        ArrowPrefab.GetComponent<Rigidbody>().AddForce(Face * 100.0f);
         audioPlayer.PlayOneShot(attackSE);
        
     }

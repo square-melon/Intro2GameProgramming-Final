@@ -12,8 +12,8 @@ public class enemyScript : MonoBehaviour
     public AudioClip ZombieMoan;
     public AudioClip ZombieDead; 
     //public GameObject GameControllerObj;
-    public GameObject player;
-    private GameController GameController;
+    //public GameObject player;
+    
     private NavMeshAgent naviAgent;
     private Animator ZombieAnim;
     //private UnityEngine.AI.NavMeshAgent nav;
@@ -32,21 +32,21 @@ public class enemyScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float dstToPlayer = Vector3.Distance(transform.position, player.transform.position);
+        float dstToPlayer = Vector3.Distance(transform.position, DataManager.Instance.PlayerPos);
         
-        if(dstToPlayer<10.0f && dstToPlayer > 1.0f){ //Track
+        if(dstToPlayer<10.0f && dstToPlayer > 2.0f){ //Track
             if(first){ 
                 audioPlayer.PlayOneShot(ZombieMoan);
                 first = false;
             }
-            transform.LookAt(player.transform);
+            transform.LookAt(DataManager.Instance.PlayerPos);
             ZombieAnim.SetFloat("Speed", 1.0f);
-            naviAgent.SetDestination(player.transform.position);
-        }else if(dstToPlayer<=1.0f){                //attack
-            transform.LookAt(player.transform);
+            naviAgent.SetDestination(DataManager.Instance.PlayerPos);
+        }else if(dstToPlayer<=2.0f){                //attack
+            transform.LookAt(DataManager.Instance.PlayerPos);
             ZombieAnim.SetFloat("Speed", 0.0f);
             ZombieAnim.SetBool("Attack",true);
-             Invoke("ResetAnimAttack",1.0f);
+            Invoke("ResetAnimAttack",1.0f);
         }
         if(hp<=0){
             ZombieAnim.SetBool("Dead",true);
