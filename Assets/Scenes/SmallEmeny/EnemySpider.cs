@@ -39,8 +39,8 @@ public class EnemySpider : MonoBehaviour
     private void Update()
     {
         //Check for sight and attack range
-        float dis = Vector3.Distance(DataManager.Instance.PlayerPos,transform.position);
-        print(dis);
+        float dis = Vector3.Distance(player.position,transform.position);
+        // print(dis);
         if(dis < sightRange) {
             playerInSightRange = true;
         } else {
