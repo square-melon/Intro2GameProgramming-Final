@@ -1460,67 +1460,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d218001a1e147542bc5a9058259e49f, type: 3}
---- !u!1 &42944497440248000
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 42944497440248030}
-  - component: {fileID: 42944497440248001}
-  m_Layer: 0
-  m_Name: DataManager
-  m_TagString: DataManager
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &42944497440248001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 42944497440248000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d47469631b959645bc73782c76366f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IncreaseBioValRate: 0
-  IsPausing: 0
-  BearTime: 0
-  InBearMode: 0
-  ShieldStored: 0
-  ShieldBlockPer: 0
-  ShieldBlockDamagePer: 0
-  MaxShieldStored: 0
-  ShieldUp: 0
-  Scaling: 0
-  ShootOnSB: 0
-  damagetext: {fileID: 2043656377152561074, guid: ecf95b3d39e3aa445811bb3eecdbb59f,
-    type: 3}
-  cam: {fileID: 756392198}
-  TotemCharged: 0
-  HealingPlaceCreated: 0
-  ChainLightning: 0
---- !u!4 &42944497440248030
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 42944497440248000}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.31445336, y: 0.14868927, z: -0.058034897}
-  m_LocalScale: {x: 1, y: 1.0000001, z: 1.0000001}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &52246192245535354
 Transform:
   m_ObjectHideFlags: 0
@@ -11948,7 +11887,7 @@ Transform:
   - {fileID: 6529531424769053368}
   - {fileID: 1710604090883044530}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1753525824543530929
 MonoBehaviour:
@@ -18386,7 +18325,7 @@ RectTransform:
   - {fileID: 52246192245535354}
   - {fileID: 4675398141807649411}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -24042,7 +23981,7 @@ Transform:
   m_Children:
   - {fileID: 4000828696468361379}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: 0, z: 0}
 --- !u!1001 &4028199869950034994
 PrefabInstance:
@@ -47430,7 +47369,7 @@ RectTransform:
   m_Children:
   - {fileID: 7973806430013646240}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

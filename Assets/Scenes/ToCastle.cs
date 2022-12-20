@@ -19,6 +19,7 @@ public class ToCastle : MonoBehaviour
 
     public void Click()
     {
+        DataManager.Instance.SetMAXHP(200.0f);
         SceneManager.LoadScene("06 - Castle");
     }
 }

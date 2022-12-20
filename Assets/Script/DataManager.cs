@@ -80,7 +80,7 @@ public class DataManager : MonoBehaviour
             _HP -= damage;
             var go = Instantiate(damagetext, PlayerPos, Quaternion.identity);
             go.GetComponent<TextMesh>().text = damage.ToString("N1");
-            go.transform.LookAt(go.transform.position + cam.transform.forward);
+            // go.transform.LookAt(go.transform.position + cam.transform.forward);
         }
         BiolanceValue += damage * IncreaseBioValRate;
         if (BiolanceValue >= 100f)
@@ -173,6 +173,14 @@ public class DataManager : MonoBehaviour
             PlayerOnHit(damage);
             return;
         }
+        if (!enemy.CompareTag("Enemy")) {
+            for (int i = enemy.childCount - 1; i >= 0; i--) {
+                if (enemy.GetChild(i).CompareTag("Enemy")) {
+                    enemy = enemy.GetChild(i);
+                    break;
+                }
+            }
+        }
         ShootOnSB = true;
         Scene2Enemy e1 = enemy.GetComponent<Scene2Enemy>();
         enemyScript e2 = enemy.GetComponent<enemyScript>();
@@ -205,6 +213,6 @@ public class DataManager : MonoBehaviour
     void ShowDamage(Transform enemy, float damage) {
         var go = Instantiate(damagetext, enemy.transform.position, Quaternion.identity);
         go.GetComponent<TextMesh>().text = damage.ToString("N1");
-        go.transform.LookAt(go.transform.position + cam.transform.forward);
+        // go.transform.LookAt(go.transform.position + cam.transform.forward);
     }
 }
