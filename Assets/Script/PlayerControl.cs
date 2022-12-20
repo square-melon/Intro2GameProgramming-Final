@@ -850,7 +850,7 @@ public class PlayerControl : MonoBehaviour
                 Invoke("LoadLoseScene", 4f);
             } else {
                 if (CurHP < OriHP) {
-                    audioPlayer.PlayOneShot(hurtSE);
+                    // audioPlayer.PlayOneShot(hurtSE);
                     Instantiate(DamagedEffect, Human.transform.position, Quaternion.identity);
                     PlayerAnim.SetInteger("Doing", 4);
                     Invoke("ResetAnimDoing", 0.1f);
