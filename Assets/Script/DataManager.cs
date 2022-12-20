@@ -35,6 +35,9 @@ public class DataManager : MonoBehaviour
     public bool ShootOnSB;
     public GameObject damagetext;
     public GameObject cam;
+    public float TotemCharged;
+    public bool HealingPlaceCreated;
+    public bool ChainLightning;
     private void Awake()
     {   
         if (Instance != null && Instance != this) {
@@ -69,9 +72,16 @@ public class DataManager : MonoBehaviour
             ShieldStored += ShieldBlockPer * damage * 0.01f;
             if (ShieldStored > MaxShieldStored)
                 ShieldStored = MaxShieldStored;
+            var go = Instantiate(damagetext, PlayerPos, Quaternion.identity);
+            go.GetComponent<TextMesh>().text = (ShieldBlockDamagePer * damage * 0.01f).ToString("N1");
+            go.transform.LookAt(go.transform.position + cam.transform.forward);
         }
-        else
+        else {
             _HP -= damage;
+            var go = Instantiate(damagetext, PlayerPos, Quaternion.identity);
+            go.GetComponent<TextMesh>().text = damage.ToString("N1");
+            go.transform.LookAt(go.transform.position + cam.transform.forward);
+        }
         BiolanceValue += damage * IncreaseBioValRate;
         if (BiolanceValue >= 100f)
             BiolanceValue = 100f;
@@ -159,6 +169,10 @@ public class DataManager : MonoBehaviour
 
     public void takedamage(Transform enemy, float damage) {
         Debug.Log(enemy.name);
+        if (enemy.CompareTag("Player")) {
+            PlayerOnHit(damage);
+            return;
+        }
         ShootOnSB = true;
         Scene2Enemy e1 = enemy.GetComponent<Scene2Enemy>();
         enemyScript e2 = enemy.GetComponent<enemyScript>();
