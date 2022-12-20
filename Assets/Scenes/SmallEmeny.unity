@@ -1013,6 +1013,86 @@ Transform:
   m_Father: {fileID: 1543849853}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &319407172
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 319407175}
+  - component: {fileID: 319407174}
+  - component: {fileID: 319407173}
+  m_Layer: 5
+  m_Name: Text (Legacy)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &319407173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319407172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: New Text
+--- !u!222 &319407174
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319407172}
+  m_CullTransparentMesh: 1
+--- !u!224 &319407175
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319407172}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 72.4785}
+  m_LocalScale: {x: 0.0019999999, y: 0.002, z: 0.0019999999}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 62665.207, y: 9216.592}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &329637585
 GameObject:
   m_ObjectHideFlags: 0
@@ -1210,6 +1290,10 @@ MonoBehaviour:
   ShieldBlockDamagePer: 0
   MaxShieldStored: 0
   ShieldUp: 0
+  Scaling: 0
+  ShootOnSB: 0
+  damagetext: {fileID: 0}
+  cam: {fileID: 0}
 --- !u!4 &418180051
 Transform:
   m_ObjectHideFlags: 0
@@ -1893,7 +1977,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 673559886}
   enemy: {fileID: 673559883}
-  player: {fileID: 7948826071810478570}
   Arrow: {fileID: 7864864296017842643, guid: 234b6065c9c693b439dd758a411d2dd1, type: 3}
   audioPlayer: {fileID: 53667895}
   deadPlayer: {fileID: 53667895}
@@ -66662,6 +66745,8 @@ MonoBehaviour:
   BearLHand: {fileID: 0}
   BearRHand: {fileID: 0}
   BearShieldUp: {fileID: 0}
+  Totem: {fileID: 0}
+  FallingThunder: {fileID: 0}
   PlayerAnim: {fileID: 0}
   BearAnim: {fileID: 0}
   BearScale: 0
@@ -66692,6 +66777,7 @@ MonoBehaviour:
   EarthQuakeEffect: {fileID: 0}
   Shield: {fileID: 0}
   ShieldBreakCircle: {fileID: 0}
+  Lightning: {fileID: 0}
   audioPlayer: {fileID: 53667895}
   shootSE: {fileID: 8300000, guid: 7575dc366f03a8046850f97855376936, type: 3}
   walkSE: {fileID: 8300000, guid: 450f20958c8db4541a8a2c24d89b58cd, type: 3}
@@ -66700,9 +66786,11 @@ MonoBehaviour:
   deadSE: {fileID: 8300000, guid: 0498ad96395514e4a8017aac5d17fb67, type: 3}
   hurtSE: {fileID: 8300000, guid: aad4338833a3bc646ba6824e8d809cbd, type: 3}
   frostSE: {fileID: 8300000, guid: cf64e25e41f797045bd7371f8e125191, type: 3}
+  Scaling: 0
   SpawnPoint: {x: 0, y: 2.3, z: 44.7}
   RotationSlerp: 10
   BearRotationSlerp: 0
+  AttackAnimWait: 0
   ReloadSpeed: 0.8
   ShootForce: 1200
   ShootWaitingTime: 0.2
@@ -66720,16 +66808,20 @@ MonoBehaviour:
   SparkyShootForce: 500
   SparkyTransScale: 25
   LightningCoolDown: 0
-  DisableLightningTime: 0
-  CastLightningWaitingTime: 0
-  LightningBasicAS: 0
-  LightningAddAS: 0
   ExploCoolDown: 0
   BugCircularChoosingTime: 0
   SwitchingParallelTime: 0
   RootedTime: 0
-  LightningAutoAttackRange: 0
-  LightningAutoAttackReload: 0
+  DisableLightningTime: 0
+  LightningAAWait: 0
+  LightningAARange: 0
+  LightningAAReload: 0
+  LightningAAIncAS: 0
+  LightningAAWaitB: 0
+  LightningCurvePts: 0
+  LightningCurveDis: 0
+  LightningGlowingTimes: 0
+  LightningGlowingWait: 0
   BecomeBearTime: 0
   MaxInBearMode: 0
   BearAttackSpeed: 0
@@ -66754,6 +66846,21 @@ MonoBehaviour:
   ShieldUpCoolDown: 0
   ShieldDarkerScaler: 0
   ShieldBlockDamagePercent: 0
+  CastLightningWaitingTime: 0
+  ThunderCastCoolDown: 0
+  ThunderCastAddCD: 0
+  PlacingTotemCoolDown: 0
+  ChargedTotemAmount: 0
+  TotemChargedDis: 0
+  HealingPlaceCreatedTime: 0
+  HealingPlaceAmount: 0
+  HealingFrequency: 0
+  LightningTotemAmount: 0
+  LightningTotemChargedDis: 0
+  RandomThunderCoolDown: 0
+  RandomThunderAddCD: 0
+  RandomThunderTime: 0
+  ThunderInterval: 0
   Skill1: 0
   Skill2: 0
   Skill3: 0
