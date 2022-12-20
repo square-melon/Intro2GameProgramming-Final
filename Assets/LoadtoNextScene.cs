@@ -10,7 +10,7 @@ public class LoadtoNextScene : MonoBehaviour
     private GameObject player;
     private bool loadto = false;
     //public Animator animatorfade;
-    // public Text m_Text;
+     public Text m_Text;
     void Start()
     {
         
@@ -50,13 +50,13 @@ public class LoadtoNextScene : MonoBehaviour
         while (!asyncOperation.isDone)
         {
             //Output the current progress
-            // m_Text.text = "Loading progress: " + (asyncOperation.progress * 100) + "%";
+             m_Text.text = "Loading progress: " + (asyncOperation.progress * 100) + "%";
 
             // Check if the load has finished
             if (asyncOperation.progress >= 0.9f)
             {
                 //Change the Text to show the Scene is ready
-                // m_Text.text = "Press the space bar to continue";
+                 m_Text.text = "Press the space bar to enter the castle";
                 //Wait to you press the space key to activate the Scene
                 if (Input.GetKeyDown(KeyCode.Space))
                     //Activate the Scene

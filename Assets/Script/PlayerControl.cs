@@ -369,23 +369,25 @@ public class PlayerControl : MonoBehaviour
                 case 301: return RandomThunderCD;
                 case 302: return ThunderCastCD;
             }
-        } else if (DataManager.Instance.InParallel) {
-            switch(skillNum) {
-                case 0: return Dashing;
-                case 1: return true;
-                case 2: return true;
-                case 3: return true;
-                case 4: return true;
-                case 5: return true;
+        } 
+        // else if (OriInParrallel) {
+        //     switch(skillNum) {
+        //         case 0: return Dashing;
+        //         case 1: return true;
+        //         case 2: return true;
+        //         case 3: return true;
+        //         case 4: return true;
+        //         case 5: return true;
 
-                case 201: return true;
-                case 202: return true;
-                case 203: return true;
+        //         case 201: return true;
+        //         case 202: return true;
+        //         case 203: return true;
 
-                case 301: return true;
-                case 302: return true;
-            }
-        } else {
+        //         case 301: return true;
+        //         case 302: return true;
+        //     }
+        // } 
+        else {
             switch(skillNum) {
                 case 0: return true;
                 case 1: return true;
@@ -545,8 +547,11 @@ public class PlayerControl : MonoBehaviour
                 // Vector3 ShootDir = GetMousePos();
                 AvoidCasting = true;
                 GameObject Ene = FindNearestEnemy();
-                if (Ene == null)
+                if (Ene == null) {
+                    AvoidCasting = false;
                     return;
+                }
+                Ene = ChangeToEnemy(Ene);
                 FacingTarget = Ene.transform.position - Human.transform.position;
                 FacingTarget.y = 0;
                 LightningFiring = true;
@@ -606,19 +611,29 @@ public class PlayerControl : MonoBehaviour
             }
         }
         foreach (var obj in Monsters) {
-            Vector3 a = obj.transform.root.position;
+            Vector3 a = obj.transform.position;
             Vector3 b = Human.transform.position;
             a.y = 0;
             b.y = 0;
             float dis = Vector3.Distance(a, b);
             if (dis <= LightningAARange && ClosetEnemy == null) {
-                ClosetEnemy = obj.transform.root.gameObject;
+                ClosetEnemy = obj.transform.gameObject;
             } else if (dis < ShortestDis) {
-                ClosetEnemy = obj.transform.root.gameObject;
+                ClosetEnemy = obj.transform.gameObject;
                 ShortestDis = dis;
             }
         }
         return ClosetEnemy;
+    }
+
+    GameObject ChangeToEnemy(GameObject Enemy) {
+        if (Enemy.CompareTag("Enemy")) return Enemy;
+        for (int j = Enemy.transform.childCount - 1; j >= 0; j--) {
+            if (Enemy.transform.GetChild(j).CompareTag("Enemy")) {
+                return Enemy.transform.GetChild(j).gameObject;
+            }
+        }
+        return null;
     }
 
     void CheckHit() {
@@ -649,9 +664,6 @@ public class PlayerControl : MonoBehaviour
     }
 
     IEnumerator LightningAA(GameObject Enemy) {
-        while (PlayerAnim.IsInTransition(0)) {
-            yield return null;
-        }
         PlayerAnim.SetInteger("Doing", 8);
         Invoke("ResetAnimDoing", 0.2f);
         yield return new WaitForSeconds(LightningAAWait);
@@ -873,9 +885,9 @@ public class PlayerControl : MonoBehaviour
             } else {
                 if (CurHP < OriHP) {
                     // audioPlayer.PlayOneShot(hurtSE);
-                    Instantiate(DamagedEffect, Human.transform.position, Quaternion.identity);
-                    PlayerAnim.SetInteger("Doing", 4);
-                    Invoke("ResetAnimDoing", 0.1f);
+                    // Instantiate(DamagedEffect, Human.transform.position, Quaternion.identity);
+                    // PlayerAnim.SetInteger("Doing", 4);
+                    // Invoke("ResetAnimDoing", 0.1f);
                 }
                 OriHP = CurHP;
             }
