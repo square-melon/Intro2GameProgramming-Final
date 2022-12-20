@@ -23,7 +23,7 @@ public class BossScript : MonoBehaviour
 
     [Header("Settings")]
     private UnityEngine.AI.NavMeshAgent naviAgent;
-    private float hp=150;
+    private float  hp=150f;
     private float skill=1;
 
     [Header("Player")]
