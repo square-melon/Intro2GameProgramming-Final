@@ -180,6 +180,7 @@ public class DataManager : MonoBehaviour
         Wizard e3 = enemy.GetComponent<Wizard>();
         Scene2Boss ee = enemy.GetComponent<Scene2Boss>();
         EnemySpider e4 = enemy.GetComponent<EnemySpider>();
+        BossScript e5 = enemy.GetComponent<BossScript>();
         if(e4) {
             e4.DamageA();
             print("joikokij");
@@ -194,6 +195,8 @@ public class DataManager : MonoBehaviour
             ee.Damage();
         else if (ee2)
             ee2.Damage();
+        else if (e5)
+            e5.Damage(damage);
         if(damagetext) {
             ShowDamage(enemy, damage);
         }

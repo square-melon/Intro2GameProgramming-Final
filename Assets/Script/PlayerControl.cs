@@ -800,7 +800,7 @@ public class PlayerControl : MonoBehaviour
 
     IEnumerator DashMoving(Vector3 dir) {
         float DashAmount = 0f;
-        while (DashAmount < DashDistance) {
+        while (DashAmount < DashDistance * Scaling) {
             Human.transform.position += Time.deltaTime * DashSpeed * dir;
             DashAmount += Time.deltaTime * DashSpeed;
             yield return null;
@@ -850,7 +850,7 @@ public class PlayerControl : MonoBehaviour
                 Invoke("LoadLoseScene", 4f);
             } else {
                 if (CurHP < OriHP) {
-                    audioPlayer.PlayOneShot(hurtSE);
+                    // audioPlayer.PlayOneShot(hurtSE);
                     Instantiate(DamagedEffect, Human.transform.position, Quaternion.identity);
                     PlayerAnim.SetInteger("Doing", 4);
                     Invoke("ResetAnimDoing", 0.1f);
