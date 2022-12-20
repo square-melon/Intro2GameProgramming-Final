@@ -16,6 +16,7 @@ public class LightningManager : MonoBehaviour
     }
 
     public void HitOn(Transform obj) {
+        obj = ChangeToEnemy(obj);
         int hash = obj.GetHashCode();
         if (Lightning.ContainsKey(hash)) {
             Lightning[hash]++;
@@ -23,5 +24,15 @@ public class LightningManager : MonoBehaviour
             Lightning.Add(hash, 1);
         }
         DataManager.Instance.takedamage(obj.transform, BasicDamage + (Lightning[hash] - 1) * AdditionalDamage);
+    }
+
+    Transform ChangeToEnemy(Transform Enemy) {
+        if (Enemy.CompareTag("Enemy")) return Enemy;
+        for (int j = Enemy.childCount - 1; j >= 0; j--) {
+            if (Enemy.GetChild(j).CompareTag("Enemy")) {
+                return Enemy.transform.GetChild(j);
+            }
+        }
+        return null;
     }
 }
