@@ -12,6 +12,11 @@ public class BossScript : MonoBehaviour
     private GameObject FrostRainPrefab;
     public float RotationSlerp;
     private Animator BossAnim;
+    public float ExistTime;
+    public float RayRadius;
+    public float RayLength;
+    public float Damage;
+    private bool HitPlayer;
 
     [Header("Settings")]
     private UnityEngine.AI.NavMeshAgent naviAgent;
@@ -27,8 +32,8 @@ public class BossScript : MonoBehaviour
     void Start()
     {
         naviAgent = this.GetComponent<UnityEngine.AI.NavMeshAgent>();
-        playerNaviAgent = Player.GetComponent<UnityEngine.AI.NavMeshAgent>();
         BossAnim = GetComponent<Animator>();
+        HitPlayer = false;
     }
 
     // Update is called once per frame
@@ -85,11 +90,17 @@ public class BossScript : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(b_a);
     }
     void Spray(){
-        // Debug.Log(transform.forward);
-        // Debug.Log(transform.forward);
         Vector3 pos = shootspot.position; 
-        // pos += Target*0.2;
         ArcaneSprayPrefab = Instantiate(ArcaneSpray, pos, Quaternion.LookRotation(transform.forward));
+        
+        RaycastHit[] hit = Physics.SphereCastAll(transform.position, RayRadius, transform.forward, RayLength);
+        foreach (var obj in hit) {
+            if (obj.collider.CompareTag("Player")){
+                if(HitPlayer==false){
+                    
+                }
+            }
+        }
         Destroy(ArcaneSprayPrefab,3.0f);
     }
     void Rain(){
