@@ -27,26 +27,37 @@ public class SkillCDUI : MonoBehaviour
         string skname = "";
         bool lightning = false;
         bool rooted = false;
+        bool parallel = false;
         bool IsLightning = DataManager.Instance.LightningMode;
         bool IsRooted = DataManager.Instance.PlayerIsRooted;
+        bool InParallel = DataManager.Instance.InParallel;
         switch (DataManager.Instance.SkillEvent[iam]) {
-            case 0: skname = "Dash"; lightning = false; rooted = false; break;
+            case 0: skname = "Dash"; lightning = false; rooted = false; parallel = true; break;
             case 1: skname = "Frost"; lightning = false; rooted = true; break;
             case 2: skname = "Sparky"; lightning = false; rooted = true; break;
             case 3: skname = "LightningMode"; lightning = true; rooted = true; break;
             case 4: skname = "ExploAll"; lightning = false; rooted = true; break;
+            case 5: skname = "Totem"; lightning = true; rooted = true; break;
 
             case 101: skname = "ExploR"; lightning = false; break;
             case 102: skname = "ExploG"; lightning = false; break;
             case 103: skname = "ExploB"; lightning = false; break;
+
+            case 301: skname = "RandomThunder"; lightning = true; rooted = true; break;
+            case 302: skname = "CastThunder"; lightning = true; rooted = true; break;
+
+            case 201: skname = "BearJump"; lightning = false; rooted = false; break;
+            case 202: skname = "EarthQuake"; lightning = false; rooted = true; break;
+            case 203: skname = "Shield"; lightning = false; rooted = true; break;
             default: skname = ""; break;
         }
+
         for (var i = Icon.transform.childCount - 1; i >= 0; i--) {
             if (Icon.transform.GetChild(i).name != skname) {
                 Icon.transform.GetChild(i).gameObject.SetActive(false);
             } else {
                 Icon.transform.GetChild(i).gameObject.SetActive(true);
-                if ((!lightning && IsLightning) || (!rooted && IsRooted))
+                if ((!lightning && IsLightning) || (!rooted && IsRooted) || (!parallel && InParallel))
                     Disable.SetActive(true);
                 else
                     Disable.SetActive(false);
