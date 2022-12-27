@@ -16,7 +16,7 @@ public class Scene2Enemy : MonoBehaviour
     public GameObject Arrow;
     private float dis;
     private Vector3 Face;
-    private float hp = 3;
+    private float hp = 1;
     public AudioSource audioPlayer;
     public AudioSource deadPlayer;
     public AudioClip attackSE;
@@ -37,7 +37,7 @@ public class Scene2Enemy : MonoBehaviour
         Face = DataManager.Instance.PlayerPos - transform.position;
         dis = Vector3.Distance(DataManager.Instance.PlayerPos, transform.position);
         
-        if(dis < 20.0f) {
+        if(dis < 9.0f) {
             Quaternion rotation = Quaternion.LookRotation(Face, Vector3.up);
             transform.rotation = rotation;
             
@@ -70,9 +70,6 @@ public class Scene2Enemy : MonoBehaviour
     //     }
     // }
     public void Damage() {
-        if(hp>1){
-            animator.SetTrigger("Stunned");
-        }
         hp--;
         Debug.Log(hp);
     }
