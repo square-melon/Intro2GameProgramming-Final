@@ -2731,9 +2731,10 @@ MonoBehaviour:
   ZombieAttack: {fileID: 8300000, guid: 5e718aeaea72d564ebdfe87f29d9de78, type: 3}
   ZombieMoan: {fileID: 8300000, guid: f035887894cc14c4d96bce8debfd494f, type: 3}
   ZombieDead: {fileID: 8300000, guid: 023e6911fd90d1a4cb8eff25f3ee5ed8, type: 3}
-  player: {fileID: 0}
   damagetext: {fileID: 2043656377152561074, guid: ecf95b3d39e3aa445811bb3eecdbb59f,
     type: 3}
+  walkPoint: {x: 0, y: 0, z: 0}
+  walkPointRange: 3
 --- !u!195 &3939639778782979456
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2744,7 +2745,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.25
-  m_Speed: 0.1
+  m_Speed: 0.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

@@ -20,6 +20,9 @@ public class enemyScript : MonoBehaviour
     private int  hp=2;
     private bool first=true;
     public GameObject damagetext;
+    public Vector3 walkPoint;
+    bool walkPointSet;
+    public float walkPointRange;
     void Start()
     {
         audioPlayer.volume = 5.0f;
@@ -47,6 +50,9 @@ public class enemyScript : MonoBehaviour
             ZombieAnim.SetFloat("Speed", 0.0f);
             ZombieAnim.SetBool("Attack",true);
             Invoke("ResetAnimAttack",1.0f);
+        } else if(dstToPlayer > 10.0f){
+            ZombieAnim.SetFloat("Speed", 0.2f);
+            Patroling();
         }
         if(hp<=0){
             ZombieAnim.SetBool("Dead",true);
@@ -66,7 +72,7 @@ public class enemyScript : MonoBehaviour
         hp--;
     }   
     public void DamagePlayer() {
-        DataManager.Instance.PlayerOnHit(50.0f); 
+        DataManager.Instance.PlayerOnHit(1.0f); 
         print(DataManager.Instance._HP);
     }
     public void AttackSE(){
@@ -77,5 +83,30 @@ public class enemyScript : MonoBehaviour
     }
     public void LoadScene2() {
 
+    }
+    private void Patroling()
+    {
+        if (!walkPointSet) SearchWalkPoint();
+
+        if (walkPointSet)
+            naviAgent.SetDestination(walkPoint);
+
+        Vector3 distanceToWalkPoint = transform.position - walkPoint;
+
+        //Walkpoint reached
+        if (distanceToWalkPoint.magnitude < 1f)
+            walkPointSet = false;
+    }
+    private void SearchWalkPoint()
+    {
+        //Calculate random point in range
+        float randomZ = Random.Range(-walkPointRange, walkPointRange);
+        float randomX = Random.Range(-walkPointRange, walkPointRange);
+
+        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+
+        // if (Physics.Raycast(walkPoint, -transform.up, 2f,whatground))
+        // if(walkPoint.x < 30.0f && walkPoint.x > -25.0f && walkpoint)
+        walkPointSet = true;
     }
 } 
