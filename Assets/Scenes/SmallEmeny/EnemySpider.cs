@@ -51,23 +51,27 @@ public class EnemySpider : MonoBehaviour
         } else {
             playerInAttackRange = false;
         }
-
-        if (!playerInSightRange && !playerInAttackRange) {
-            animator.SetBool("Move Forward Fast",true);
-            Patroling();
-        }
-        if (playerInSightRange && !playerInAttackRange) {
-            print("yes");
-            ChasePlayer();
-        }
-        if (playerInAttackRange && playerInSightRange) {
-            //animator.SetBool("Move Forward Fast",false);
-            AttackPlayer();
+        if(animator.GetCurrentAnimatorStateInfo(0).IsName("Take Damage")){
+            agent.SetDestination(transform.position);
+        }else{
+            if (!playerInSightRange && !playerInAttackRange) {
+                animator.SetBool("Move Forward Fast",true);
+                Patroling();
+            }
+            if (playerInSightRange && !playerInAttackRange) {
+                print("yes");
+                ChasePlayer();
+            }
+            if (playerInAttackRange && playerInSightRange) {
+                //animator.SetBool("Move Forward Fast",false);
+                AttackPlayer();
+            }
         }
         Death();
     }
     public void DamageA() {
         //print(damage);
+        animator.SetTrigger("Take Damage");
         health -= 30;
         Debug.Log(health);
     }
