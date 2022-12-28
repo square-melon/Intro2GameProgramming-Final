@@ -54525,6 +54525,7 @@ MonoBehaviour:
   PlacingTotemCoolDown: 8
   ChargedTotemAmount: 10
   TotemChargedDis: 10
+  HealingPlaceDis: 0
   HealingPlaceCreatedTime: 10
   HealingPlaceAmount: 5
   HealingFrequency: 1
@@ -54532,8 +54533,12 @@ MonoBehaviour:
   LightningTotemChargedDis: 15
   RandomThunderCoolDown: 8
   RandomThunderAddCD: 2
+  RandomThunderDis: 0
   RandomThunderTime: 4
   ThunderInterval: 1
+  ChainDis: 0
+  ChainingWaiting: 0
+  ChainLightningTime: 0
   Skill1: 0
   Skill2: 1
   Skill3: 5

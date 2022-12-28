@@ -39,6 +39,8 @@ public class BossScript : MonoBehaviour
     private bool Dead ;
 
     public BossHealth bar;
+    // public CameraShake camShake;
+    // camShake.start = true;
 
     void Start()
     {
