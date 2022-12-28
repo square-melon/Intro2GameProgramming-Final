@@ -666,7 +666,6 @@ GameObject:
   - component: {fileID: 756392201}
   - component: {fileID: 756392200}
   - component: {fileID: 756392199}
-  - component: {fileID: 756392203}
   - component: {fileID: 756392204}
   - component: {fileID: 756392205}
   m_Layer: 0
@@ -750,18 +749,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 45, y: 45, z: 0}
---- !u!114 &756392203
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 756392198}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &756392204
 AudioSource:
   m_ObjectHideFlags: 0
@@ -24499,6 +24486,7 @@ GameObject:
   - component: {fileID: 4000828696762576297}
   - component: {fileID: 4000828696762576294}
   - component: {fileID: 4000828696762576292}
+  - component: {fileID: 4000828696762576298}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: Untagged
@@ -24560,6 +24548,44 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: 0, z: 0}
+--- !u!114 &4000828696762576298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4000828696762576293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db2090a8770a74c3db9bb04e3253b1f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  start: 0
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  duration: 1
 --- !u!1001 &4028199869950034994
 PrefabInstance:
   m_ObjectHideFlags: 0
