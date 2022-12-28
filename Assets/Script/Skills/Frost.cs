@@ -27,7 +27,7 @@ public class Frost : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RaycastHit[] hit = Physics.SphereCastAll(transform.position, RayRadius * Scaling, transform.forward, RayLength * Scaling);
+        RaycastHit[] hit = Physics.SphereCastAll(transform.position, RayRadius, transform.forward, RayLength);
         // Debug.DrawRay(transform.position, transform.forward * RayLength);
         foreach (var obj in hit) {
             if (obj.collider.CompareTag("Enemy")) {

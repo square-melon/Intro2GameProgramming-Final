@@ -152,10 +152,13 @@ public class PlayerControl : MonoBehaviour
     public float RandomThunderDis;
     public int RandomThunderTime;
     public float ThunderInterval;
+    public float ChainLightningCharge;
     public float ChainDis;
     public float ChainingWaiting;
     public float ChainLightningTime;
 
+    [Header("EffectSettings")]
+    public float LightningRangeToScale;
 
     [Header("Debug")]
     public int Skill1;
@@ -247,6 +250,7 @@ public class PlayerControl : MonoBehaviour
         MedkitHealCD = true;
         FireEffect.SetActive(false);
         HealEffect.SetActive(false);
+        LightningMode.SetActive(false);
         DataManager.Instance.PlayerDead(false);
         OriHP = DataManager.Instance.HP();
         ResetAnimDoing();
@@ -694,7 +698,7 @@ public class PlayerControl : MonoBehaviour
         int StopGlow = 5;
         while (glowtimes < LightningGlowingTimes) {
             Vector3 TargetP = Target.transform.position;
-            TargetP.y += HumanScale * Scaling;
+            TargetP.y += HumanScale;
             Vector3 Toward = TargetP - rightHand.position;
             Vector3 TowardNorm = Toward.normalized;
             float alpha = UnityEngine.Random.value;
@@ -742,7 +746,6 @@ public class PlayerControl : MonoBehaviour
         ShootDir = new Vector3(ShootDir.x, 0f, ShootDir.z).normalized;
         FireEffect.SetActive(true);
         BulletPrefab = Instantiate(Bullet, rightHand.position, Quaternion.identity);
-        BulletPrefab.transform.localScale *= Scaling;
         BulletPrefab.GetComponent<Rigidbody>().AddForce(ShootDir * ShootForce);
         Invoke("DisableFireEffect", FireEffectStop);
         Invoke("ToggleNavi", AttackAnimWait);
@@ -834,7 +837,7 @@ public class PlayerControl : MonoBehaviour
 
     IEnumerator DashMoving(Vector3 dir) {
         float DashAmount = 0f;
-        while (DashAmount < DashDistance * Scaling) {
+        while (DashAmount < DashDistance) {
             Human.transform.position += Time.deltaTime * DashSpeed * dir;
             DashAmount += Time.deltaTime * DashSpeed;
             yield return null;
@@ -907,6 +910,7 @@ public class PlayerControl : MonoBehaviour
 
     private bool FrostCD = false;
     private float CurFrostCD;
+    private Vector3 ForstOri;
     void Frost(Vector3 SubTarget) {
         Vector3 Target = GetMousePos() - Human.transform.position;
         ToggleNavi();
@@ -915,7 +919,8 @@ public class PlayerControl : MonoBehaviour
         PlayerAnim.SetInteger("Doing", 5);
         Doing = true;
         Target.y = 0;
-        StartCoroutine(ShootFrost(Target, FrostWaitTime));
+        FrostOri = Human.transform.position;
+        StartCoroutine(ShootIceBall(Target, FrostWaitTime));
         audioPlayer.PlayOneShot(frostSE);
         StartCoroutine(CoolDownCal(FrostCoolDown, (returnVal1, returnVal2) => {
             CurFrostCD = returnVal1;
@@ -926,12 +931,15 @@ public class PlayerControl : MonoBehaviour
         Invoke("ToggleNavi", FrostWaitTime + 0.2f);
     }
 
+    IEnumerator ShootIceBall(Vector3 Target) {
+
+    }
+
     IEnumerator ShootFrost(Vector3 Target, float wait) {
         yield return new WaitForSeconds(wait);
         Vector3 posi = (rightHand.position + leftHand.position) / 2.0f;
         posi.y = Human.transform.position.y + 0.2f;
         GameObject FrostPre = Instantiate(FrostBeam, posi, Quaternion.LookRotation(Target));
-        FrostPre.transform.localScale *= Scaling;
     }
 
     IEnumerator CoolDownCal(float coolDown, System.Action<float, bool> callback) {
@@ -981,7 +989,6 @@ public class PlayerControl : MonoBehaviour
         float dur = 0;
         Turning = true;
         GameObject Chprefab = Instantiate(ChargeEffect, Human.transform.position, Quaternion.identity);
-        Chprefab.transform.localScale *= Scaling;
         while (dur < TurnIntoDuration) {
             dur += Time.deltaTime;
             yield return null;
@@ -1019,8 +1026,8 @@ public class PlayerControl : MonoBehaviour
         CancelInvoke("ToggleNavi");
         CancelInvoke("ResetAnimDoing");
         DeactiveNavi();
-        Vector3 TurnInto = new Vector3(HumanScale*BearHumanScaleRatio*Scaling, HumanScale*BearHumanScaleRatio*Scaling, HumanScale*BearHumanScaleRatio*Scaling);
-        while (Bear.transform.localScale.x > HumanScale*BearHumanScaleRatio*Scaling * 1.1f) {
+        Vector3 TurnInto = new Vector3(HumanScale*BearHumanScaleRatio, HumanScale*BearHumanScaleRatio, HumanScale*BearHumanScaleRatio);
+        while (Bear.transform.localScale.x > HumanScale*BearHumanScaleRatio * 1.1f) {
             Bear.transform.localScale = Vector3.Slerp(Bear.transform.localScale, TurnInto, Time.deltaTime*TurnIntoScaler);
             yield return null;
         }
@@ -1030,7 +1037,7 @@ public class PlayerControl : MonoBehaviour
         Human.SetActive(true);
         BearMode = false;
         Turning = false;
-        Human.transform.localScale = new Vector3(HumanScale*Scaling, HumanScale*Scaling, HumanScale*Scaling);
+        Human.transform.localScale = new Vector3(HumanScale, HumanScale, HumanScale);
         yield return new WaitForSeconds(1f);
         ActiveNavi();
         DataManager.Instance.InBearMode = false;
@@ -1141,6 +1148,7 @@ public class PlayerControl : MonoBehaviour
         LightningCast = true;
         LightningFiring = false;
         LightningMode.SetActive(true);
+        LightningMode.transform.localScale = LightningRangeToScale * (LightningAARange / 6) / Scaling * new Vector3(1, 1, 1);
         DataManager.Instance.SetSkillEvent(0, 301);
         DataManager.Instance.SetSkillEvent(1, 302);
         DataManager.Instance.SetSkillEvent(2, 5);
@@ -1358,7 +1366,6 @@ public class PlayerControl : MonoBehaviour
         Vector3 InsPos = Bear.transform.position + Bear.transform.forward * KnockForwardScaler;
         InsPos.y = Bear.transform.position.y + 0.1f;
         Knock = Instantiate(EarthQuakeEffect, InsPos, Quaternion.Euler(90, 0, 0));
-        Knock.transform.localScale *= Scaling;
         yield return new WaitForSeconds(FirstKnockWait);
         BearAnim.SetFloat("Attack5Speed", 1f);
         BearAnim.SetBool("Attack5", true);
@@ -1368,7 +1375,6 @@ public class PlayerControl : MonoBehaviour
         InsPos = Bear.transform.position + Bear.transform.forward * KnockForwardScaler;
         InsPos.y = Bear.transform.position.y + 0.1f;
         Knock = Instantiate(EarthQuakeEffect, InsPos, Quaternion.Euler(90, 0, 0));
-        Knock.transform.localScale *= Scaling;
         yield return new WaitForSeconds(SecondKnockWait);
         BearAnim.SetFloat("Attack5Speed", Attack5AnimSpeed);
         BearAnim.SetBool("Attack5", true);
@@ -1377,7 +1383,6 @@ public class PlayerControl : MonoBehaviour
         InsPos = Bear.transform.position + Bear.transform.forward * KnockForwardScaler;
         InsPos.y = Bear.transform.position.y + 0.1f;
         Knock = Instantiate(EarthQuakeEffect, InsPos, Quaternion.Euler(90, 0, 0));
-        Knock.transform.localScale *= Scaling;
         BearAnim.SetFloat("Attack5Speed", 1f);
         yield return new WaitForSeconds(ThirdKnockWait);
         Doing = false;
@@ -1455,7 +1460,6 @@ public class PlayerControl : MonoBehaviour
         ShootDir.y = 0;
         ShootDir = ShootDir.normalized;
         GameObject LightningB = Instantiate(LightningBullet, (rightHand.position + leftHand.position) / 2, Quaternion.LookRotation(ShootDir));
-        LightningB.transform.localScale *= Scaling;
         Invoke("ToggleNavi", 0.7f);
         Doing = false;
         AvoidCasting = false;
@@ -1477,7 +1481,6 @@ public class PlayerControl : MonoBehaviour
             PlacingTotemCD = returnVal2;
         }));
         TotemPrefab = Instantiate(Totem, Human.transform.position, Quaternion.identity);
-        TotemPrefab.transform.localScale *= Scaling;
         TotemCharged = 0;
     }
 
@@ -1489,7 +1492,7 @@ public class PlayerControl : MonoBehaviour
         if (HealingPlaceCreated || ChLightning)
             return;
         if (LightningCast) {
-            if (Vector3.Distance(TotemPrefab.transform.position, Human.transform.position) <= LightningTotemChargedDis * Scaling) {
+            if (Vector3.Distance(TotemPrefab.transform.position, Human.transform.position) <= LightningTotemChargedDis) {
                 TotemCharged += amount;
             }
             if (TotemCharged >= 100f) {
@@ -1499,7 +1502,7 @@ public class PlayerControl : MonoBehaviour
                 TotemCharged = 0;
             }
         } else {
-            if (Vector3.Distance(TotemPrefab.transform.position, Human.transform.position) <= TotemChargedDis * Scaling) {
+            if (Vector3.Distance(TotemPrefab.transform.position, Human.transform.position) <= TotemChargedDis) {
                 TotemCharged += amount;
             }
             if (TotemCharged >= 100f) {
@@ -1514,7 +1517,7 @@ public class PlayerControl : MonoBehaviour
     IEnumerator CreateHealingPlace() {
         float dur = 0;
         while (!LightningCast && dur < HealingPlaceCreatedTime && TotemNotChanged) {
-            if (Vector3.Distance(TotemPrefab.transform.position, Human.transform.position) <= HealingPlaceDis * Scaling)
+            if (Vector3.Distance(TotemPrefab.transform.position, Human.transform.position) <= HealingPlaceDis)
                 DataManager.Instance.HealPlayer(HealingPlaceAmount);
             dur += HealingFrequency;
             yield return new WaitForSeconds(HealingFrequency);
@@ -1550,19 +1553,20 @@ public class PlayerControl : MonoBehaviour
     }
 
     void CastThunder() {
-        float RandomX = UnityEngine.Random.Range(-RandomThunderDis*Scaling, RandomThunderDis*Scaling);
-        float RandomZ = Mathf.Sqrt(RandomThunderDis*Scaling*RandomThunderDis*Scaling - RandomX * RandomX);
+        float Len = UnityEngine.Random.Range(0, RandomThunderDis);
+        float RandomX = UnityEngine.Random.Range(-Len, Len);
+        float RandomZ = Mathf.Sqrt(Len*Len - RandomX * RandomX);
         float sign = UnityEngine.Random.value;
         if (sign < 0.5)
             RandomZ = -RandomZ;
         GameObject ThunderPrefab = Instantiate(FallingThunder, TotemPrefab.transform.position + new Vector3(RandomX, 0.2f, RandomZ), Quaternion.Euler(-90, 0, 0));
-        ThunderPrefab.transform.localScale *= Scaling;
     }
 
     IEnumerator ChainLightning() {
         int ChainedTime = 0;
         GameObject Last = TotemPrefab;
         Dictionary<int, bool> Chained = new Dictionary<int, bool>();
+        yield return new WaitForSeconds(ChainLightningCharge);
         while (ChainedTime < ChainLightningTime && TotemNotChanged && LightningCast) {
             float ShortestDis = ChainDis;
             GameObject Closet = null;
@@ -1623,11 +1627,11 @@ public class PlayerControl : MonoBehaviour
             Vector3 Basis = Vector3.Cross(Toward, transform.up);
             Basis *= LightningCurveDis / Basis.magnitude;
             Vector3[] curvept2 = new Vector3[LightningCurvePts+2];
-            curvept[0] = A.transform.position + new Vector3(0, HumanScale*Scaling, 0);
-            curvept[LightningCurvePts+1] = B.transform.position + new Vector3(0, HumanScale*Scaling, 0);
+            curvept[0] = A.transform.position + new Vector3(0, HumanScale, 0);
+            curvept[LightningCurvePts+1] = B.transform.position + new Vector3(0, HumanScale, 0);
             for (var i = 1; i < LightningCurvePts+1; i++) {
                 Vector3 BasisR = Quaternion.AngleAxis(v2[i], TowardNorm) * Basis;
-                curvept[i] = A.transform.position + new Vector3(0, HumanScale*Scaling, 0) + Toward * lenV[i] + BasisR;
+                curvept[i] = A.transform.position + new Vector3(0, HumanScale, 0) + Toward * lenV[i] + BasisR;
             }
             LR.positionCount = LightningCurvePts+2;
             LR.SetPositions(curvept);
