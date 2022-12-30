@@ -22,6 +22,16 @@ public class TotemChargedBar : MonoBehaviour
         ChainFill = gameObject.transform.Find("ChainFill").gameObject;
         Fill = gameObject.transform.Find("Fill").gameObject;
         LightningFill = gameObject.transform.Find("LightningFill").gameObject;
+        if (DataManager.Instance.LightningMode) {
+            LightningFill.SetActive(true);
+            Fill.SetActive(false);
+        }
+        else {
+            LightningFill.SetActive(false);
+            Fill.SetActive(true);
+        }
+        HealFill.SetActive(false);
+        ChainFill.SetActive(false);
     }
 
     void Update() {

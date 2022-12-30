@@ -16,6 +16,7 @@ public class PanAndZoom : MonoBehaviour
     public float BorderDown;
     public float BorderLeft;
     public float BorderRight;
+    public float ShakingTime;
     
     private CinemachineVirtualCamera VirtualCamera;
     private Transform CameraTransform;
@@ -23,6 +24,7 @@ public class PanAndZoom : MonoBehaviour
     private bool Switching;
     private bool Lock;
     private bool first;
+    private bool isShaking;
 
     void Start()
     {
@@ -46,7 +48,9 @@ public class PanAndZoom : MonoBehaviour
             first = true;
         }
         if (DataManager.Instance.IsPlayerDead) {
-            Center();
+            CheckShake();
+            if (!isShaking)
+                Center();
         } else if (DataManager.Instance.InParallel != Switching) {
             StartCoroutine(CenterAfterHalfSec());
         } else {
@@ -59,7 +63,9 @@ public class PanAndZoom : MonoBehaviour
 
     void MoveCamera() {
         if (Lock) {
-            Center();
+            CheckShake();
+            if (!isShaking)
+                Center();
         } else {
             if (Input.GetKey(KeyCode.Space)) {
                 Center();
@@ -95,6 +101,18 @@ public class PanAndZoom : MonoBehaviour
         else if (Input.mousePosition.x <= Screen.width * BorderLeft)
             direction.x -= 1;
         return direction;
+    }
+
+    void CheckShake() {
+        if (DataManager.Instance.ShakeCam) {
+            DataManager.Instance.ShakeCam = false;
+            isShaking = true;
+            Invoke("ResetShake", ShakingTime);
+        }
+    }
+
+    void ResetShake() {
+        isShaking = false;
     }
     
 }

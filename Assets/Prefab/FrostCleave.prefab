@@ -19221,8 +19221,8 @@ Transform:
   m_GameObject: {fileID: 2545011683520402149}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2545011683520453067}
   - {fileID: 2545011683520432853}
@@ -24097,9 +24097,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ExistTime: 1.2
-  RayRadius: 0.5
-  RayLength: 6.2
-  Damage: 10
-  FrozenTime: 0.2
+  halfx: 0.2
+  halfy: 1
+  halfz: 2.8
+  RayLength: 0
+  Damage: 20
+  FrozenTime: 1.2
+  FrozenRate: 75
   HitEffect: {fileID: 6174150256750590993, guid: 24ec0c83f65d37a45941c9fc58bb6cd1,
     type: 3}
