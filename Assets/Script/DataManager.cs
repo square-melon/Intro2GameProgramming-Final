@@ -32,12 +32,13 @@ public class DataManager : MonoBehaviour
     public float MaxShieldStored;
     public bool ShieldUp;
     public float Scaling;
-    public bool ShootOnSB;
+    public int ShootOnSB;
     public GameObject damagetext;
     public GameObject cam;
     public float TotemCharged;
     public bool HealingPlaceCreated;
     public bool ChainLightning;
+    public bool ShakeCam;
     private void Awake()
     {   
         if (Instance != null && Instance != this) {
@@ -82,7 +83,7 @@ public class DataManager : MonoBehaviour
             go.GetComponent<TextMesh>().text = damage.ToString("N1");
             // go.transform.LookAt(go.transform.position + cam.transform.forward);
         }
-        BiolanceValue += damage * IncreaseBioValRate;
+        BiolanceValue += damage * IncreaseBioValRate * 0.01f;
         if (BiolanceValue >= 100f)
             BiolanceValue = 100f;
     }
@@ -168,6 +169,7 @@ public class DataManager : MonoBehaviour
     }
 
     public void takedamage(Transform enemy, float damage) {
+        enemy = ChangeToEnemyTrans(enemy);
         Debug.Log(enemy.name);
         if (enemy.CompareTag("Player")) {
             PlayerOnHit(damage);
@@ -181,7 +183,7 @@ public class DataManager : MonoBehaviour
                 }
             }
         }
-        ShootOnSB = true;
+        ShootOnSB++;
         Scene2Enemy e1 = enemy.GetComponent<Scene2Enemy>();
         enemyScript e2 = enemy.GetComponent<enemyScript>();
         Zombie3script ee2 = enemy.GetComponent<Zombie3script>();
@@ -210,9 +212,26 @@ public class DataManager : MonoBehaviour
         }
     }
 
+    public void ShakeCamera() {
+        ShakeCam = true;
+    }
+
     void ShowDamage(Transform enemy, float damage) {
         var go = Instantiate(damagetext, enemy.transform.position, Quaternion.identity);
         go.GetComponent<TextMesh>().text = damage.ToString("N1");
         // go.transform.LookAt(go.transform.position + cam.transform.forward);
+    }
+    private Transform ChangeToEnemyTrans(Transform Enemy) {
+        if (Enemy.CompareTag("Enemy")) return Enemy;
+        for (int j = Enemy.childCount - 1; j >= 0; j--) {
+            if (Enemy.GetChild(j).CompareTag("Enemy")) {
+                return Enemy.GetChild(j);
+            }
+        }
+        return null;
+    }
+
+    void IncreaseBioVal(float val) {
+        BiolanceValue += val;
     }
 }

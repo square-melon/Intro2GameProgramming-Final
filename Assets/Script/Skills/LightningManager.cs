@@ -9,6 +9,7 @@ public class LightningManager : MonoBehaviour
     public Dictionary<int, int> Lightning { get; private set; }
     public float BasicDamage;
     public float AdditionalDamage;
+    public int MaxStack;
 
     private void Awake() {
         Instance = this;
@@ -19,7 +20,8 @@ public class LightningManager : MonoBehaviour
         obj = ChangeToEnemy(obj);
         int hash = obj.GetHashCode();
         if (Lightning.ContainsKey(hash)) {
-            Lightning[hash]++;
+            if (Lightning[hash] < MaxStack)
+                Lightning[hash]++;
         } else {
             Lightning.Add(hash, 1);
         }
@@ -28,6 +30,7 @@ public class LightningManager : MonoBehaviour
 
     Transform ChangeToEnemy(Transform Enemy) {
         if (Enemy.CompareTag("Enemy")) return Enemy;
+        if (Enemy.CompareTag("Player")) return Enemy;
         for (int j = Enemy.childCount - 1; j >= 0; j--) {
             if (Enemy.GetChild(j).CompareTag("Enemy")) {
                 return Enemy.transform.GetChild(j);
