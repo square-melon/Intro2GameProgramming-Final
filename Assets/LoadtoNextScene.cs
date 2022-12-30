@@ -20,7 +20,7 @@ public class LoadtoNextScene : MonoBehaviour
     void Update()
     {
         float dis = Vector3.Distance(DataManager.Instance.PlayerPos,transform.position);
-        print(dis);
+        // print(dis);
         if(dis < 3.0f && !loadto) {
             //animatorfade.SetTrigger("FadeOut");
             LoadtoNext();

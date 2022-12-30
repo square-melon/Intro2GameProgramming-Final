@@ -6,17 +6,22 @@ public class peopleScript : MonoBehaviour
 {
     private UnityEngine.AI.NavMeshAgent naviAgent;
     private Animator peopleAnim;
+    Vector3 startSpot;
 
     public GameObject ExclamationR;
     private GameObject ExclamationPrefabR;
     public GameObject ExclamationY;
     private GameObject ExclamationPrefabY;
-    // Start is called before the first frame update
-    Vector3 startSpot;
     private bool discoveredY = false;
     private bool discoveredR = false;
+
+    
+    
+    
     //Time
     public static float deltaTime;
+
+
     void Start()
     {
         naviAgent = this.GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -34,6 +39,7 @@ public class peopleScript : MonoBehaviour
         if(run==true){
             Run();
         }
+        //觸發追逐的條件
         else if(dstToPlayer<15.0f && IsInFace()){
             timer += Time.deltaTime;
             if(timer>=2){
@@ -54,6 +60,14 @@ public class peopleScript : MonoBehaviour
             } 
             Track();   
             timer=0;
+        }
+        else if(dstToPlayer<15.0f && SpikeTrapDemo.trapped==true){
+            if(discoveredR==false){
+                Destroy(ExclamationPrefabY,0.0f);
+                discoveredY = false;
+                InstantiateR();     
+            }
+            Track();
         }
         else{
             idle();
