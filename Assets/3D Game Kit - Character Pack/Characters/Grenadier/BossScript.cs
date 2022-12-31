@@ -39,6 +39,11 @@ public class BossScript : MonoBehaviour
     
     
     private bool Dead ;
+
+    public BossHealth bar;
+    // public CameraShake camShake;
+    // camShake.start = true;
+
     void Start()
     {
         naviAgent = this.GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -46,6 +51,7 @@ public class BossScript : MonoBehaviour
         bearNaviAgent = Bear.GetComponent<UnityEngine.AI.NavMeshAgent>();
         BossAnim = GetComponent<Animator>();
         HitPlayer = false;
+        bar.SetMaxHealth(hp); 
     }
 
     // Update is called once per frame
@@ -201,6 +207,7 @@ public class BossScript : MonoBehaviour
         (0,Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(FacingTarget), Time.deltaTime * RotationSlerp * 2).eulerAngles.y,0);
     }
     public void Damage(float damage) {
-        hp-= damage;
+        hp -= damage;
+        bar.SetHealth(hp);  
     }
 }
