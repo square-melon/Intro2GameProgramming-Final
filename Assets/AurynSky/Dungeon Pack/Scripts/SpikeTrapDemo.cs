@@ -22,10 +22,9 @@ public class SpikeTrapDemo : MonoBehaviour {
         StartCoroutine(OpenCloseTrap());
     }
     void Start(){
-        Player = GameObject.Find("Player/Human");
+        Player = GameObject.Find("Human");
         playerNaviAgent = Player.GetComponent<UnityEngine.AI.NavMeshAgent>();
         originSpeed = playerNaviAgent.speed;
-
     }
     private bool opened = false;
     public static bool trapped = false;
