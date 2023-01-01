@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class peopleScript : MonoBehaviour
 {
     private UnityEngine.AI.NavMeshAgent naviAgent;
@@ -42,7 +42,7 @@ public class peopleScript : MonoBehaviour
         //觸發追逐的條件
         else if(dstToPlayer<15.0f && IsInFace()){
             timer += Time.deltaTime;
-            if(timer>=2){
+            if(timer>=1.5f){
                 run = true;
             }
             if(discoveredR==false){
@@ -94,10 +94,14 @@ public class peopleScript : MonoBehaviour
         Vector3 target = new Vector3(-40.0f,16.0f,92.0f);
         peopleAnim.SetBool("scared",true);
         naviAgent.SetDestination(target);
-        Invoke("RunSpeed",1f);
+        Invoke("RunSpeed",1.0f);
+        Invoke("loadScene",3.0f);
     }
     void RunSpeed(){
         naviAgent.speed = 5.0f;
+    }
+    void loadScene(){
+        SceneManager.LoadScene("Lose");
     }
     void InstantiateR(){
         Vector3 pos = transform.position;

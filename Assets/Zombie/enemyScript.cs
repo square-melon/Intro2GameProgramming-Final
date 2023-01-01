@@ -22,7 +22,7 @@ public class enemyScript : MonoBehaviour
     public GameObject damagetext;
     public Vector3 walkPoint;
     bool walkPointSet;
-    public float walkPointRange;
+    public float walkPointRange = 3.0f;
     void Start()
     {
         audioPlayer.volume = 5.0f;
