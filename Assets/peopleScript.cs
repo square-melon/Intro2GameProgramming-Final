@@ -74,7 +74,7 @@ public class peopleScript : MonoBehaviour
             timer=0;
         }
         //Timer
-        Debug.Log(timer);
+        // Debug.Log(timer);
     }
     void TimeCount(){
         
