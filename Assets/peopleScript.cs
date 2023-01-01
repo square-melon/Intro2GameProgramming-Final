@@ -91,7 +91,7 @@ public class peopleScript : MonoBehaviour
         naviAgent.SetDestination(DataManager.Instance.PlayerPos);
     }
     void Run(){
-        Vector3 target = new Vector3(-40.0f,16.0f,92.0f);
+        Vector3 target = new Vector3(9.867254f,-8.000162f,42.30503f);
         peopleAnim.SetBool("scared",true);
         naviAgent.SetDestination(target);
         Invoke("RunSpeed",1.0f);
