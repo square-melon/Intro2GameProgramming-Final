@@ -40,9 +40,9 @@ public class peopleScript : MonoBehaviour
             Run();
         }
         //觸發追逐的條件
-        else if(dstToPlayer<15.0f && IsInFace()){
+        else if(dstToPlayer<10.0f && IsInFace()){
             timer += Time.deltaTime;
-            if(timer>=1.5f){
+            if(timer>=3.0f){
                 run = true;
             }
             if(discoveredR==false){
@@ -52,7 +52,7 @@ public class peopleScript : MonoBehaviour
             }
             Track();
         }
-        else if(dstToPlayer<15.0f && IsInFront()){
+        else if(dstToPlayer<10.0f && IsInFront()){
             if(discoveredY==false){
                 Destroy(ExclamationPrefabR,0.0f);
                 discoveredR = false;
@@ -61,7 +61,7 @@ public class peopleScript : MonoBehaviour
             Track();   
             timer=0;
         }
-        else if(dstToPlayer<15.0f && SpikeTrapDemo.trapped==true){
+        else if(dstToPlayer<10.0f && SpikeTrapDemo.trapped==true){
             if(discoveredR==false){
                 Destroy(ExclamationPrefabY,0.0f);
                 discoveredY = false;
