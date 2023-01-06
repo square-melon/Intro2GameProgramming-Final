@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/bossDebug.unity
     guid: 58ceb76c660007047bc842674a8d0737
+  - enabled: 1
+    path: Assets/Scenes/Lose.unity
+    guid: a260819d7b8ce4d23a87dfe87e687648
   m_configObjects: {}
