@@ -14,7 +14,9 @@ public class peopleScript : MonoBehaviour
     private GameObject ExclamationPrefabY;
     private bool discoveredY = false;
     private bool discoveredR = false;
-
+    public Vector3 walkPoint;
+    bool walkPointSet;
+    public float walkPointRange;
     
     
     
@@ -70,7 +72,8 @@ public class peopleScript : MonoBehaviour
             Track();
         }
         else{
-            idle();
+            //idle();
+            Patroling();
             timer=0;
         }
         //Timer
@@ -79,6 +82,7 @@ public class peopleScript : MonoBehaviour
     void TimeCount(){
         
     }
+
     void idle(){
         naviAgent.SetDestination(startSpot);
         Destroy(ExclamationPrefabY,0.2f);
@@ -86,7 +90,31 @@ public class peopleScript : MonoBehaviour
         discoveredY = false;
         discoveredR = false;
     }
-    
+    private void Patroling()
+    {
+        if (!walkPointSet) SearchWalkPoint();
+
+        if (walkPointSet)
+            naviAgent.SetDestination(walkPoint);
+
+        Vector3 distanceToWalkPoint = transform.position - walkPoint;
+
+        //Walkpoint reached
+        if (distanceToWalkPoint.magnitude < 1f)
+            walkPointSet = false;
+    }
+    private void SearchWalkPoint()
+    {
+        //Calculate random point in range
+        float randomZ = Random.Range(-walkPointRange, walkPointRange);
+        float randomX = Random.Range(-walkPointRange, walkPointRange);
+
+        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+
+        // if (Physics.Raycast(walkPoint, -transform.up, 2f,whatground))
+        // if(walkPoint.x < 30.0f && walkPoint.x > -25.0f && walkpoint)
+        walkPointSet = true;
+    }
     void Track(){
         naviAgent.SetDestination(DataManager.Instance.PlayerPos);
     }

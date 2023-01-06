@@ -79,6 +79,7 @@ public class enemyScript : MonoBehaviour
         hp--;
     }   
     public void DamagePlayer() {
+    
         DataManager.Instance.PlayerOnHit(1.0f); 
         print(DataManager.Instance._HP);
     }
