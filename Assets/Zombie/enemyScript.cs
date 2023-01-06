@@ -23,6 +23,9 @@ public class enemyScript : MonoBehaviour
     public Vector3 walkPoint;
     bool walkPointSet;
     public float walkPointRange;
+    public GameObject SlashEffect;
+    private GameObject slashprefab;
+    private GameObject zombiehand;
     void Start()
     {
         audioPlayer.volume = 5.0f;
@@ -30,6 +33,8 @@ public class enemyScript : MonoBehaviour
         naviAgent = this.GetComponent<NavMeshAgent>();
         ZombieAnim = GetComponent<Animator>();
         DataManager.Instance.SetSceneState(false);
+        //zombiehand = GameObject.Find("Base HumanRArmDigit12");
+       
     }
 
     // Update is called once per frame
@@ -49,8 +54,10 @@ public class enemyScript : MonoBehaviour
             transform.LookAt(DataManager.Instance.PlayerPos);
             ZombieAnim.SetFloat("Speed", 0.0f);
             ZombieAnim.SetBool("Attack",true);
+            //Vector3 Target = new Vector3(0.0f,0.5f,0.0f);
+            Invoke("slashins",0.5f);
             Invoke("ResetAnimAttack",1.0f);
-        } else if(dstToPlayer > 10.0f){
+        } else if(dstToPlayer > 10.0f){         //patrol
             ZombieAnim.SetFloat("Speed", 0.2f);
             Patroling();
         }
@@ -83,6 +90,12 @@ public class enemyScript : MonoBehaviour
     }
     public void LoadScene2() {
 
+    }
+    public void slashins() {
+        Vector3 face = DataManager.Instance.PlayerPos - transform.position;
+        face = face * 0.5f;
+        Vector3 newpos = new Vector3(transform.position.x + face.x, transform.position.y+2.0f,transform.position.z + face.z);
+        slashprefab = Instantiate(SlashEffect,newpos,Quaternion.identity);
     }
     private void Patroling()
     {

@@ -2735,6 +2735,7 @@ MonoBehaviour:
     type: 3}
   walkPoint: {x: 0, y: 0, z: 0}
   walkPointRange: 3
+  SlashEffect: {fileID: 158764, guid: d3ea60607b1ce414a9416c252b7fd89f, type: 3}
 --- !u!195 &3939639778782979456
 NavMeshAgent:
   m_ObjectHideFlags: 0
