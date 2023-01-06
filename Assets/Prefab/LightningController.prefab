@@ -44,5 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c6d41c3624b5a34696c7ed719f25d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BasicDamage: 5
-  AdditionalDamage: 15
+  BasicDamage: 1
+  AdditionalDamage: 1
+  MaxStack: 20

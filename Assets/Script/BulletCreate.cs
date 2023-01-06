@@ -40,8 +40,8 @@ public class BulletCreate : MonoBehaviour
                 Instantiate(ExplodeEffect, other.contacts[0].point, Quaternion.identity);
                 DataManager.Instance.takedamage(other.collider.transform.root, Damage);
             }
-            Destroy(gameObject);
         }
+        Destroy(gameObject);
     }
     void ShowDamage() {
         var go = Instantiate(damagetext, transform.position, Quaternion.identity);
