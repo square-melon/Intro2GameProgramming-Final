@@ -75,7 +75,7 @@ public class peopleScript2 : MonoBehaviour
         }
         else{
             //idle();
-            //Patroling();
+            Patroling();
             timer=0;
         }
         //Timer

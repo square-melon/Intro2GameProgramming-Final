@@ -10,7 +10,8 @@ public class LoadtoNextScene : MonoBehaviour
     private GameObject player;
     private bool loadto = false;
     //public Animator animatorfade;
-     public Text m_Text;
+    public Text m_Text;
+    public Animator animatorfade;
     void Start()
     {
         
@@ -22,8 +23,8 @@ public class LoadtoNextScene : MonoBehaviour
         float dis = Vector3.Distance(DataManager.Instance.PlayerPos,transform.position);
         // print(dis);
         if(dis < 3.0f && !loadto) {
-            //animatorfade.SetTrigger("FadeOut");
-            LoadtoNext();
+            animatorfade.SetTrigger("FadeOut");
+            //LoadtoNext();
             loadto = true;
         }
     }
@@ -56,7 +57,7 @@ public class LoadtoNextScene : MonoBehaviour
             if (asyncOperation.progress >= 0.9f)
             {
                 //Change the Text to show the Scene is ready
-                 m_Text.text = "Press the space bar to enter the castle";
+                 m_Text.text = "Press space bar to enter the castle";
                 //Wait to you press the space key to activate the Scene
                 if (Input.GetKeyDown(KeyCode.Space))
                     //Activate the Scene
