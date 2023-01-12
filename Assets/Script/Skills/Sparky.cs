@@ -79,8 +79,8 @@ public class Sparky : MonoBehaviour
             e1.Damage();
         else if (e2)
             e2.Damage();
-        else if (e3)
-            e3.Damage();
+        // else if (e3)
+        //     e3.Damage();
         else if (ee)
             ee.Damage();
         else if (ee2)
