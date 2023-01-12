@@ -211,7 +211,7 @@ public class DataManager : MonoBehaviour
             print("joikokij");
         }
         if (e1)
-            e1.Damage();
+            e1.Damage(damage);
         else if (e2)
             e2.Damage();
         else if (e3)
