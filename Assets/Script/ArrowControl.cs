@@ -16,12 +16,19 @@ public class ArrowControl : MonoBehaviour
         //DetectShoot();
         
     }
-    void OnCollisionEnter(Collision col) {
+    // void OnCollisionEnter(Collision col) {
+    //     if(col.gameObject.tag == "Player") {
+    //         Destroy(gameObject);
+    //         //扣寫
+    //         DataManager.Instance.PlayerOnHit(10.0f);
+    //     }
+        
+    // }
+    void OnTriggerEnter(Collider col) {
         if(col.gameObject.tag == "Player") {
             Destroy(gameObject);
             //扣寫
             DataManager.Instance.PlayerOnHit(10.0f);
-            print(DataManager.Instance._HP);
         }
         
     }

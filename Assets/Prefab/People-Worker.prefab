@@ -199,6 +199,8 @@ MonoBehaviour:
     type: 3}
   ExclamationY: {fileID: 1825140083410618733, guid: faa5074556b4a31419efc02f10d4bbfa,
     type: 3}
+  walkPoint: {x: 0, y: 0, z: 0}
+  walkPointRange: 0
 --- !u!195 &7455246069461050111
 NavMeshAgent:
   m_ObjectHideFlags: 0

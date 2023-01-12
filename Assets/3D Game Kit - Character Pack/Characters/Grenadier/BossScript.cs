@@ -20,6 +20,10 @@ public class BossScript : MonoBehaviour
     public float RainDamage;
     private bool HitPlayer;
     private bool RHitPlayer;
+    private bool Spraying = false;
+    private bool Rainning = false;
+    public Transform shootspot;
+    private Coroutine ResetCasting;
 
     [Header("Settings")]
     private UnityEngine.AI.NavMeshAgent naviAgent;
@@ -32,10 +36,8 @@ public class BossScript : MonoBehaviour
     private UnityEngine.AI.NavMeshAgent playerNaviAgent;
     private UnityEngine.AI.NavMeshAgent bearNaviAgent;
     private Vector3 FacingTarget;
-    public Transform shootspot;
-    private Coroutine ResetCasting;
-    private bool Spraying = false;
-    private bool Rainning = false;
+    
+    
     private bool Dead ;
 
     public BossHealth bar;
