@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 4765efe9bd259bf44be4f08becc010e3
+guid: 61b20bf4226d3d34a827df1d7bd6ad1b
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: SemiCircleSlash
+    second: SwordCreate2
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -39,11 +39,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: SemiCircleSlash
+      name: SwordCreate2
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 109
+      lastFrame: 78
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
