@@ -39,6 +39,7 @@ public class Frost : MonoBehaviour
                 if (HitEnemy.ContainsKey(hash) == false) {
                     HitEnemy.Add(hash, true);
                     Transform objTrans = ChangeToEnemyTrans(obj.transform.root);
+                    Debug.Log(objTrans.position);
                     GameObject Hit = Instantiate(HitEffect, objTrans.position, Quaternion.identity);
                     Destroy(Hit, FrozenTime+0.2f);
                     DataManager.Instance.takedamage(objTrans, Damage);

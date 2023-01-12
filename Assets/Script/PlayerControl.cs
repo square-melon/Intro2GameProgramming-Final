@@ -165,11 +165,29 @@ public class PlayerControl : MonoBehaviour
     public float ChainDis;
     public float ChainingWaiting;
     public float ChainLightningTime;
-
+    public float MaxCombatTime;
 
     [Header("EffectSettings")]
     public float LightningRangeToScale;
     public float HealingPlaceRangeScaling;
+    public SpriteRenderer SPRenderer;
+    public GameObject GhostTrail;
+    public GameObject HealingPlaceHurtEffect;
+
+    [Header("Running")]
+    public float HumanWalkingSpeed;
+    public float HumanRunningSpeed;
+    public float BearWalkingSpeed;
+    public float BearRunningSpeed;
+    public float StaminaResTime;
+    public float StaminaResQuantity;
+    public float StaminaDrop;
+
+    [Header("Knock Back")]
+    public float HitBackDis;
+    public float GettingUpTime;
+    public float HitBackTime;
+    public float HitBackPercent;
 
     [Header("Debug")]
     public int Skill1;
@@ -199,6 +217,7 @@ public class PlayerControl : MonoBehaviour
     private Coroutine RSTDoing;
     private bool IsRooted;
     private bool BearMode;
+    private float Stamina;
 
     void Start()
     {
@@ -206,6 +225,7 @@ public class PlayerControl : MonoBehaviour
         Bear_naviAgent = Bear.GetComponent<NavMeshAgent>();
         PlayerRb = Human.GetComponent<Rigidbody>();
         BearRb = Bear.GetComponent<Rigidbody>();
+        Stamina = 100;
         SetGun();
         Init();
     }
@@ -217,15 +237,19 @@ public class PlayerControl : MonoBehaviour
             if (!Switching && !Turning) {
                 LocateDestination();
                 FaceTarget();
-                Attack();
+                if (!running)
+                    Attack();
                 Skills();
                 BioValDetect();
                 ToggleInParallel();
+                Running();
             }
+            StaminaRestore();
             DeadDetect();
             CheckDamaged();
             UpdateControlValue();
             UpdateValue();
+            InCombatCheck();
         } else {
             // Maybe reset?
         }
@@ -245,6 +269,7 @@ public class PlayerControl : MonoBehaviour
             DataManager.Instance.SetSkillLevel(2, SkillLevel3);
             DataManager.Instance.SetSkillLevel(3, SkillLevel4);
         }
+        DataManager.Instance.SetMAXHP(MAXHP);
         Firing = false;
         Dashing = false;
         Doing = false;
@@ -270,12 +295,29 @@ public class PlayerControl : MonoBehaviour
     void CheckDamaged() {
         if (DataManager.Instance.ShootOnSB != 0) {
             int x = DataManager.Instance.ShootOnSB;
+            InCombat = true;
+            ReCalCombat = true;
             DataManager.Instance.ShootOnSB = 0;
             if (LightningCast) {
                 ChargingTotem(LightningTotemAmount*x);
             } else {
                 ChargingTotem(ChargedTotemAmount*x);
             }
+        }
+    }
+
+    public bool ReCalCombat;
+    public float CombatCounter;
+    void InCombatCheck() {
+        if (ReCalCombat) {
+            ReCalCombat = false;
+            CombatCounter = 0;
+            stm_counter = 0;
+        } else if (InCombat) {
+            if (CombatCounter < MaxCombatTime)
+                CombatCounter += Time.deltaTime;
+            else
+                InCombat = false;
         }
     }
 
@@ -291,6 +333,7 @@ public class PlayerControl : MonoBehaviour
     void UpdateControlValue() {
         IsRooted = DataManager.Instance.PlayerIsRooted;
         RootedDetect();
+        KnockDownDetect();
     }
 
     private bool OriIsRooted;
@@ -303,6 +346,13 @@ public class PlayerControl : MonoBehaviour
             Invoke("ResetRooted", DataManager.Instance.RootedTime);
         }
         OriIsRooted = IsRooted;
+    }
+
+    void KnockDownDetect() {
+        if (DataManager.Instance.PlayerKnockDown) {
+            DataManager.Instance.PlayerKnockDown = false;
+            KnockBack();
+        }
     }
 
     void ResetRooted() {
@@ -361,7 +411,7 @@ public class PlayerControl : MonoBehaviour
     void Skills() {
         for (int i = 0; i < 4; i++) {
             if (Input.GetKey(SkillKey[i]) && !CheckSkillState(SkillEvent[i])) {
-                if (!AvoidCasting && !Turning) {
+                if (!AvoidCasting && !Turning && !running && !HitBack) {
                     StartCoroutine(CastSkill(SkillEvent[i], new Vector3(0, 0, 0), 0f, SkillKey[i], i));
                 }
             }
@@ -446,13 +496,22 @@ public class PlayerControl : MonoBehaviour
     }
 
     void UpdateValue() {
-        if (BearMode) 
+        if (BearMode) {
             DataManager.Instance.SetPlayerPos(Bear.transform.position);
-        else
+            DataManager.Instance.SetPlayerRotation(Bear.transform.rotation);
+            DataManager.Instance.SetPlayerFacing(Bear.transform.forward);
+            DataManager.Instance.SetPlayerScale(Bear.transform.localScale);
+        }
+        else {
             DataManager.Instance.SetPlayerPos(Human.transform.position);
+            DataManager.Instance.SetPlayerRotation(Human.transform.rotation);
+            DataManager.Instance.SetPlayerFacing(Human.transform.forward);
+            DataManager.Instance.SetPlayerScale(Human.transform.localScale);
+        }
         DataManager.Instance.TotemCharged = TotemCharged;
         DataManager.Instance.HealingPlaceCreated = HealingPlaceCreated;
         DataManager.Instance.ChainLightning = ChLightning;
+        DataManager.Instance.stamina = Stamina;
     }
 
     public Vector3 PlayerPos() {
@@ -460,9 +519,11 @@ public class PlayerControl : MonoBehaviour
     }
 
     void LocateDestination() {
-        if (Doing || IsRooted) {
+        if (Doing || IsRooted || HitBack) {
             PlayerAnim.SetBool("Walking", false);
+            PlayerAnim.SetBool("Running", false);
             BearAnim.SetBool("WalkForward", false);
+            BearAnim.SetBool("Run Forward", false);
             return;
         }
         if (Input.GetMouseButtonDown(1)) {
@@ -504,8 +565,17 @@ public class PlayerControl : MonoBehaviour
             if (Human_naviAgent.isStopped)
                 IsWalking = false;
         }
-        PlayerAnim.SetBool("Walking", IsWalking);
-        BearAnim.SetBool("WalkForward", IsWalking);
+        if (running) {
+            PlayerAnim.SetBool("Walking", false);
+            PlayerAnim.SetBool("Running", IsWalking);
+            BearAnim.SetBool("WalkForward", false);
+            BearAnim.SetBool("Run Forward", IsWalking);
+        } else {
+            PlayerAnim.SetBool("Walking", IsWalking);
+            PlayerAnim.SetBool("Running", false);
+            BearAnim.SetBool("WalkForward", IsWalking);
+            BearAnim.SetBool("Run Forward", false);
+        }
     }
 
     void FaceTarget() {
@@ -516,9 +586,11 @@ public class PlayerControl : MonoBehaviour
                 Bear.transform.eulerAngles = new Vector3(0, Quaternion.Slerp(Bear.transform.rotation, Quaternion.LookRotation(FacingTarget), Time.deltaTime * BearRotationSlerp * 2).eulerAngles.y, 0);
             }
         } else {
-            if (Human_naviAgent.velocity != Vector3.zero && !Human_naviAgent.isStopped) {
+            if (!HitBack && Human_naviAgent.velocity != Vector3.zero && !Human_naviAgent.isStopped) {
                 Human.transform.eulerAngles = new Vector3(0, Quaternion.Slerp(Human.transform.rotation, Quaternion.LookRotation(Human_naviAgent.velocity - Vector3.zero), Time.deltaTime * RotationSlerp).eulerAngles.y, 0);
-            } else if (Human_naviAgent.isStopped && FacingTarget != Vector3.zero) {
+            } else if (!HitBack && Human_naviAgent.isStopped && FacingTarget != Vector3.zero) {
+                Human.transform.eulerAngles = new Vector3(0, Quaternion.Slerp(Human.transform.rotation, Quaternion.LookRotation(FacingTarget), Time.deltaTime * RotationSlerp * 2).eulerAngles.y, 0);
+            } else if (HitBack && FacingTarget != Vector3.zero) {
                 Human.transform.eulerAngles = new Vector3(0, Quaternion.Slerp(Human.transform.rotation, Quaternion.LookRotation(FacingTarget), Time.deltaTime * RotationSlerp * 2).eulerAngles.y, 0);
             }
         }
@@ -543,7 +615,7 @@ public class PlayerControl : MonoBehaviour
     private float CurLightningAttackSpeed;
     private int BearAttackCnt;
     void Attack() {
-        if (Doing)
+        if (Doing || HitBack)
             return;
         if (!BearMode) {
             if (Input.GetKey(KeyCode.A) && !Firing && !LightningCast) {
@@ -867,7 +939,6 @@ public class PlayerControl : MonoBehaviour
         ResetDoing(0f);
         ToggleNavi();
         Invoke("DashEffectDisabled", 0.3f);
-        DataManager.Instance.SetBiolanceValue(100f);
     }
 
     void DashEffectDisabled() {
@@ -896,9 +967,10 @@ public class PlayerControl : MonoBehaviour
         MedkitHealCD = true;
     }
 
+    private bool HitBack;
     void DeadDetect() {
         if (DataManager.Instance.IsPlayerDead == false) {
-            float CurHP = DataManager.Instance.HP();
+            float CurHP = DataManager.Instance._HP;
             if (CurHP <= 0) {
                 audioPlayer.PlayOneShot(deadSE);
                 DataManager.Instance.PlayerDead(true);
@@ -909,14 +981,45 @@ public class PlayerControl : MonoBehaviour
                 Invoke("LoadLoseScene", 4f);
             } else {
                 if (CurHP < OriHP) {
+                    if (OriHP - CurHP >= DataManager.Instance.MAXHP * HitBackPercent * 0.01f)
+                        KnockBack();
+                    if (!BearMode)
+                        Instantiate(DamagedEffect, Human.transform.position, Quaternion.Euler(-90, 0, 0));
+                    else
+                        Instantiate(DamagedEffect, Bear.transform.position, Quaternion.Euler(-90, 0, 0));
                     // audioPlayer.PlayOneShot(hurtSE);
-                    // Instantiate(DamagedEffect, Human.transform.position, Quaternion.identity);
                     // PlayerAnim.SetInteger("Doing", 4);
                     // Invoke("ResetAnimDoing", 0.1f);
+                    InCombat = true;
+                    ReCalCombat = true;
                 }
                 OriHP = CurHP;
             }
         }
+    }
+
+    void KnockBack() {
+        if (!BearMode && !HitBack) {
+            HitBack = true;
+            if (DataManager.Instance.KnockDownFrom != null) {
+                FacingTarget = DataManager.Instance.KnockDownFrom.transform.position - Human.transform.position;
+                FacingTarget.y = 0;
+                Human_naviAgent.SetDestination(Human.transform.position - FacingTarget.normalized * HitBackDis);
+                DataManager.Instance.KnockDownFrom = null;
+            }
+            else {
+                FacingTarget = Human.transform.forward;
+                Human_naviAgent.SetDestination(Human.transform.position - Human.transform.forward * HitBackDis);
+            }
+            ResetAnimDoing();
+            PlayerAnim.SetTrigger("KnockDown");
+            // Invoke("GettingUp", GettingUpTime);
+            Invoke("ResetHitBack", HitBackTime);
+        }
+    }
+
+    void ResetHitBack() {
+        HitBack = false;
     }
 
     void LoadLoseScene() {
@@ -1503,7 +1606,8 @@ public class PlayerControl : MonoBehaviour
         float dur = 0;
         Vector3 pos = TotemPrefab.transform.position;
         pos.y = 0.02f;
-        HealingPlacePrefab = Instantiate(HealingPlace, pos, Quaternion.identity);
+        HealingPlacePrefab = Instantiate(HealingPlace, pos, Quaternion.Euler(-90, 0, 0));
+        yield return new WaitForSeconds(0.2f);
         for (int j = HealingPlacePrefab.transform.childCount - 1; j >= 0; j--) {
             HealingPlacePrefab.transform.GetChild(j).localScale *= HealingPlaceDis * (HealingPlaceRangeScaling / 10);
         }
@@ -1514,11 +1618,15 @@ public class PlayerControl : MonoBehaviour
                 inside = true;
             RaycastHit[] hit = Physics.SphereCastAll(HealingPlacePrefab.transform.position, HealingPlaceDis, Vector3.up, 0);
             foreach (var obj in hit) {
-                if (obj.transform.root.CompareTag("Enemy") || obj.transform.root.CompareTag("Monster")) {
-                    int hash = obj.transform.root.GetHashCode();
+                Debug.Log(obj.transform.root.CompareTag("Enemy"));
+                Transform enemyTrans = ChangeToEnemyTrans(obj.transform.root);
+                if (enemyTrans != null) {
+                    int hash = enemyTrans.GetHashCode();
                     if (!enemies.ContainsKey(hash)) {
                         enemies.Add(hash, true);
-                        DataManager.Instance.takedamage(ChangeToEnemyTrans(obj.transform.root), HealingPlaceAmount);
+                        DataManager.Instance.takedamage(enemyTrans, HealingPlaceAmount);
+                        GameObject HurtEff = Instantiate(HealingPlaceHurtEffect, enemyTrans.position, Quaternion.Euler(-90, 0, 0));
+                        Destroy(HurtEff, HealingFrequency);
                         if (inside)
                             DataManager.Instance.HealPlayer(HealingPlaceAmount);
                     }
@@ -1647,5 +1755,40 @@ public class PlayerControl : MonoBehaviour
             yield return new WaitForSeconds(LightningGlowingWait);
         }
         Destroy(LightningPrefab);
+    }
+
+    private bool running;
+    void Running() {
+        if (Input.GetKey(KeyCode.LeftShift) && Stamina > 0 && !HitBack) {
+            if (InCombat || DataManager.Instance.BossStage)
+                Stamina -= StaminaDrop;
+            running = true;
+            stm_counter = 0;
+            if (!BearMode) 
+                Human_naviAgent.speed = HumanRunningSpeed;
+            else
+                Bear_naviAgent.speed = BearRunningSpeed;
+            if (Stamina < 0)
+                Stamina = 0;
+        } else if (!BearMode) {
+            running = false;
+            Human_naviAgent.speed = HumanWalkingSpeed;
+        } else {
+            running = false;
+            Bear_naviAgent.speed = BearWalkingSpeed;
+        }
+    }
+
+    private bool InCombat;
+    private float stm_counter;
+    void StaminaRestore() {
+        if (stm_counter < StaminaResTime)
+            stm_counter += Time.deltaTime;
+        else if (Stamina < 100) {
+            Stamina += StaminaResQuantity;
+            if (Stamina > 100) Stamina = 100;
+        }
+        else
+            Stamina = 100;
     }
 }
