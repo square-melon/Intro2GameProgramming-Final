@@ -13,6 +13,7 @@ public class IceBall : MonoBehaviour
     public GameObject IceBallExplosion;
 
     private Vector3 Origin;
+    private bool explode;
     void Start()
     {
         Origin = transform.position;
@@ -20,16 +21,32 @@ public class IceBall : MonoBehaviour
 
     void Update()
     {
-        if (Vector3.Distance(transform.position, Origin) >= ExplodeDistance) {
-            StartCoroutine(Explode(null));
+        if (!explode) {
+            Ray ray = new Ray(transform.position, GetComponent<Rigidbody>().velocity);
+            Debug.DrawRay(transform.position, GetComponent<Rigidbody>().velocity.normalized * 0.5f, Color.green);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 0.5f)) {
+                Debug.Log("IceBall: " + hit.collider.transform.root.name);
+                if (hit.collider.transform.root.CompareTag("Enemy") || hit.collider.transform.root.CompareTag("Monster")) {
+                    explode = true;
+                    StartCoroutine(Explode(ChangeToEnemyTrans(hit.transform.root)));
+                }
+            }
+            if (Vector3.Distance(transform.position, Origin) >= ExplodeDistance) {
+                explode = true;
+                StartCoroutine(Explode(null));
+            }
         }
     }
 
     private void OnCollisionEnter(Collision other) {
-        if (other.transform.root.CompareTag("Enemy") || other.transform.root.CompareTag("Monster")) {
-            StartCoroutine(Explode(ChangeToEnemyTrans(other.transform.root)));
-        } else {
-            Destroy(gameObject);
+        if (!explode) {
+            if (other.transform.root.CompareTag("Enemy") || other.transform.root.CompareTag("Monster")) {
+                explode = true;
+                StartCoroutine(Explode(ChangeToEnemyTrans(other.transform.root)));
+            } else {
+                Destroy(gameObject);
+            }
         }
     }
 
