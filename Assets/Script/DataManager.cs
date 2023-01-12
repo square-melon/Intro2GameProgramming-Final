@@ -200,6 +200,7 @@ public class DataManager : MonoBehaviour
         Scene2Enemy e1 = enemy.GetComponent<Scene2Enemy>();
         enemyScript e2 = enemy.GetComponent<enemyScript>();
         Zombie3script ee2 = enemy.GetComponent<Zombie3script>();
+        magicZombieScript ee3 = enemy.GetComponent<magicZombieScript>();
         Wizard e3 = enemy.GetComponent<Wizard>();
         Scene2Boss ee = enemy.GetComponent<Scene2Boss>();
         EnemySpider e4 = enemy.GetComponent<EnemySpider>();
@@ -223,6 +224,8 @@ public class DataManager : MonoBehaviour
             e5.Damage(damage);
         else if (e6)
             e6.Damage(damage);
+        else if (ee3)
+            ee3.Damage(damage);
         if(damagetext) {
             ShowDamage(enemy, damage);
         }

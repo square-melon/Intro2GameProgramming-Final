@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc54790c38d56d240bbd83cf672713a4, type: 3}
-  m_Name: "Mentor: \u55E8"
+  m_Name: "Mentor: <b>Hephaestus<\u2026"
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: -248, y: -72}
@@ -54,7 +54,7 @@ MonoBehaviour:
   PlayPerChar: 0
   PlayTyping: 0
   Dialogue:
-  - "\u55E8"
+  - "<b>Hephaestus</b>\n\u6211\u5011\u7D04\u5B9A\u597D\u7684\u9019\u4E00\u5929\u5230\u4E86..."
   IsMax: 1
   curIndex: 0
 --- !u!114 &-4543930858193790450
@@ -116,23 +116,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2784bac956dac04b9b62556f83545a0, type: 3}
-  m_Name: New Dialogue Graph
+  m_Name: ToMonster
   m_EditorClassIdentifier: 
   nodes:
+  - {fileID: -4543930858193790450}
   - {fileID: -4530802627035662291}
   - {fileID: -6615528333919897313}
-  - {fileID: -4543930858193790450}
   - {fileID: 5193828476513748844}
   - {fileID: 1878034710950481228}
   - {fileID: 3537106969947681138}
   - {fileID: 7686452401673749607}
-  startNode: {fileID: 0}
-  dialogueNode: {fileID: 0}
+  - {fileID: 6180451366325664120}
+  startNode: {fileID: -4530802627035662291}
+  dialogueNode: {fileID: 6987870835145323165, guid: 041d0cfd9037e6d4fb6e27d953a94928,
+    type: 2}
   optionNode: {fileID: 0}
   eventNode: {fileID: 0}
   commentNode: {fileID: 0}
   profileNode: {fileID: -4543930858193790450}
-  current: {fileID: 7686452401673749607}
+  current: {fileID: 6180451366325664120}
 --- !u!114 &1878034710950481228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,7 +145,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc54790c38d56d240bbd83cf672713a4, type: 3}
-  m_Name: "Mentor: \u6211\u7684\u540D\u5B57\u662FJosh"
+  m_Name: "Mentor: <b>Hephaestus<\u2026"
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: 456, y: -72}
@@ -187,7 +189,7 @@ MonoBehaviour:
   PlayPerChar: 0
   PlayTyping: 0
   Dialogue:
-  - "\u6211\u7684\u540D\u5B57\u662FJosh"
+  - "<b>Hephaestus</b>\n\u770B\u5230\u4F60\u5145\u6EFF\u9B25\u5FD7\u771F\u662F\u4EE4\u4EBA\u6B23\u6170\uFF0C\u9084\u8A18\u5F97\u6211\u5011\u7684\u7279\u8A13\u55CE\uFF1F"
   IsMax: 1
   curIndex: 0
 --- !u!114 &3537106969947681138
@@ -200,7 +202,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc54790c38d56d240bbd83cf672713a4, type: 3}
-  m_Name: "Mentor: \u5FD8\u8A18\u600E\u9EBC\u8D70\u8DEF\u4E86\u55CE\uFF1F\u6ED1\u9F20\u53F3\u9375\u9EDE\u2026"
+  m_Name: 'Player: <b>Melon</b>'
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: 808, y: -72}
@@ -233,7 +235,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  TalkingPerson: Mentor
+  TalkingPerson: Player
   Expression: none
   Facing: 0
   FacingPerson: 
@@ -244,7 +246,7 @@ MonoBehaviour:
   PlayPerChar: 0
   PlayTyping: 0
   Dialogue:
-  - "\u5FD8\u8A18\u600E\u9EBC\u8D70\u8DEF\u4E86\u55CE\uFF1F\u6ED1\u9F20\u53F3\u9375\u9EDE\u64CA\u53EF\u4EE5\u8D70\u5230\u60F3\u53BB\u7684\u5730\u65B9"
+  - "<b>Melon</b>\n\u554A\uFF01\u6211\u53C8\u5FD8\u8A18\u4E86<sub>melon melon</sub>..."
   IsMax: 1
   curIndex: 0
 --- !u!114 &5193828476513748844
@@ -257,7 +259,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc54790c38d56d240bbd83cf672713a4, type: 3}
-  m_Name: "Mentor: \u4F60\u597D"
+  m_Name: 'Player: <b>Melon</b>'
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: 104, y: -72}
@@ -290,7 +292,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  TalkingPerson: Mentor
+  TalkingPerson: Player
   Expression: none
   Facing: 0
   FacingPerson: 
@@ -301,7 +303,63 @@ MonoBehaviour:
   PlayPerChar: 0
   PlayTyping: 0
   Dialogue:
-  - "\u4F60\u597D"
+  - "<b>Melon</b>\n\u662F\u7684\uFF0C\u5728\u7D93\u904E\u5E2B\u5085\u9019\u5E7E\u5E74\u7684\u7279\u8A13\u5F8C\uFF0C\u6211\u5982\u4ECA\u5DF2\u548C\u7576\u5E74\u7626\u5F31\u7684Melon\u4E0D\u540C\u4E86\u3002\u6211\u4E00\u5B9A\u6703\u6253\u6557\u9B54\u738B\u62EF\u6551\u4E16\u754C\u7684\u3002<sub>melon
+    melon</sub>"
+  IsMax: 1
+  curIndex: 0
+--- !u!114 &6180451366325664120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc54790c38d56d240bbd83cf672713a4, type: 3}
+  m_Name: 'Player: <b>Melon</b>'
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1512, y: -72}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: 6180451366325664120}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Output
+        node: {fileID: 7686452401673749607}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: 6180451366325664120}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  TalkingPerson: Player
+  Expression: none
+  Facing: 0
+  FacingPerson: 
+  Width: 0
+  ShowBubble: 1
+  CameraFollow: 1
+  Audio: {fileID: 0}
+  PlayPerChar: 0
+  PlayTyping: 0
+  Dialogue:
+  - "<b>Melon</b>\n\u597D\uFF01\u6211\u8A66\u8A66\u770B\u5E2B\u5085\uFF01<sub>melon
+    melon</sub>"
   IsMax: 1
   curIndex: 0
 --- !u!114 &7686452401673749607
@@ -314,7 +372,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc54790c38d56d240bbd83cf672713a4, type: 3}
-  m_Name: "Player: \u8ACB\u554F\u4F60\u662F\uFF1F"
+  m_Name: "Mentor: <b>Hephaestus<\u2026"
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: 1160, y: -72}
@@ -339,12 +397,15 @@ MonoBehaviour:
       _node: {fileID: 7686452401673749607}
       _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: Input
+        node: {fileID: 6180451366325664120}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  TalkingPerson: Player
+  TalkingPerson: Mentor
   Expression: none
   Facing: 0
   FacingPerson: 
@@ -355,6 +416,6 @@ MonoBehaviour:
   PlayPerChar: 0
   PlayTyping: 0
   Dialogue:
-  - "\u8ACB\u554F\u4F60\u662F\uFF1F"
+  - "<b>Hephaestus</b>\n\u5475\u5475\u5475\u5475\uFF0C\u6C92\u6709\u95DC\u4FC2\uFF0C\u8A18\u5F97\u53F3\u9375\u9EDE\u64CA\u5730\u677F\u53EF\u4EE5\u8D70\u8DEF\uFF0C\u518D\u8A66\u8A66\u770B\u5427\uFF01"
   IsMax: 1
   curIndex: 0
