@@ -24,12 +24,12 @@ public class FallingThunder : MonoBehaviour
     {
         RaycastHit[] hit = Physics.SphereCastAll(transform.position, RayRadius * Scaling, Vector3.up, RayLength * Scaling);
         foreach (var obj in hit) {
-            if (obj.collider.CompareTag("Enemy") || (obj.collider.CompareTag("Player"))) {
-                int hash = obj.collider.transform.root.GetHashCode();
+            if (obj.transform.root.CompareTag("Enemy") || obj.transform.root.CompareTag("Monster") || obj.transform.root.CompareTag("Player")) {
+                int hash = obj.transform.root.GetHashCode();
                 if (HitEnemy.ContainsKey(hash) == false) {
                     HitEnemy.Add(hash, true);
                     if (LightningManager.Instance != null)
-                        LightningManager.Instance.HitOn(obj.collider.transform.root);
+                        LightningManager.Instance.HitOn(obj.transform.root);
                 }
             }
         }

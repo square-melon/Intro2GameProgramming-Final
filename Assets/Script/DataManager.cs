@@ -5,6 +5,7 @@ using UnityEngine;
 public class DataManager : MonoBehaviour
 {
     public float IncreaseBioValRate;
+    public float IncBioValRateBoss;
     public static DataManager Instance { get; private set; }
     public float Score { get; private set; }
     public float _HP { get; private set; }
@@ -13,6 +14,9 @@ public class DataManager : MonoBehaviour
     public int PreviousScene { get; private set;}
     public bool SceneWin { get; private set; }
     public Vector3 PlayerPos { get; private set; }
+    public Quaternion PlayerRot { get; private set; }
+    public Vector3 PlayerFacing { get; private set; }
+    public Vector3 PlayerScale { get; private set; }
     public float BiolanceValue { get; private set; }
     public int IsPausing;
     public int[] SkillLevel { get; private set; }
@@ -39,6 +43,11 @@ public class DataManager : MonoBehaviour
     public bool HealingPlaceCreated;
     public bool ChainLightning;
     public bool ShakeCam;
+    public float stamina;
+    public bool EmitGhost;
+    public bool PlayerKnockDown;
+    public GameObject KnockDownFrom;
+    public bool BossStage;
     private void Awake()
     {   
         if (Instance != null && Instance != this) {
@@ -81,9 +90,13 @@ public class DataManager : MonoBehaviour
             _HP -= damage;
             var go = Instantiate(damagetext, PlayerPos, Quaternion.identity);
             go.GetComponent<TextMesh>().text = damage.ToString("N1");
+            Debug.Log(_HP);
             // go.transform.LookAt(go.transform.position + cam.transform.forward);
         }
-        BiolanceValue += damage * IncreaseBioValRate * 0.01f;
+        if (!BossStage)
+            BiolanceValue += damage * IncreaseBioValRate * 0.01f;
+        else
+            BiolanceValue += damage * IncBioValRateBoss * 0.01f;
         if (BiolanceValue >= 100f)
             BiolanceValue = 100f;
     }
@@ -201,7 +214,7 @@ public class DataManager : MonoBehaviour
         else if (e2)
             e2.Damage();
         else if (e3)
-            e3.Damage();
+            e3.Damage(damage);
         else if (ee)
             ee.Damage();
         else if (ee2)
@@ -226,6 +239,7 @@ public class DataManager : MonoBehaviour
     }
     private Transform ChangeToEnemyTrans(Transform Enemy) {
         if (Enemy.CompareTag("Enemy")) return Enemy;
+        if (Enemy.CompareTag("Player")) return Enemy;
         for (int j = Enemy.childCount - 1; j >= 0; j--) {
             if (Enemy.GetChild(j).CompareTag("Enemy")) {
                 return Enemy.GetChild(j);
@@ -234,7 +248,19 @@ public class DataManager : MonoBehaviour
         return null;
     }
 
-    void IncreaseBioVal(float val) {
+    public void IncreaseBioVal(float val) {
         BiolanceValue += val;
+    }
+
+    public void SetPlayerRotation(Quaternion rot) {
+        PlayerRot = rot;
+    }
+
+    public void SetPlayerFacing(Vector3 forw) {
+        PlayerFacing = forw;
+    }
+
+    public void SetPlayerScale(Vector3 sca) {
+        PlayerScale = sca;
     }
 }
