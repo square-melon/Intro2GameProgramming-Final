@@ -17,8 +17,8 @@ public class Key : MonoBehaviour
     {
         RotateAngle = new Vector3(0,1,0);
     }
-    // void Update()
-    // {
-    //     transform.Rotate(RotateAngle * )
-    // }
+    void Update()
+    {
+        transform.Rotate(RotateAngle * Speed);
+    }
 }

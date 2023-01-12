@@ -17,14 +17,14 @@ public class enemyScript : MonoBehaviour
     private NavMeshAgent naviAgent;
     private Animator ZombieAnim;
     //private UnityEngine.AI.NavMeshAgent nav;
-    private int  hp=2;
+    private float  hp=90;
     private bool first=true;
     public GameObject damagetext;
     public Vector3 walkPoint;
     bool walkPointSet;
     public float walkPointRange;
     public GameObject SlashEffect;
-    private GameObject slashprefab;
+    public GameObject SlashEffect1;
     private GameObject zombiehand;
     void Start()
     {
@@ -38,11 +38,12 @@ public class enemyScript : MonoBehaviour
     }
 
     // Update is called once per frame
+    public bool attack = false;
+    private bool attacking = false;
     void Update()
     {
         float dstToPlayer = Vector3.Distance(transform.position, DataManager.Instance.PlayerPos);
-        
-        if(dstToPlayer<10.0f && dstToPlayer > 2.0f){ //Track
+        if(dstToPlayer<10.0f && dstToPlayer > 2.5f){ //Track
             if(first){ 
                 audioPlayer.PlayOneShot(ZombieMoan);
                 first = false;
@@ -50,20 +51,23 @@ public class enemyScript : MonoBehaviour
             transform.LookAt(DataManager.Instance.PlayerPos);
             ZombieAnim.SetFloat("Speed", 1.0f);
             naviAgent.SetDestination(DataManager.Instance.PlayerPos);
-        }else if(dstToPlayer<=2.0f){                //attack
+        }else if(dstToPlayer<=2.5f){                //attack
+            naviAgent.isStopped = true;
             transform.LookAt(DataManager.Instance.PlayerPos);
             ZombieAnim.SetFloat("Speed", 0.0f);
-            ZombieAnim.SetBool("Attack",true);
-            //Vector3 Target = new Vector3(0.0f,0.5f,0.0f);
-            Invoke("slashins",0.5f);
-            Invoke("ResetAnimAttack",1.0f);
-        } else if(dstToPlayer > 10.0f){         //patrol
+            if(!attack){
+                attack = true;
+                ZombieAnim.SetTrigger("Attac");
+                Invoke("ResetAnimAttack",1.8f);
+            }
+            //Vector3 Target = new Vector3(0.0f,0.5f,0.0f);        
+        }else if(dstToPlayer > 10.0f){         //patrol
             ZombieAnim.SetFloat("Speed", 0.2f);
             Patroling();
         }
+
         if(hp<=0){
             ZombieAnim.SetBool("Dead",true);
-
         }
         if(ZombieAnim.GetCurrentAnimatorStateInfo(0).IsName("Dissapear")){ //dissapear after dead
             gameObject.SetActive(false);
@@ -73,10 +77,11 @@ public class enemyScript : MonoBehaviour
         }
     }
     void ResetAnimAttack(){
-        ZombieAnim.SetBool("Attack",false);
+        attack = false;
+        attacking = false;
     }
-    public void Damage() {
-        hp--;
+    public void Damage(float demage) {
+        hp-= demage;
     }   
     public void DamagePlayer() {
     
@@ -85,6 +90,8 @@ public class enemyScript : MonoBehaviour
     }
     public void AttackSE(){
         audioPlayer.PlayOneShot(ZombieAttack);
+        Invoke("Slashins",0.4f);
+        Invoke("Slashins1",0.6f);
     }
     public void DeadSE(){
         audioPlayer.PlayOneShot(ZombieDead);
@@ -92,11 +99,20 @@ public class enemyScript : MonoBehaviour
     public void LoadScene2() {
 
     }
-    public void slashins() {
-        Vector3 face = DataManager.Instance.PlayerPos - transform.position;
-        face = face * 0.5f;
-        Vector3 newpos = new Vector3(transform.position.x + face.x, transform.position.y+2.0f,transform.position.z + face.z);
-        slashprefab = Instantiate(SlashEffect,newpos,Quaternion.identity);
+    public void Slashins() {
+        SlashEffect.SetActive(true);
+        Invoke("Setfalse",1.0f);
+        // slashprefab = Instantiate(SlashEffect);
+    }
+    public void Slashins1() {
+        SlashEffect1.SetActive(true);
+        Invoke("Setfalse1",1.0f);
+    }
+    public void Setfalse(){
+        SlashEffect.SetActive(false);
+    }
+    public void Setfalse1(){
+        SlashEffect1.SetActive(false);
     }
     private void Patroling()
     {
