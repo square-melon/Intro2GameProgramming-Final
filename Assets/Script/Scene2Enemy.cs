@@ -16,9 +16,9 @@ public class Scene2Enemy : MonoBehaviour
     public GameObject Arrow;
     private float dis;
     private Vector3 Face;
-    private float hp = 3;
+    private float hp = 70;
     public AudioSource audioPlayer;
-    public AudioSource deadPlayer;
+    //public AudioSource deadPlayer;
     public AudioClip attackSE;
     public AudioClip deadSE;
 
@@ -69,11 +69,11 @@ public class Scene2Enemy : MonoBehaviour
     //         print("yes");
     //     }
     // }
-    public void Damage() {
+    public void Damage(float damage) {
         if(hp>1){
             animator.SetTrigger("Stunned");
         }
-        hp--;
+        hp-= damage;
         Debug.Log(hp);
     }
     void DetectDead() {
@@ -94,6 +94,6 @@ public class Scene2Enemy : MonoBehaviour
        
     }
     public void DeadSE(){
-        deadPlayer.PlayOneShot(deadSE);
+        audioPlayer.PlayOneShot(deadSE);
     }
 }

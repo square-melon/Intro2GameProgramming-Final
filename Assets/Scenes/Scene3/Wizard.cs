@@ -27,6 +27,9 @@ public class Wizard : MonoBehaviour
 
     private float hp = 150;
     private NavMeshAgent agent;
+    public AudioSource audiosource;
+    
+    //public AudioClip aclip;
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +46,7 @@ public class Wizard : MonoBehaviour
         // Fire.transform.position = transform.position;
         Fire.SetActive(false);
         agent = GetComponent<NavMeshAgent>();
+        gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -74,15 +78,21 @@ public class Wizard : MonoBehaviour
             } else {
                 agent.SetDestination(lockedpoint);
             }
-            Invoke("Rush",5.0f);
-            attackflag = 0;
+            //Invoke("Rush",5.0f);
+            //attackflag = 0;
             //Fire.SetActive(false);
         } else {
             agent.SetDestination(transform.position);
         }
-
-        if (dis < 1f)
-            attackflag = 0;
+        float diss = Vector3.Distance(lockedpoint, transform.position);
+        if (diss < 0.6f) {
+            Invoke("clear", 3.0f);
+        }
+            
+    }
+    void clear() {
+        attackflag = 0;
+        transform.LookAt(DataManager.Instance.PlayerPos);
     }
     void Rush() {
         attackflag = 1;
@@ -98,9 +108,9 @@ public class Wizard : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.name == "Player")
+        if(other.gameObject.CompareTag ("Player"))
         {
-            if(hp > 0) DataManager.Instance.PlayerOnHit(40);
+            if(hp > 0) DataManager.Instance.PlayerOnHit(40.0f);
         }
         if(other.gameObject.layer == 6)
         {
