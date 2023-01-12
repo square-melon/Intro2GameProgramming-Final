@@ -1,22 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class peopleScript : MonoBehaviour
 {
     private UnityEngine.AI.NavMeshAgent naviAgent;
     private Animator peopleAnim;
+    Vector3 startSpot;
 
     public GameObject ExclamationR;
     private GameObject ExclamationPrefabR;
     public GameObject ExclamationY;
     private GameObject ExclamationPrefabY;
-    // Start is called before the first frame update
-    Vector3 startSpot;
     private bool discoveredY = false;
     private bool discoveredR = false;
+    public Vector3 walkPoint;
+    bool walkPointSet;
+    public float walkPointRange;
+    
+    
+    
     //Time
     public static float deltaTime;
+
+
     void Start()
     {
         naviAgent = this.GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -34,9 +41,10 @@ public class peopleScript : MonoBehaviour
         if(run==true){
             Run();
         }
-        else if(dstToPlayer<15.0f && IsInFace()){
+        //觸發追逐的條件
+        else if(dstToPlayer<10.0f && IsInFace()){
             timer += Time.deltaTime;
-            if(timer>=2){
+            if(timer>=3.0f){
                 run = true;
             }
             if(discoveredR==false){
@@ -46,7 +54,7 @@ public class peopleScript : MonoBehaviour
             }
             Track();
         }
-        else if(dstToPlayer<15.0f && IsInFront()){
+        else if(dstToPlayer<10.0f && IsInFront()){
             if(discoveredY==false){
                 Destroy(ExclamationPrefabR,0.0f);
                 discoveredR = false;
@@ -55,16 +63,26 @@ public class peopleScript : MonoBehaviour
             Track();   
             timer=0;
         }
+        else if(dstToPlayer<10.0f && SpikeTrapDemo.trapped==true){
+            if(discoveredR==false){
+                Destroy(ExclamationPrefabY,0.0f);
+                discoveredY = false;
+                InstantiateR();     
+            }
+            Track();
+        }
         else{
-            idle();
+            //idle();
+            Patroling();
             timer=0;
         }
         //Timer
-        Debug.Log(timer);
+        // Debug.Log(timer);
     }
     void TimeCount(){
         
     }
+
     void idle(){
         naviAgent.SetDestination(startSpot);
         Destroy(ExclamationPrefabY,0.2f);
@@ -72,18 +90,46 @@ public class peopleScript : MonoBehaviour
         discoveredY = false;
         discoveredR = false;
     }
-    
+    private void Patroling()
+    {
+        if (!walkPointSet) SearchWalkPoint();
+
+        if (walkPointSet)
+            naviAgent.SetDestination(walkPoint);
+
+        Vector3 distanceToWalkPoint = transform.position - walkPoint;
+
+        //Walkpoint reached
+        if (distanceToWalkPoint.magnitude < 1f)
+            walkPointSet = false;
+    }
+    private void SearchWalkPoint()
+    {
+        //Calculate random point in range
+        float randomZ = Random.Range(-walkPointRange, walkPointRange);
+        float randomX = Random.Range(-walkPointRange, walkPointRange);
+
+        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+
+        // if (Physics.Raycast(walkPoint, -transform.up, 2f,whatground))
+        // if(walkPoint.x < 30.0f && walkPoint.x > -25.0f && walkpoint)
+        walkPointSet = true;
+    }
     void Track(){
         naviAgent.SetDestination(DataManager.Instance.PlayerPos);
     }
     void Run(){
-        Vector3 target = new Vector3(-40.0f,16.0f,92.0f);
+        Vector3 target = new Vector3(9.867254f,-8.000162f,42.30503f);
         peopleAnim.SetBool("scared",true);
         naviAgent.SetDestination(target);
-        Invoke("RunSpeed",1f);
+        Invoke("RunSpeed",1.0f);
+        Invoke("loadScene",3.0f);
     }
     void RunSpeed(){
         naviAgent.speed = 5.0f;
+    }
+    void loadScene(){
+        SceneManager.LoadScene("Lose");
     }
     void InstantiateR(){
         Vector3 pos = transform.position;
