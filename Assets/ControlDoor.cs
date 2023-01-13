@@ -76,7 +76,7 @@ public class ControlDoor : MonoBehaviour
             Invoke("Cleartext", 5.0f);
             if(flag == 0) {
                 agent1.isStopped = true;
-                agent2.isStopped = true;
+                //agent2.isStopped = true;
             } 
             flagdetect = 1;
         }
@@ -90,7 +90,7 @@ public class ControlDoor : MonoBehaviour
         _text.text = "";
         flag = 1;
         agent1.isStopped = false;
-        agent2.isStopped = false;
+        //agent2.isStopped = false;
         //Wizardani.SetTrigger("goup");
         Destroy(fireprefab1);
         Destroy(fireprefab2);

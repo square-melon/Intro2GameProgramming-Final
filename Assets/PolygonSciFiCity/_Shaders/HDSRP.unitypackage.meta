@@ -1,5 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/minfanPrefab/Zombie 1.meta
+guid: 0b67080444328f14ebe1df621f31ac3a
+folderAsset: yes
+========
 guid: 939781158920a0e4f8b3b9331945b47f
+>>>>>>>> main:Assets/PolygonSciFiCity/_Shaders/HDSRP.unitypackage.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
