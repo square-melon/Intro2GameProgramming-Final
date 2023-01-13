@@ -62,6 +62,7 @@ public class ControlDoor : MonoBehaviour
     
     void OnTriggerEnter(Collider other) {
         if(other.GetComponent<Collider>().CompareTag("Player") && flagdetect == 0) {
+            transform.position = new Vector3(transform.position.x, transform.position.y - 3.0f, transform.position.z);
             change2();
             audiosource.PlayOneShot(aclip);
             Vector3 a = new Vector3(Wizardd1.transform.position.x,Wizardd1.transform.position.y-6.0f,Wizardd1.transform.position.z);
@@ -74,12 +75,16 @@ public class ControlDoor : MonoBehaviour
             _text.text = "<b>Warning!!!!</b>";
             Invoke("wizardout", 4.5f);
             Invoke("Cleartext", 5.0f);
-            if(flag == 0) {
-                agent1.isStopped = true;
-                agent2.isStopped = true;
-            } 
+            Invoke("stop",1.0f);
+            
             flagdetect = 1;
         }
+    }
+    void stop() {
+        if(flag == 0) {
+            agent1.isStopped = true;
+            //agent2.isStopped = true;
+        } 
     }
     void wizardout() {
         Wizardd1.SetActive(true);
@@ -90,7 +95,7 @@ public class ControlDoor : MonoBehaviour
         _text.text = "";
         flag = 1;
         agent1.isStopped = false;
-        agent2.isStopped = false;
+        //agent2.isStopped = false;
         //Wizardani.SetTrigger("goup");
         Destroy(fireprefab1);
         Destroy(fireprefab2);

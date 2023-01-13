@@ -75,9 +75,11 @@ public class Wizard : MonoBehaviour
         if(dis < attackRange) {
             if(attackflag == 0) {
                 Rush();
-            } else {
+            } 
+
+            if(attackflag == 1)
                 agent.SetDestination(lockedpoint);
-            }
+            
             //Invoke("Rush",5.0f);
             //attackflag = 0;
             //Fire.SetActive(false);
@@ -92,24 +94,27 @@ public class Wizard : MonoBehaviour
     }
     void clear() {
         attackflag = 0;
-        transform.LookAt(DataManager.Instance.PlayerPos);
+        //transform.LookAt(DataManager.Instance.PlayerPos);
     }
     void Rush() {
-        attackflag = 1;
+        
         lockedpoint = DataManager.Instance.PlayerPos;
         
         //transform.LookAt(DataManager.Instance.PlayerPos);
         animator.SetBool("Attack", true);
         Fire.SetActive(true);
-        agent.speed = 15.0f;
+        agent.speed = 20.0f;
+        attackflag = 1;
         //agent.SetDestination(lockedpoint);
         
         
     }
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
+        print("aa");
         if(other.gameObject.CompareTag ("Player"))
         {
+            print("aa");
             if(hp > 0) DataManager.Instance.PlayerOnHit(40.0f);
         }
         // if(other.gameObject.layer == 6)
