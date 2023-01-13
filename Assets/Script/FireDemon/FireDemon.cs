@@ -18,6 +18,7 @@ public class FireDemon : MonoBehaviour
     public GameObject Mouth;
     public GameObject BioFlame;
     public GameObject RevivingFire;
+    public GameObject HumanCollider;
 
     public float RotationSlerp;
     public float DemonRotationSlerp;
@@ -154,13 +155,22 @@ public class FireDemon : MonoBehaviour
     [Header("Sound")]
     public AudioSource AS;
     public AudioClip Attack1Clip;
+    public AudioClip Attack2Clip;
     public float Attack1ClipWait;
     public AudioClip KickClip;
     public AudioClip StabClip;
     public float StabSoundWait;
     public AudioClip SemiCircleSlashClip;
-    public AudioClip ShockWaveClip;
     public AudioClip SpeedUpClip;
+    public AudioClip Combo1Clip;
+    public AudioClip Combo2Clip;
+    public AudioClip Combo3Clip;
+    public AudioClip ShockWaveClip;
+    public AudioClip FlameBreathClip;
+    public AudioClip ShootFireBallClip;
+    public AudioClip MeleeAttackClip;
+    public AudioClip CrushAttackClip;
+    public float CrushAttackSFXWait;
 
     private int Phase;
     private NavMeshAgent Human_naviAgent;
@@ -173,7 +183,7 @@ public class FireDemon : MonoBehaviour
 
     void Start()
     {
-        DataManager.Instance.BossName = "Boss";
+        DataManager.Instance.BossName = "Hephaestus";
         HP = HumanMAXHP;
         Phase = 1;
         Human.SetActive(true);
@@ -265,7 +275,7 @@ public class FireDemon : MonoBehaviour
         }
         Destroy(Rev);
         Demon.transform.localScale = Into;
-        DataManager.Instance.BossName = "Fire Demon";
+        DataManager.Instance.BossName = "\"FIRE DEMON\" Hephaestus";
         DoNotShow = false;
         HP = 0;
         while (HP < DemonMAXHP) {
@@ -305,6 +315,7 @@ public class FireDemon : MonoBehaviour
             SkillNum = Random.Range(1, 101);
             if (combo) {
                 ch = true;
+                combo = false;
                 SkillNum = 0;
             }
             else if (SkillNum <= 45) { // 45
@@ -403,9 +414,9 @@ public class FireDemon : MonoBehaviour
         yield return new WaitForSeconds(Attack1HandUp);
         HumanAnim.SetFloat("Attack1Speed", 0.01f);
         yield return new WaitForSeconds(Attack1Slash);
-        AS.PlayOneShot(Attack1Clip);
-        yield return new WaitForSeconds(Attack1ClipWait);
         HumanAnim.SetFloat("Attack1Speed", 1f);
+        yield return new WaitForSeconds(Attack1ClipWait);
+        AS.PlayOneShot(Attack1Clip);
         yield return new WaitForSeconds(Attack1DmgTrigger);
         if (Dis() <= Attack1SlashRange && Vector3.Dot(MeToPlayer(), Human.transform.forward) >= Attack1SlashAng)
             DataManager.Instance.PlayerOnHit(Attack1Damage);
@@ -500,6 +511,7 @@ public class FireDemon : MonoBehaviour
         if (Dis() <= StabRange && Vector3.Dot(MeToPlayer(), Human.transform.forward) >= StabAng) {
             DataManager.Instance.KnockDownFrom = Human;
             DataManager.Instance.PlayerOnHit(StabDamage);
+            DataManager.Instance.PlayerKnockDown = true;
         }
         yield return new WaitForSeconds(StabSwordDestroy);
         StabSword.SetActive(false);
@@ -524,16 +536,19 @@ public class FireDemon : MonoBehaviour
         DoNotTurn = true;
         HumanAnim.SetTrigger("OneHandCombo");
         yield return new WaitForSeconds(OneSwordComboDmgTri1);
+        AS.PlayOneShot(Attack1Clip);
         if (Dis() <= OneSwordComboTooClose || (Dis() <= OneSwordComboRange && Vector3.Dot(MeToPlayer(), Human.transform.forward) >= OneSwordComboAng)) {
             DataManager.Instance.KnockDownFrom = Human;
             DataManager.Instance.PlayerOnHit(OneSwordComboDamage1);
         }
         yield return new WaitForSeconds(OneSwordComboDmgTri2);
+        AS.PlayOneShot(Attack2Clip);
         if (Dis() <= OneSwordComboTooClose || (Dis() <= OneSwordComboRange && Vector3.Dot(MeToPlayer(), Human.transform.forward) >= OneSwordComboAng)) {
             DataManager.Instance.KnockDownFrom = Human;
             DataManager.Instance.PlayerOnHit(OneSwordComboDamage2);
         }
         yield return new WaitForSeconds(OneSwordComboDmgTri3);
+        AS.PlayOneShot(Attack1Clip);
         if (Dis() <= OneSwordComboTooClose || (Dis() <= OneSwordComboRange && Vector3.Dot(MeToPlayer(), Human.transform.forward) >= OneSwordComboAng)) {
             DataManager.Instance.KnockDownFrom = Human;
             DataManager.Instance.PlayerOnHit(OneSwordComboDamage3);
@@ -614,6 +629,7 @@ public class FireDemon : MonoBehaviour
                 HumanAnim.SetBool("IsDead", true);
                 HumanAnim.SetTrigger("Dead");
                 Demon.transform.position = Human.transform.position;
+                HumanCollider.GetComponent<CapsuleCollider>().enabled = false;
                 Invoke("DisableHealthBar", 2);
                 Invoke("PhaseChange", 10);
             }
@@ -628,6 +644,7 @@ public class FireDemon : MonoBehaviour
     }
 
     void DisableHealthBar() {
+        Human_naviAgent.enabled = false;
         DoNotShow = true;
     }
 
@@ -670,15 +687,7 @@ public class FireDemon : MonoBehaviour
                     ShootFireBall();
                 } else if (x < 2) {
                     FlameBreathe();
-                } else {
-                    LastSkill = 3;
-                    DemonRush();
                 }
-            } else {
-                DemonAnim.SetBool("Walk Forward", false);
-                WalkingCounter = 0;
-                LastSkill = 3;
-                DemonRush();
             }
         } else {
             WalkingCounter += Time.deltaTime;
@@ -720,7 +729,7 @@ public class FireDemon : MonoBehaviour
         else if (SkillNum == 2) {
             CrushAttack();
         } else if (SkillNum == 3) 
-            DemonRush();
+            FlameBreathe();
         else if (SkillNum == 4) 
             ShootFireBall();
     }
@@ -737,7 +746,7 @@ public class FireDemon : MonoBehaviour
     }
 
     IEnumerator IShockWave() {
-        FacingTarget = Demon.transform.position - PlayerPos();
+        FacingTarget = PlayerPos() - Demon.transform.position;
         FacingTarget.y = 0;
         yield return new WaitForSeconds(ShockWaveBefore);
         DoNotTurn = true;
@@ -755,8 +764,8 @@ public class FireDemon : MonoBehaviour
         ShockWaveCircle.transform.localScale = Into;
         yield return new WaitForSeconds(ShockWavePrepare);
         DemonAnim.SetFloat("ShockWaveSpeed", 1);
-        yield return new WaitForSeconds(ShockWaveStart);
         AS.PlayOneShot(ShockWaveClip);
+        yield return new WaitForSeconds(ShockWaveStart);
         ShockWaveVertical.SetActive(true);
         if (Dis() <= ShockWaveRange) {
             DataManager.Instance.KnockDownFrom = Demon;
@@ -781,14 +790,18 @@ public class FireDemon : MonoBehaviour
 
     private int BurnStack;
     IEnumerator ICrushAttack() {
-        FacingTarget = Demon.transform.position - PlayerPos();
+        FacingTarget = PlayerPos() - Demon.transform.position;
         FacingTarget.y = 0;
         yield return new WaitForSeconds(CrushAttackBefore);
         DoNotTurn = true;
         DemonAnim.SetTrigger("Crush Attack");
-        yield return new WaitForSeconds(CrushAttackDmgTrigger);
+        yield return new WaitForSeconds(CrushAttackSFXWait);
+        AS.PlayOneShot(CrushAttackClip);
+        yield return new WaitForSeconds(CrushAttackDmgTrigger-CrushAttackSFXWait);
         if (Dis() <= CrushAttackRange && Vector3.Dot(MeToPlayer(), Demon.transform.forward) >= CrushAttackAng) {
+            DataManager.Instance.KnockDownFrom = Demon;
             DataManager.Instance.PlayerOnHit(CrushAttackDamage);
+            DataManager.Instance.PlayerKnockDown = true;
             BurnStack++;
             CheckBurn();
         }
@@ -815,19 +828,23 @@ public class FireDemon : MonoBehaviour
     }
 
     IEnumerator IShootFireBall() {
-        FacingTarget = Demon.transform.position - PlayerPos();
+        FacingTarget = PlayerPos() - Demon.transform.position;
         FacingTarget.y = 0;
+        Demon_naviAgent.ResetPath();
         yield return new WaitForSeconds(FireBallBefore);
         DoNotTurn = true;
         DemonAnim.SetTrigger("Cast Spell");
         yield return new WaitForSeconds(FireBallShootFirst);
+        AS.PlayOneShot(ShootFireBallClip);
         DemonAnim.SetFloat("CastSpellSpeed", 0.05f);
         GameObject FireBallPre1 = Instantiate(FireBall, Mouth.transform.position, Quaternion.identity);
         FireBallPre1.GetComponent<Rigidbody>().AddForce(0, ShootFireBallForce, 0);
         yield return new WaitForSeconds(FireBallShootSecond);
+        AS.PlayOneShot(ShootFireBallClip);
         GameObject FireBallPre2 = Instantiate(FireBall, Mouth.transform.position, Quaternion.identity);
         FireBallPre2.GetComponent<Rigidbody>().AddForce(0, ShootFireBallForce, 0);
         yield return new WaitForSeconds(FireBallShootThird);
+        AS.PlayOneShot(ShootFireBallClip);
         GameObject FireBallPre3 = Instantiate(FireBall, Mouth.transform.position, Quaternion.identity);
         FireBallPre3.GetComponent<Rigidbody>().AddForce(0, ShootFireBallForce, 0);
         yield return new WaitForSeconds(ShootEnd);
@@ -881,6 +898,7 @@ public class FireDemon : MonoBehaviour
         DoNotTurn = true;
         DemonAnim.SetFloat("FireBreathSpeed", 1);
         DemonAnim.SetTrigger("Fire Breath Attack");
+        AS.PlayOneShot(FlameBreathClip);
         yield return new WaitForSeconds(StartFlaming);
         DemonAnim.SetFloat("FireBreathSpeed", 0.3f);
         BioFlame.SetActive(true);
@@ -926,12 +944,18 @@ public class FireDemon : MonoBehaviour
         DoNotTurn = true;
         yield return new WaitForSeconds(StartRush);
         DemonAnim.SetBool("Run Forward", true);
-        Demon_naviAgent.speed = RushSpeed;
-        Demon_naviAgent.SetDestination(PlayerPos());
         Coroutine X = StartCoroutine(CheckRushHit());
-        yield return new WaitForSeconds(RushEnd);
+        Demon_naviAgent.speed = RushSpeed;
+        Demon_naviAgent.stoppingDistance = 1;
+        float dur = 0;
+        while (dur < RushEnd) {
+            Demon_naviAgent.SetDestination(Demon.transform.position);
+            dur += Time.deltaTime;
+            yield return null;
+        }
         Demon_naviAgent.ResetPath();
         Demon_naviAgent.speed = DemonSpeed;
+        Demon_naviAgent.stoppingDistance = DemonChaseDis;
         DemonAnim.SetBool("Run Forward", false);
         StopCoroutine(X);
     }
@@ -973,6 +997,7 @@ public class FireDemon : MonoBehaviour
         yield return new WaitForSeconds(MeleeAttackHandUp);
         DemonAnim.SetFloat("MeleeAttackSpeed", 0.01f);
         yield return new WaitForSeconds(MeleeAttackStart);
+        AS.PlayOneShot(MeleeAttackClip);
         DemonAnim.SetFloat("MeleeAttackSpeed", 1);
         yield return new WaitForSeconds(MeleeAttackDmgTrigger);
         if (Dis() <= MeleeAttackRange && Vector3.Dot(MeToPlayer(), Demon.transform.forward) >= MeleeAttackAng) {
