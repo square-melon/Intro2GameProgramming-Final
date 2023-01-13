@@ -57,7 +57,7 @@ public class Wizard : MonoBehaviour
         Dead();
     }
     void Dead() {
-        if(hp == 0) {
+        if(hp <= 0) {
             hp = 0;
             animator.SetBool("Dead", true);
             Fire.SetActive(false);
