@@ -71,9 +71,9 @@ public class IceBall : MonoBehaviour
     }
 
     GameObject ChangeToEnemy(GameObject Enemy) {
-        if (Enemy.CompareTag("Enemy")) return Enemy;
+        if (Enemy.CompareTag("Enemy") && Enemy.GetComponent<FireDemon>() == null) return Enemy;
         for (int j = Enemy.transform.childCount - 1; j >= 0; j--) {
-            if (Enemy.transform.GetChild(j).CompareTag("Enemy")) {
+            if (Enemy.transform.GetChild(j).gameObject.activeSelf && Enemy.transform.GetChild(j).CompareTag("Enemy")) {
                 return Enemy.transform.GetChild(j).gameObject;
             }
         }
@@ -81,9 +81,9 @@ public class IceBall : MonoBehaviour
     }
 
     Transform ChangeToEnemyTrans(Transform Enemy) {
-        if (Enemy.CompareTag("Enemy")) return Enemy;
+        if (Enemy.CompareTag("Enemy") && Enemy.gameObject.GetComponent<FireDemon>() == null) return Enemy;
         for (int j = Enemy.childCount - 1; j >= 0; j--) {
-            if (Enemy.GetChild(j).CompareTag("Enemy")) {
+            if (Enemy.GetChild(j).gameObject.activeSelf && Enemy.GetChild(j).CompareTag("Enemy")) {
                 return Enemy.GetChild(j);
             }
         }
