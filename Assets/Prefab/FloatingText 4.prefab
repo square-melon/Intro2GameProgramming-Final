@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8049834518153297730}
   - component: {fileID: 7222860994454723050}
   m_Layer: 0
-  m_Name: FloatingText
+  m_Name: FloatingText 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,7 +98,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 997a43b767814dd0a7642ec9b78cba41, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4287466983
 --- !u!114 &8049834518153297730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8514df9691a79014c9fb8cc280e6bc8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyrime: 0.4
+  destroyrime: 0.6
   offset: {x: 0, y: 2, z: 0}
   randomdir: {x: 0.5, y: 0, z: 0}
 --- !u!95 &7222860994454723050
