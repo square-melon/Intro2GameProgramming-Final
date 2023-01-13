@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/PlayText/Guideline.pdf.meta
+guid: 82f83c30e438c4d2fa02134774e5f8fe
+========
 guid: ae657b9c376ad8446ad1b6b93a2cc70f
 folderAsset: yes
+>>>>>>>> main:Assets/minfanPrefab/Zombie 1/Animations/Prefabs.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

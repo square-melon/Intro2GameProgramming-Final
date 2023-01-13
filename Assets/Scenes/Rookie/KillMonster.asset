@@ -1,0 +1,229 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7354755383692465062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc54790c38d56d240bbd83cf672713a4, type: 3}
+  m_Name: "Mentor: <b>Hephaestus<\u2026"
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 56, y: -72}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: -7354755383692465062}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Output
+        node: {fileID: -5267043839829379499}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: -7354755383692465062}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: 7733940785659660774}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  TalkingPerson: Mentor
+  Expression: none
+  Facing: 0
+  FacingPerson: 
+  Width: 0
+  ShowBubble: 1
+  CameraFollow: 1
+  Audio: {fileID: 0}
+  PlayPerChar: 0
+  PlayTyping: 0
+  Dialogue:
+  - '<b>Hephaestus</b>
+
+    Congradulations! it seems that you are ready for the
+    rest of the journey. Here, I''ll take you to see the Dungoen.  Be careful.'
+  IsMax: 1
+  curIndex: 0
+--- !u!114 &-7179765610984740669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 857b2783297fa724aa9cb35db8c314c7, type: 3}
+  m_Name: Start
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -504, y: -72}
+  ports:
+    keys:
+    - Ouput
+    values:
+    - _fieldName: Ouput
+      _node: {fileID: -7179765610984740669}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: -5267043839829379499}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  Language: chinese
+--- !u!114 &-5267043839829379499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a391752700ffb442a5ce5508f41175f, type: 3}
+  m_Name: Event
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -264, y: -72}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: -5267043839829379499}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Ouput
+        node: {fileID: -7179765610984740669}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: -5267043839829379499}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: -7354755383692465062}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  EventName: KillMonster
+  WaitCallback: 1
+  EventValue: []
+  IsMax: 1
+  IsWaiting: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2784bac956dac04b9b62556f83545a0, type: 3}
+  m_Name: KillMonster
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 253149509444908075}
+  - {fileID: -7179765610984740669}
+  - {fileID: -7354755383692465062}
+  - {fileID: 7733940785659660774}
+  - {fileID: -5267043839829379499}
+  startNode: {fileID: -7179765610984740669}
+  dialogueNode: {fileID: 0}
+  optionNode: {fileID: 0}
+  eventNode: {fileID: 0}
+  commentNode: {fileID: 0}
+  profileNode: {fileID: 253149509444908075}
+  current: {fileID: -7179765610984740669}
+--- !u!114 &253149509444908075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6a5d78950873f44a797d0c84c321bc, type: 3}
+  m_Name: Profile
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -504, y: -136}
+  ports:
+    keys: []
+    values: []
+  dialogueProfile: {fileID: 11400000, guid: f1cd49c82e87e451c929cb6bfbdfdc23, type: 2}
+--- !u!114 &7733940785659660774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a391752700ffb442a5ce5508f41175f, type: 3}
+  m_Name: Event
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 408, y: -72}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: 7733940785659660774}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Output
+        node: {fileID: -7354755383692465062}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: 7733940785659660774}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  EventName: End
+  WaitCallback: 0
+  EventValue: []
+  IsMax: 1
+  IsWaiting: 0

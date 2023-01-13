@@ -25,6 +25,8 @@ public class BossScript : MonoBehaviour
     public Transform shootspot;
     private Coroutine ResetCasting;
 
+    public CameraShake cameraShake;
+
     [Header("Settings")]
     private UnityEngine.AI.NavMeshAgent naviAgent;
     private float  hp=150f;
@@ -148,6 +150,8 @@ public class BossScript : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(b_a);
     }
     void Spray(){
+        DataManager.Instance.ShakeCam = true;
+        cameraShake.start = true;
         Spraying = true;
         Vector3 pos = shootspot.position; 
         ArcaneSprayPrefab = Instantiate(ArcaneSpray, pos, Quaternion.LookRotation(transform.forward));

@@ -73,17 +73,24 @@ public class Sparky : MonoBehaviour
         Scene2Enemy e1 = enemy.GetComponent<Scene2Enemy>();
         enemyScript e2 = enemy.GetComponent<enemyScript>();
         Zombie3script ee2 = enemy.GetComponent<Zombie3script>();
+        magicZombieScript em = enemy.GetComponent<magicZombieScript>();
         Wizard e3 = enemy.GetComponent<Wizard>();
         Scene2Boss ee = enemy.GetComponent<Scene2Boss>();
-        // if (e1)
-        //     e1.Damage();
-        // else if (e2)
-        //     e2.Damage();
-        // // else if (e3)
-        // //     e3.Damage();
-        // else if (ee)
-        //     ee.Damage();
-        // else if (ee2)
-        //     ee2.Damage();
+        magicZombieScript ee3 = enemy.GetComponent<magicZombieScript>();
+
+        if (e1)
+            e1.Damage(damage);
+        else if (e2)
+            e2.Damage(damage);
+        // else if (e3)
+        //     e3.Damage();
+        else if (ee)
+            ee.Damage();
+        else if (ee2)
+            ee2.Damage();
+        else if(ee3)
+            ee3.Damage(damage);
+        else if (em)
+            em.Damage(damage);
     }
 }

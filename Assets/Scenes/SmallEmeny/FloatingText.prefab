@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8514df9691a79014c9fb8cc280e6bc8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyrime: 2
+  destroyrime: 0.4
   offset: {x: 0, y: 2, z: 0}
   randomdir: {x: 0.5, y: 0, z: 0}
 --- !u!95 &7222860994454723050

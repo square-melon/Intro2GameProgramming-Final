@@ -38,8 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.000027740774, g: 0.000022707432, b: 0.000021545997,
-    a: 1}
+  m_IndirectSpecularColor: {r: 0.20861712, g: 0.20861712, b: 0.20861712, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -843,7 +842,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'John, you are truly an inspiration to us all. You have done something
+  m_text: 'Melon, you are truly an inspiration to us all. You have done something
     that no other man in history has been able to do, and that is save our world
     from the brink of disaster. We will never forget your courage, your strength
     and your selflessness. The world owes you a debt it can never repay. Thank you

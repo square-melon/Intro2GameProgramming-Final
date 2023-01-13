@@ -1,0 +1,488 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6615528333919897313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc54790c38d56d240bbd83cf672713a4, type: 3}
+  m_Name: "Mentor: <b>Hephaestus<\u2026"
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -264, y: -72}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: -6615528333919897313}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Ouput
+        node: {fileID: -4530802627035662291}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: -6615528333919897313}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: 5193828476513748844}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  TalkingPerson: Mentor
+  Expression: none
+  Facing: 0
+  FacingPerson: 
+  Width: 0
+  ShowBubble: 1
+  CameraFollow: 1
+  Audio: {fileID: 0}
+  PlayPerChar: 0
+  PlayTyping: 0
+  Dialogue:
+  - '<b>Hephaestus</b>
+
+    Today is the day, Melon...'
+  IsMax: 1
+  curIndex: 0
+--- !u!114 &-4543930858193790450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6a5d78950873f44a797d0c84c321bc, type: 3}
+  m_Name: Profile
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -504, y: -136}
+  ports:
+    keys: []
+    values: []
+  dialogueProfile: {fileID: 11400000, guid: f1cd49c82e87e451c929cb6bfbdfdc23, type: 2}
+--- !u!114 &-4530802627035662291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 857b2783297fa724aa9cb35db8c314c7, type: 3}
+  m_Name: Start
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -504, y: -72}
+  ports:
+    keys:
+    - Ouput
+    values:
+    - _fieldName: Ouput
+      _node: {fileID: -4530802627035662291}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: -6615528333919897313}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  Language: chinese
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2784bac956dac04b9b62556f83545a0, type: 3}
+  m_Name: ToMonster
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: -4543930858193790450}
+  - {fileID: -4530802627035662291}
+  - {fileID: -6615528333919897313}
+  - {fileID: 5193828476513748844}
+  - {fileID: 1878034710950481228}
+  - {fileID: 3537106969947681138}
+  - {fileID: 7686452401673749607}
+  - {fileID: 6180451366325664120}
+  - {fileID: 3652209693891016031}
+  startNode: {fileID: -4530802627035662291}
+  dialogueNode: {fileID: 0}
+  optionNode: {fileID: 0}
+  eventNode: {fileID: 0}
+  commentNode: {fileID: 0}
+  profileNode: {fileID: -4543930858193790450}
+  current: {fileID: -4530802627035662291}
+--- !u!114 &1878034710950481228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc54790c38d56d240bbd83cf672713a4, type: 3}
+  m_Name: "Mentor: <b>Hephaestus<\u2026"
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 456, y: -72}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: 1878034710950481228}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Output
+        node: {fileID: 5193828476513748844}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: 1878034710950481228}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: 3537106969947681138}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  TalkingPerson: Mentor
+  Expression: none
+  Facing: 0
+  FacingPerson: 
+  Width: 0
+  ShowBubble: 1
+  CameraFollow: 1
+  Audio: {fileID: 0}
+  PlayPerChar: 0
+  PlayTyping: 0
+  Dialogue:
+  - '<b>Hephaestus</b>
+
+    It''s glad to see you are ready. Remember what we have
+    learned?'
+  IsMax: 1
+  curIndex: 0
+--- !u!114 &3537106969947681138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc54790c38d56d240bbd83cf672713a4, type: 3}
+  m_Name: 'Player: <b>Melon</b>'
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 808, y: -72}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: 3537106969947681138}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Output
+        node: {fileID: 1878034710950481228}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: 3537106969947681138}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: 7686452401673749607}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  TalkingPerson: Player
+  Expression: none
+  Facing: 0
+  FacingPerson: 
+  Width: 0
+  ShowBubble: 1
+  CameraFollow: 1
+  Audio: {fileID: 0}
+  PlayPerChar: 0
+  PlayTyping: 0
+  Dialogue:
+  - '<b>Melon</b>
+
+    Ah! I forget >< <sub>melon melon</sub>'
+  IsMax: 1
+  curIndex: 0
+--- !u!114 &3652209693891016031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a391752700ffb442a5ce5508f41175f, type: 3}
+  m_Name: Event
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1864, y: -72}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: 3652209693891016031}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Output
+        node: {fileID: 6180451366325664120}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: 3652209693891016031}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  EventName: NextGraph
+  WaitCallback: 0
+  EventValue:
+  - ValueType: 0
+    intValue: 1
+    floatValue: 0
+    stringValue: 
+    boolValue: 0
+    guid: 
+  IsMax: 1
+  IsWaiting: 0
+--- !u!114 &5193828476513748844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc54790c38d56d240bbd83cf672713a4, type: 3}
+  m_Name: 'Player: <b>Melon</b>'
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 104, y: -72}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: 5193828476513748844}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Output
+        node: {fileID: -6615528333919897313}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: 5193828476513748844}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: 1878034710950481228}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  TalkingPerson: Player
+  Expression: none
+  Facing: 0
+  FacingPerson: 
+  Width: 0
+  ShowBubble: 1
+  CameraFollow: 1
+  Audio: {fileID: 0}
+  PlayPerChar: 0
+  PlayTyping: 0
+  Dialogue:
+  - '<b>Melon</b>
+
+    Yes, after years of training, i have become stronger and more
+    powerful. I will definitely defeat the boss and save the world. <sub>melon melon</sub>'
+  IsMax: 1
+  curIndex: 0
+--- !u!114 &6180451366325664120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc54790c38d56d240bbd83cf672713a4, type: 3}
+  m_Name: 'Player: <b>Melon</b>'
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1512, y: -72}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: 6180451366325664120}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Output
+        node: {fileID: 7686452401673749607}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: 6180451366325664120}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: 3652209693891016031}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  TalkingPerson: Player
+  Expression: none
+  Facing: 0
+  FacingPerson: 
+  Width: 0
+  ShowBubble: 1
+  CameraFollow: 1
+  Audio: {fileID: 0}
+  PlayPerChar: 0
+  PlayTyping: 0
+  Dialogue:
+  - '<b>Melon</b>
+
+    Okay! Let''s try it.<sub>melon melon</sub>'
+  IsMax: 1
+  curIndex: 0
+--- !u!114 &7686452401673749607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc54790c38d56d240bbd83cf672713a4, type: 3}
+  m_Name: "Mentor: <b>Hephaestus<\u2026"
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1160, y: -72}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: 7686452401673749607}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Output
+        node: {fileID: 3537106969947681138}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: 7686452401673749607}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: 6180451366325664120}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  TalkingPerson: Mentor
+  Expression: none
+  Facing: 0
+  FacingPerson: 
+  Width: 0
+  ShowBubble: 1
+  CameraFollow: 1
+  Audio: {fileID: 0}
+  PlayPerChar: 0
+  PlayTyping: 0
+  Dialogue:
+  - '<b>Hephaestus</b>
+
+    Haha, it''s ok. using right click on the floor can  move
+    your body, just try it!'
+  IsMax: 1
+  curIndex: 0

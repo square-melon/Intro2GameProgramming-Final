@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraShake : MonoBehaviour
 {
     public bool start;
+    public GameObject player;
     public AnimationCurve curve;
     public float duration = 1f;
     
