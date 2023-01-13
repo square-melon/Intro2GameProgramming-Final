@@ -26,7 +26,6 @@ public class BulletCreate : MonoBehaviour
         RaycastHit hit;
         if (Physics.SphereCast(transform.position, RayRadius, GetComponent<Rigidbody>().velocity, out hit, 0.5f)) {
             if (hit.collider.CompareTag("Enemy")) {
-                
                 Instantiate(ExplodeEffect, hit.point, Quaternion.identity);
                 DataManager.Instance.takedamage(hit.transform.root, Damage);
                 Destroy(gameObject);

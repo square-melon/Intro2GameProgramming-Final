@@ -185,6 +185,7 @@ public class FireDemon : MonoBehaviour
     {
         DataManager.Instance.BossName = "Hephaestus";
         HP = HumanMAXHP;
+        DataManager.Instance.BossStage = true;
         Phase = 1;
         Human.SetActive(true);
         StabSword.SetActive(false);
@@ -394,9 +395,10 @@ public class FireDemon : MonoBehaviour
         }
     }
 
+    private Coroutine CHumanAttack1;
     void HumanAttack1() {
         Casting = true;
-        StartCoroutine(IHumanAttack1());
+        CHumanAttack1 = StartCoroutine(IHumanAttack1());
         StartCoroutine(CoolDownCal(HumanAttack1Before+Attack1AnimWait, (returnVal1) => {
             Casting = returnVal1;
         }));
@@ -422,9 +424,10 @@ public class FireDemon : MonoBehaviour
             DataManager.Instance.PlayerOnHit(Attack1Damage);
     }
 
+    private Coroutine CHumanKick;
     void HumanKick() {
         Casting = true;
-        StartCoroutine(IKick());
+        CHumanKick = StartCoroutine(IKick());
         StartCoroutine(CoolDownCal(KickBefore+KickAnimWait, (returnVal1) => {
             Casting = returnVal1;
         }));
@@ -453,10 +456,11 @@ public class FireDemon : MonoBehaviour
     }
 
     private bool HumanSpeedUpCD;
+    private Coroutine CHumanSpeedUp;
     void HumanSpeedUp() {
         Casting = true;
         HumanSpeedUpCD = true;
-        StartCoroutine(IHumanSpeedUp());
+        CHumanSpeedUp = StartCoroutine(IHumanSpeedUp());
         StartCoroutine(CoolDownCal(SpeedUpBefore+SpeedUpCoolDown, (returnVal1) => {
             HumanSpeedUpCD = returnVal1;
         }));
@@ -485,9 +489,10 @@ public class FireDemon : MonoBehaviour
         Human_naviAgent.speed = HumanSpeed;
     }
 
+    private Coroutine CStab;
     void Stab() {
         Casting = true;
-        StartCoroutine(IStab());
+        CStab = StartCoroutine(IStab());
         StartCoroutine(CoolDownCal(StabDmgTrigger+StabSwordStartCreate+StabSwordCreated+StabAnimWait+StabSoundWait, (returnVal1) => {
             Casting = returnVal1;
         }));
@@ -518,9 +523,10 @@ public class FireDemon : MonoBehaviour
         // yield return new WaitForSeconds(StabAnimWait);
     }
 
+    private Coroutine COneSwordCombo;
     void OneSwordCombo() {
         Casting = true;
-        StartCoroutine(IOneSwordCombo());
+        COneSwordCombo = StartCoroutine(IOneSwordCombo());
         StartCoroutine(CoolDownCal(OneSwordComboDmgTri1+OneSwordComboDmgTri2+OneSwordComboDmgTri3+OneSwordComboAnimWait, (returnVal1) => {
             Casting = returnVal1;
         }));
@@ -556,10 +562,11 @@ public class FireDemon : MonoBehaviour
     }
 
     private bool SemiCircleSlashCD;
+    private Coroutine CHumanSemiCircleSlash;
     void HumanSemiCircleSlash() {
         Casting = true;
         SemiCircleSlashCD = true;
-        StartCoroutine(ISemiCircleSlash());
+        CHumanSemiCircleSlash = StartCoroutine(ISemiCircleSlash());
         StartCoroutine(CoolDownCal(SemiCircleSlashBefore+SemiCircleStartSlash+SemiCircleSlashEnd+SemiCircleSlashAnimWait+SemiCirlceSlashCoolDown, (returnVal1) => {
             SemiCircleSlashCD = returnVal1;
         }));
@@ -630,6 +637,16 @@ public class FireDemon : MonoBehaviour
                 HumanAnim.SetTrigger("Dead");
                 Demon.transform.position = Human.transform.position;
                 HumanCollider.GetComponent<CapsuleCollider>().enabled = false;
+                if (CHumanAttack1 != null)
+                    StopCoroutine(CHumanAttack1);
+                if (CHumanKick != null)
+                    StopCoroutine(CHumanKick);
+                if (CHumanSpeedUp != null)
+                    StopCoroutine(CHumanSpeedUp);
+                if (COneSwordCombo != null)
+                    StopCoroutine(COneSwordCombo);
+                if (CHumanSemiCircleSlash != null)
+                    StopCoroutine(CHumanSemiCircleSlash);
                 Invoke("DisableHealthBar", 2);
                 Invoke("PhaseChange", 10);
             }
@@ -703,10 +720,10 @@ public class FireDemon : MonoBehaviour
         bool ch = false;
         while (!ch) {
             SkillNum = Random.Range(1, 101);
-            if (SkillNum <= 60) { // 60
+            if (SkillNum <= 50) { // 50
                 ch = true;
                 SkillNum = 0;
-            } else if (SkillNum <= 70 && LastSkill != 1) { // 10
+            } else if (SkillNum <= 70 && LastSkill != 1) { // 20
                 ch = true;
                 SkillNum = 1;
             } else if (SkillNum <= 88 && LastSkill != 2) { // 18

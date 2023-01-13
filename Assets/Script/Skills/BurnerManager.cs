@@ -26,7 +26,7 @@ public class BurnerManager : MonoBehaviour
     }
 
     public void BurnOn(Transform obj) {
-        obj = ChangeToEnemy(obj);
+        obj = ChangeToEnemyTrans(obj);
         int hash = obj.GetHashCode();
         if (Burning.ContainsKey(hash))
             return;
@@ -36,12 +36,14 @@ public class BurnerManager : MonoBehaviour
         StartCoroutine(Burn(obj));
     }
 
-    Transform ChangeToEnemy(Transform Enemy) {
+    private Transform ChangeToEnemyTrans(Transform Enemy) {
+        Enemy = Enemy.root;
+        if (Enemy.gameObject.GetComponent<FireDemon>() != null) return Enemy;
         if (Enemy.CompareTag("Enemy")) return Enemy;
         if (Enemy.CompareTag("Player")) return Enemy;
         for (int j = Enemy.childCount - 1; j >= 0; j--) {
-            if (Enemy.GetChild(j).CompareTag("Enemy")) {
-                return Enemy.transform.GetChild(j);
+            if (Enemy.GetChild(j).gameObject.activeSelf && Enemy.GetChild(j).CompareTag("Enemy")) {
+                return Enemy.GetChild(j);
             }
         }
         return null;
