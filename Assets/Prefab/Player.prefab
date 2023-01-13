@@ -5583,6 +5583,10 @@ MonoBehaviour:
   StaminaResTime: 3
   StaminaResQuantity: 0.3
   StaminaDrop: 0.15
+  HitBackDis: 0
+  GettingUpTime: 0
+  HitBackTime: 0
+  HitBackPercent: 0
   Skill1: 0
   Skill2: 1
   Skill3: 5

@@ -3,6 +3,7 @@ using PlayTextSupport;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Here is a sample to demonstrate how to communicate with PlayText.
@@ -46,7 +47,7 @@ public class Talking : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            print("to main scene");
+            SceneManager.LoadScene("Selection");
         }
 
         // if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))

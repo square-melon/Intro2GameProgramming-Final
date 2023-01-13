@@ -1,5 +1,56 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9138813356183797599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a391752700ffb442a5ce5508f41175f, type: 3}
+  m_Name: Event
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1528, y: -56}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: -9138813356183797599}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Output
+        node: {fileID: 2854295024593843082}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: -9138813356183797599}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  EventName: NextGraph
+  WaitCallback: 0
+  EventValue:
+  - ValueType: 0
+    intValue: 2
+    floatValue: 0
+    stringValue: 
+    boolValue: 0
+    guid: 
+  IsMax: 1
+  IsWaiting: 0
 --- !u!114 &-7991337125133115183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24,8 +75,8 @@ MonoBehaviour:
       _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: Ouput
-        node: {fileID: 1892980676368028210}
+      - fieldName: Output
+        node: {fileID: -6236034183975786599}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -54,8 +105,9 @@ MonoBehaviour:
   PlayPerChar: 0
   PlayTyping: 0
   Dialogue:
-  - "<b>Melon</b>\n\u54C7\u554A\u554A\u554A\u554A\uFF01\u5E2B\u5085\u9019\u662F\u4EC0\u9EBC\uFF1F<sub>melon
-    melon</sub>"
+  - '<b>Melon</b>
+
+    Whoaaaaa! What''s that?<sub>melon melon</sub>'
   IsMax: 1
   curIndex: 0
 --- !u!114 &-7588354233685347238
@@ -112,9 +164,60 @@ MonoBehaviour:
   PlayPerChar: 0
   PlayTyping: 0
   Dialogue:
-  - "<b>Hephaestus</b>\n\u9019\u662F\u9B54\u6CD5\u4EBA\u5076\uFF0C\u662F\u6211\u5011\u7DF4\u7FD2\u62DB\u5F0F\u7684\u4EBA\u5076\u3002\u8A18\u5F97\u6211\u6559\u4F60\u7684\u6280\u80FD\u55CE\uFF1F"
+  - '<b>Hephaestus</b>
+
+    This is something we use to practice our skills. Hey!
+    Remember what we have got?'
   IsMax: 1
   curIndex: 0
+--- !u!114 &-6236034183975786599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a391752700ffb442a5ce5508f41175f, type: 3}
+  m_Name: Event
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -568, y: -56}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: -6236034183975786599}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Ouput
+        node: {fileID: 1892980676368028210}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: -6236034183975786599}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: -7991337125133115183}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  EventName: MeetMonster
+  WaitCallback: 1
+  EventValue: []
+  IsMax: 1
+  IsWaiting: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,13 +238,15 @@ MonoBehaviour:
   - {fileID: 3263819197932593906}
   - {fileID: 8682028575129764760}
   - {fileID: 2854295024593843082}
+  - {fileID: -9138813356183797599}
+  - {fileID: -6236034183975786599}
   startNode: {fileID: 1892980676368028210}
   dialogueNode: {fileID: 0}
   optionNode: {fileID: 0}
   eventNode: {fileID: 0}
   commentNode: {fileID: 0}
   profileNode: {fileID: 1478070830680820895}
-  current: {fileID: 1892980676368028210}
+  current: {fileID: -6236034183975786599}
 --- !u!114 &1478070830680820895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,7 +260,7 @@ MonoBehaviour:
   m_Name: Profile
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -504, y: -136}
+  position: {x: -808, y: -120}
   ports:
     keys: []
     values: []
@@ -173,7 +278,7 @@ MonoBehaviour:
   m_Name: Start
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -504, y: -72}
+  position: {x: -808, y: -56}
   ports:
     keys:
     - Ouput
@@ -184,7 +289,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: Input
-        node: {fileID: -7991337125133115183}
+        node: {fileID: -6236034183975786599}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -226,7 +331,10 @@ MonoBehaviour:
       _node: {fileID: 2854295024593843082}
       _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: Input
+        node: {fileID: -9138813356183797599}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
@@ -242,8 +350,9 @@ MonoBehaviour:
   PlayPerChar: 0
   PlayTyping: 0
   Dialogue:
-  - "<b>Melon</b>\n\u54E6\u54E6\u54E6\uFF0C\u6211\u60F3\u8D77\u4F86\u4E86\uFF01\u6211\u8A66\u8A66\u770B\uFF01<sub>melon
-    melon</sub>"
+  - '<b>Melon</b>
+
+    OhOhOh! I got it. I can make it!<sub>melon melon</sub>'
   IsMax: 1
   curIndex: 0
 --- !u!114 &3263819197932593906
@@ -300,7 +409,9 @@ MonoBehaviour:
   PlayPerChar: 0
   PlayTyping: 0
   Dialogue:
-  - "<b>Melon</b>\n\u4E0D\u8A18\u5F97\u4E86...<sub>melon melon</sub>"
+  - '<b>Melon</b>
+
+    Not anymore.....<sub>melon melon</sub>'
   IsMax: 1
   curIndex: 0
 --- !u!114 &8682028575129764760
@@ -357,11 +468,25 @@ MonoBehaviour:
   PlayPerChar: 0
   PlayTyping: 0
   Dialogue:
-  - "<b>Hephaestus</b>\n\u5475\u5475\u5475\u5475\uFF0C\u6C92\u6709\u95DC\u4FC2\u3002\n\u8981\u8A18\u5F97\u6309<b>a</b>\u53EF\u4EE5\u767C\u5C04\u9B54\u6CD5\u653B\u64CA"
-  - "<b>Hephaestus</b>\n\u6309<b>q</b>\u53EF\u4EE5\u885D\u523A"
-  - "<b>Hephaestus</b>\n\u6309<b>w</b>\u53EF\u4EE5\u53EC\u559A\u51B0\u971C\u653B\u64CA"
-  - "<b>Hephaestus</b>\n\u6309<b>e</b>\u53EF\u4EE5\u53EC\u559A\u5716\u9A30\u6536\u96C6\u56DE\u5FA9\u7684\u80FD\u91CF"
-  - "<b>Hephaestus</b>\n\u6309<b>r</b>\u662F\u4F60\u7684\u5927\u62DB\u9583\u96FB\u6A21\u5F0F"
-  - "<b>Hephaestus</b>\n\u6211\u5011\u5E73\u5E38\u90FD\u662F\u653B\u64CA\u9B54\u6CD5\u4EBA\u5076\u4F86\u8A13\u7DF4\u7684\u554A"
+  - '<b>Hephaestus</b>
+
+    ......ok
+
+    Press <b>a</b> can shoot magic attack'
+  - '<b>Hephaestus</b>
+
+    <b>q</b> is for Dash'
+  - '<b>Hephaestus</b>
+
+    <b>w</b> is for Frozen attack'
+  - '<b>Hephaestus</b>
+
+    <b>e</b> is for totem to heal yourself'
+  - '<b>Hephaestus</b>
+
+    <b>r</b> is for Lightning mode. mmmm, really interesting.'
+  - '<b>Hephaestus</b>
+
+    Got it? time for you to test your limit.'
   IsMax: 1
   curIndex: 0
