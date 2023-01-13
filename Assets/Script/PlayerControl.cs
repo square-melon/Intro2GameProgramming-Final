@@ -1022,12 +1022,14 @@ public class PlayerControl : MonoBehaviour
     void ResetMedkitHealCD() {
         MedkitHealCD = true;
     }
-
+    
+    public Animator animator12;
+    private int b = 0;
     private bool HitBack;
     void DeadDetect() {
         if (DataManager.Instance.IsPlayerDead == false) {
             float CurHP = DataManager.Instance._HP;
-            if (CurHP <= 0) {
+            if (CurHP <= -1) {
                 if (!BearMode) {
                     audioPlayer.PlayOneShot(deadSE);
                     DataManager.Instance.PlayerDead(true);
@@ -1048,6 +1050,14 @@ public class PlayerControl : MonoBehaviour
                     ToggleNavi();
                     Invoke("ReloadScene", 4f);
                 }
+                if(b == 0) {
+                    //a.loadscene();
+                    print(123);
+                    animator12.SetTrigger("out");
+                    b = 1;
+                }
+                
+                
             } else {
                 if (CurHP < OriHP) {
                     if (OriHP - CurHP >= DataManager.Instance.MAXHP * HitBackPercent * 0.01f)
@@ -1060,6 +1070,7 @@ public class PlayerControl : MonoBehaviour
                     // Invoke("ResetAnimDoing", 0.1f);
                     InCombat = true;
                     ReCalCombat = true;
+                    b = 0;
                 }
                 OriHP = CurHP;
             }
@@ -1094,8 +1105,8 @@ public class PlayerControl : MonoBehaviour
     void ReloadScene() {
         if (OnDebug)
             Init();
-        else
-            SceneManager.LoadScene("Lose");
+        // else
+        //     SceneManager.LoadScene("Lose");
     }
 
     public void Reset() {
