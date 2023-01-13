@@ -6960,7 +6960,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &479339807
 Transform:
   m_ObjectHideFlags: 0
@@ -7417,6 +7417,51 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5449625444572213144, guid: a1acedf9ae79b1c44b864d0d362c7450,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5449625444572213144, guid: a1acedf9ae79b1c44b864d0d362c7450,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6017515782796589009, guid: a1acedf9ae79b1c44b864d0d362c7450,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 27
+      objectReference: {fileID: 0}
+    - target: {fileID: 7031435346854394414, guid: a1acedf9ae79b1c44b864d0d362c7450,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7031435346854394414, guid: a1acedf9ae79b1c44b864d0d362c7450,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7031435346957106320, guid: a1acedf9ae79b1c44b864d0d362c7450,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7031435346957106320, guid: a1acedf9ae79b1c44b864d0d362c7450,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7031435348064276910, guid: a1acedf9ae79b1c44b864d0d362c7450,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7031435348064276910, guid: a1acedf9ae79b1c44b864d0d362c7450,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1acedf9ae79b1c44b864d0d362c7450, type: 3}
 --- !u!1 &583071429
@@ -7523,6 +7568,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1139494757535457158, guid: 3aba47ed7158cfc49834f855c0212702,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 1139494757535457158, guid: 3aba47ed7158cfc49834f855c0212702,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1139494757535457158, guid: 3aba47ed7158cfc49834f855c0212702,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1139494757535457158, guid: 3aba47ed7158cfc49834f855c0212702,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 21.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1139494757535457159, guid: 3aba47ed7158cfc49834f855c0212702,
+        type: 3}
+      propertyPath: AS
+      value: 
+      objectReference: {fileID: 836432386}
     - target: {fileID: 3118034601340621217, guid: 3aba47ed7158cfc49834f855c0212702,
         type: 3}
       propertyPath: m_Name
@@ -16715,6 +16785,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1295967845302754810, guid: 2603c0ae90d672244b75149af744b491,
+        type: 3}
+      propertyPath: audioPlayer
+      value: 
+      objectReference: {fileID: 836432386}
+    - target: {fileID: 1295967845302754811, guid: 2603c0ae90d672244b75149af744b491,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 1295967845302754811, guid: 2603c0ae90d672244b75149af744b491,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -6.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1295967845302754811, guid: 2603c0ae90d672244b75149af744b491,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10.96
+      objectReference: {fileID: 0}
+    - target: {fileID: 1295967845302754811, guid: 2603c0ae90d672244b75149af744b491,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2473174341591974817, guid: 2603c0ae90d672244b75149af744b491,
         type: 3}
       propertyPath: m_BoundingSphereOverride.w
