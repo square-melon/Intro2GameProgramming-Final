@@ -90,7 +90,7 @@ public class Zombie_wake : MonoBehaviour
     }
     public void DamagePlayer() {
     
-        DataManager.Instance.PlayerOnHit(1.0f); 
+        DataManager.Instance.PlayerOnHit(5.0f); 
         print(DataManager.Instance._HP);
     }
     public void AttackSE(){
