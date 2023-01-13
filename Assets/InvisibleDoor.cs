@@ -27,7 +27,7 @@ public class InvisibleDoor : MonoBehaviour
     // }
     void OnTriggerEnter(Collider other){
         print("aa");
-        if(other.tag=="Player"){
+        if(other.gameObject.tag=="Player"){
             Invoke("Opendoor",4.0f);
             Invoke("RemoveObstacle",5.0f);
         }

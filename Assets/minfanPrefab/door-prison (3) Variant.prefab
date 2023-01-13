@@ -9,11 +9,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1369870916723436, guid: 874b75af7f9044864935dfb000b0e0e6, type: 3}
       propertyPath: m_Name
-      value: door-prison (3)
+      value: door-prison (3) Variant
       objectReference: {fileID: 0}
     - target: {fileID: 1369870916723436, guid: 874b75af7f9044864935dfb000b0e0e6, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4854300780712456, guid: 874b75af7f9044864935dfb000b0e0e6, type: 3}
       propertyPath: m_RootOrder
