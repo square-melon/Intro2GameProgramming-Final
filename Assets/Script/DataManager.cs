@@ -48,6 +48,7 @@ public class DataManager : MonoBehaviour
     public bool PlayerKnockDown;
     public GameObject KnockDownFrom;
     public bool BossStage;
+    public bool Burner;
     private void Awake()
     {   
         if (Instance != null && Instance != this) {
@@ -200,12 +201,12 @@ public class DataManager : MonoBehaviour
         Scene2Enemy e1 = enemy.GetComponent<Scene2Enemy>();
         enemyScript e2 = enemy.GetComponent<enemyScript>();
         Zombie3script ee2 = enemy.GetComponent<Zombie3script>();
-        magicZombieScript ee3 = enemy.GetComponent<magicZombieScript>();
         Wizard e3 = enemy.GetComponent<Wizard>();
         Scene2Boss ee = enemy.GetComponent<Scene2Boss>();
         EnemySpider e4 = enemy.GetComponent<EnemySpider>();
         BossScript e5 = enemy.GetComponent<BossScript>();
         SpiderCreate e6 = enemy.GetComponent<SpiderCreate>();
+        FireDemon FD = enemy.GetComponent<FireDemon>();
         if(e4) {
             e4.DamageA();
             print("joikokij");
@@ -213,7 +214,7 @@ public class DataManager : MonoBehaviour
         if (e1)
             e1.Damage(damage);
         else if (e2)
-            e2.Damage();
+            e2.Damage(damage);
         else if (e3)
             e3.Damage(damage);
         else if (ee)
@@ -224,8 +225,9 @@ public class DataManager : MonoBehaviour
             e5.Damage(damage);
         else if (e6)
             e6.Damage(damage);
-        else if (ee3)
-            ee3.Damage(damage);
+        else if (FD)
+            FD.Damage(damage);
+
         if(damagetext) {
             ShowDamage(enemy, damage);
         }
@@ -244,7 +246,7 @@ public class DataManager : MonoBehaviour
         if (Enemy.CompareTag("Enemy")) return Enemy;
         if (Enemy.CompareTag("Player")) return Enemy;
         for (int j = Enemy.childCount - 1; j >= 0; j--) {
-            if (Enemy.GetChild(j).CompareTag("Enemy")) {
+            if (Enemy.GetChild(j).gameObject.activeSelf && Enemy.GetChild(j).CompareTag("Enemy")) {
                 return Enemy.GetChild(j);
             }
         }
@@ -265,5 +267,9 @@ public class DataManager : MonoBehaviour
 
     public void SetPlayerScale(Vector3 sca) {
         PlayerScale = sca;
+    }
+
+    public void BurnPlayer() {
+        Burner = true;
     }
 }

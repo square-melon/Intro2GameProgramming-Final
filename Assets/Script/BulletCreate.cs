@@ -8,6 +8,7 @@ public class BulletCreate : MonoBehaviour
     [Header("Settings")]
     public float ExistTime;
     public float Damage = 30.0f;
+    public float RayRadius;
     public GameObject ExplodeEffect;
     public GameObject damagetext;
     void Start()
@@ -23,7 +24,7 @@ public class BulletCreate : MonoBehaviour
     void DetectShootOn() {
         Ray ray = new Ray(transform.position, GetComponent<Rigidbody>().velocity);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 0.5f)) {
+        if (Physics.SphereCast(transform.position, RayRadius, GetComponent<Rigidbody>().velocity, out hit, 0.5f)) {
             if (hit.collider.CompareTag("Enemy")) {
                 
                 Instantiate(ExplodeEffect, hit.point, Quaternion.identity);
