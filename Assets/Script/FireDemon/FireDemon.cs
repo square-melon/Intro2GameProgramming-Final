@@ -17,6 +17,7 @@ public class FireDemon : MonoBehaviour
     public GameObject FireBall;
     public GameObject Mouth;
     public GameObject BioFlame;
+    public GameObject RevivingFire;
 
     public float RotationSlerp;
     public float DemonRotationSlerp;
@@ -134,6 +135,32 @@ public class FireDemon : MonoBehaviour
     public float FlameAng;
     public float FlameTooClose;
     public int FlameStack;
+    public float RushBefore;
+    public float StartRush;
+    public float RushEnd;
+    public float RushAnimWait;
+    public float RushSpeed;
+    public float RushHitRange;
+    public float RushDamage;
+    public float MeleeAttackBefore;
+    public float MeleeAttackHandUp;
+    public float MeleeAttackStart;
+    public float MeleeAttackDmgTrigger;
+    public float MeleeAttackAnimWait;
+    public float MeleeAttackRange;
+    public float MeleeAttackAng;
+    public float MeleeAttackDamage;
+
+    [Header("Sound")]
+    public AudioSource AS;
+    public AudioClip Attack1Clip;
+    public float Attack1ClipWait;
+    public AudioClip KickClip;
+    public AudioClip StabClip;
+    public float StabSoundWait;
+    public AudioClip SemiCircleSlashClip;
+    public AudioClip ShockWaveClip;
+    public AudioClip SpeedUpClip;
 
     private int Phase;
     private NavMeshAgent Human_naviAgent;
@@ -146,12 +173,13 @@ public class FireDemon : MonoBehaviour
 
     void Start()
     {
+        DataManager.Instance.BossName = "Boss";
         HP = HumanMAXHP;
-        Phase = 2;
-        Human.SetActive(false);
+        Phase = 1;
+        Human.SetActive(true);
         StabSword.SetActive(false);
         SemiCircleRangeInd.SetActive(false);
-        Demon.SetActive(true);
+        Demon.SetActive(false);
         Human_naviAgent = Human.GetComponent<NavMeshAgent>();
         Demon_naviAgent = Demon.GetComponent<NavMeshAgent>();
         HumanAnim = Human.GetComponent<Animator>();
@@ -159,20 +187,31 @@ public class FireDemon : MonoBehaviour
         HumanAnim.SetBool("IsDead", false);
         LastSkill = -1;
         combo = false;
+        DoNotShow = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!DoNotShow)
+            DataManager.Instance.ShowBossHP = true;
+        else
+            DataManager.Instance.ShowBossHP = false;
+        
+        if (Phase == 1)
+            DataManager.Instance.BossMAXHP = HumanMAXHP;
+        else
+            DataManager.Instance.BossMAXHP = DemonMAXHP;
+        DataManager.Instance.BossHP = HP;
 
         if (!IsDead)
             BurnerCheck();
 
-        if (!DoNotTurn && !IsDead);
+        if (!DoNotTurn && !IsDead)
             FaceTarget();
 
         if (Phase == 1) {
-            if (!Casting && !Freeze) {
+            if (!Casting && !Freeze && !IsDead) {
                 if (Vector3.Distance(DataManager.Instance.PlayerPos, Human.transform.position) >= ChaseDis) {
                     FarSkill();
                 } else {
@@ -181,12 +220,11 @@ public class FireDemon : MonoBehaviour
                 }
             }
         } else if (Phase == 2) {
-            if (IsDead) {
+            if (IsDead && !Reviving) {
                 if (Dis() <= ReviveDis) {
-                    Demon.SetActive(true);
                     StartCoroutine(ReviveAnim());
                 }
-            } else {
+            } else if (!IsDead) {
                 if (!Casting && !Freeze) {
                     if (Vector3.Distance(DataManager.Instance.PlayerPos, Demon.transform.position) >= DemonChaseDis) {
                         DemonFarSkill();
@@ -207,17 +245,31 @@ public class FireDemon : MonoBehaviour
         }
     }
 
+    private bool Reviving;
+    private bool DoNotShow;
     IEnumerator ReviveAnim() {
-        Demon.transform.localScale = new Vector3(1, 1, 1);
+        Reviving = true;
+        GameObject Rev = Instantiate(RevivingFire, Demon.transform.position + new Vector3(0, 2.5f, 0), Quaternion.identity);
+        yield return new WaitForSeconds(4f);
+        Demon.SetActive(true);
+        BioFlame.SetActive(false);
+        ShockWaveCircle.SetActive(false);
+        ShockWaveVertical.SetActive(false);
         Human.SetActive(false);
+        Demon.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
         Vector3 Into = new Vector3(DemonScale, DemonScale, DemonScale);
+        DemonAnim.SetTrigger("Jump");
         while (Demon.transform.localScale.x < DemonScale*0.98f) {
             Demon.transform.localScale = Vector3.Slerp(Demon.transform.localScale, Into, Time.deltaTime);
             yield return null;
         }
+        Destroy(Rev);
         Demon.transform.localScale = Into;
+        DataManager.Instance.BossName = "Fire Demon";
+        DoNotShow = false;
+        HP = 0;
         while (HP < DemonMAXHP) {
-            HP += DemonMAXHP*0.33f;
+            HP += DemonMAXHP*0.0033f;
             yield return null;
         }
         HP = DemonMAXHP;
@@ -319,7 +371,7 @@ public class FireDemon : MonoBehaviour
         if (Phase == 2) {
             if (!IsDead && Demon_naviAgent.enabled && Demon_naviAgent.velocity != Vector3.zero && !Demon_naviAgent.isStopped) {
                 Demon.transform.eulerAngles = new Vector3(0, Quaternion.Slerp(Demon.transform.rotation, Quaternion.LookRotation(Demon_naviAgent.velocity - Vector3.zero), Time.deltaTime * DemonRotationSlerp).eulerAngles.y, 0);
-            } else if (!IsDead && Demon_naviAgent.enabled && Demon_naviAgent.isStopped && FacingTarget != Vector3.zero) {
+            } else if (!IsDead && FacingTarget != Vector3.zero) {
                 Demon.transform.eulerAngles = new Vector3(0, Quaternion.Slerp(Demon.transform.rotation, Quaternion.LookRotation(FacingTarget), Time.deltaTime * DemonRotationSlerp * 2).eulerAngles.y, 0);
             }
         } else {
@@ -351,6 +403,8 @@ public class FireDemon : MonoBehaviour
         yield return new WaitForSeconds(Attack1HandUp);
         HumanAnim.SetFloat("Attack1Speed", 0.01f);
         yield return new WaitForSeconds(Attack1Slash);
+        AS.PlayOneShot(Attack1Clip);
+        yield return new WaitForSeconds(Attack1ClipWait);
         HumanAnim.SetFloat("Attack1Speed", 1f);
         yield return new WaitForSeconds(Attack1DmgTrigger);
         if (Dis() <= Attack1SlashRange && Vector3.Dot(MeToPlayer(), Human.transform.forward) >= Attack1SlashAng)
@@ -374,6 +428,7 @@ public class FireDemon : MonoBehaviour
         yield return new WaitForSeconds(KickBefore);
         DoNotTurn = true;
         HumanAnim.SetTrigger("Kick");
+        AS.PlayOneShot(KickClip);
         yield return new WaitForSeconds(KickDmgTrigger);
         bool OnKick = false;
         if (Dis() <= KickRange && Vector3.Dot(MeToPlayer(), Human.transform.forward) >= KickAng) {
@@ -409,6 +464,7 @@ public class FireDemon : MonoBehaviour
         Human_naviAgent.ResetPath();
         yield return new WaitForSeconds(SpeedUpBefore);
         HumanAnim.SetTrigger("SpeedUp");
+        AS.PlayOneShot(SpeedUpClip);
         Human_naviAgent.speed = HumanBraverySpeed;
         Invoke("ResetSpeedUp", SpeedUpRemain);
     }
@@ -421,10 +477,10 @@ public class FireDemon : MonoBehaviour
     void Stab() {
         Casting = true;
         StartCoroutine(IStab());
-        StartCoroutine(CoolDownCal(StabDmgTrigger+StabSwordStartCreate+StabSwordCreated+StabAnimWait, (returnVal1) => {
+        StartCoroutine(CoolDownCal(StabDmgTrigger+StabSwordStartCreate+StabSwordCreated+StabAnimWait+StabSoundWait, (returnVal1) => {
             Casting = returnVal1;
         }));
-        StartCoroutine(CoolDownCal(StabDmgTrigger+StabSwordStartCreate+StabSwordCreated+StabAnimWait, (returnVal1) => {
+        StartCoroutine(CoolDownCal(StabDmgTrigger+StabSwordStartCreate+StabSwordCreated+StabAnimWait+StabSoundWait, (returnVal1) => {
             DoNotTurn = returnVal1;
         }));
     }
@@ -437,15 +493,17 @@ public class FireDemon : MonoBehaviour
         DoNotTurn = true;
         StabSword.SetActive(true);
         yield return new WaitForSeconds(StabSwordCreated);
+        AS.PlayOneShot(StabClip);
+        yield return new WaitForSeconds(StabSoundWait);
         HumanAnim.SetTrigger("Stab");
         yield return new WaitForSeconds(StabDmgTrigger);
-        if (Dis() <= StabRange && Vector3.Dot(PlayerPos() - HumanRightHand.transform.position, Human.transform.forward) >= StabAng) {
+        if (Dis() <= StabRange && Vector3.Dot(MeToPlayer(), Human.transform.forward) >= StabAng) {
             DataManager.Instance.KnockDownFrom = Human;
             DataManager.Instance.PlayerOnHit(StabDamage);
         }
         yield return new WaitForSeconds(StabSwordDestroy);
         StabSword.SetActive(false);
-        yield return new WaitForSeconds(StabAnimWait);
+        // yield return new WaitForSeconds(StabAnimWait);
     }
 
     void OneSwordCombo() {
@@ -501,6 +559,7 @@ public class FireDemon : MonoBehaviour
     IEnumerator ISemiCircleSlash() {
         FacingTarget = PlayerPos() - Human.transform.position;
         FacingTarget.y = 0;
+        Human_naviAgent.ResetPath();
         HumanAnim.SetTrigger("SwordCreate2");
         Vector3 Into = LeftSword.transform.localScale;
         Into.z = SemiCircleSwordLen;
@@ -508,10 +567,15 @@ public class FireDemon : MonoBehaviour
             LeftSword.transform.localScale = Vector3.Slerp(LeftSword.transform.localScale, Into, Time.deltaTime*3);
             yield return null;
         }
+        DoNotTurn = true;
         yield return new WaitForSeconds(SemiCircleStartCreating);
+        DoNotTurn = false;
         LeftSword.transform.localScale = Into;
+        FacingTarget = PlayerPos() - Human.transform.position;
+        FacingTarget.y = 0;
         yield return new WaitForSeconds(SemiCircleSwordCreated);
         HumanAnim.SetTrigger("SemiCircleSlash");
+        AS.PlayOneShot(SemiCircleSlashClip, 1f);
         yield return new WaitForSeconds(SemiCircleSlashBefore);
         DoNotTurn = true;
         SemiCircleRangeInd.SetActive(true);
@@ -537,11 +601,11 @@ public class FireDemon : MonoBehaviour
         LeftSword.transform.localScale = Into;
     }
     
+    // Check Death
     private bool IsDead;
     public void Damage(float damage) {
         if (IsDead)
             return;
-        Debug.Log("Damaged");
         HP -= damage;
         if (HP <= 0) {
             IsDead = true;
@@ -550,12 +614,25 @@ public class FireDemon : MonoBehaviour
                 HumanAnim.SetBool("IsDead", true);
                 HumanAnim.SetTrigger("Dead");
                 Demon.transform.position = Human.transform.position;
-                Phase = 2;
+                Invoke("DisableHealthBar", 2);
+                Invoke("PhaseChange", 10);
             }
             else {
-                // defeated
+                Demon_naviAgent.ResetPath();
+                DemonAnim.SetTrigger("Die");
+                Invoke("DisableHealthBar", 2);
+                // Invoke("PhaseChange", 10);
+                // Defeated
             }
         }
+    }
+
+    void DisableHealthBar() {
+        DoNotShow = true;
+    }
+
+    void PhaseChange() {
+        Phase = 2;
     }
 
     private bool Freeze;
@@ -566,23 +643,49 @@ public class FireDemon : MonoBehaviour
             CancelInvoke("ResetFrozen");
         }
         if (Phase == 1)
-            Human_naviAgent.ResetPath();
+            Human_naviAgent.speed = 0;
         else
-            Demon_naviAgent.ResetPath();
+            Demon_naviAgent.speed = 0;
         Freeze = true;
-        Invoke("Frozen", 1.5f);
+        HumanAnim.SetBool("Walk", false);
+        Invoke("ResetFrozen", 2f);
     }
 
     void ResetFrozen() {
         Freeze = false;
+        if (Phase == 1)
+            Human_naviAgent.speed = HumanSpeed;
+        else
+            Demon_naviAgent.speed = DemonSpeed;
     }
 
     void DemonFarSkill() {
-        FlameBreathe();
-        // WalkingCounter += Time.deltaTime;
-        // Demon_naviAgent.stoppingDistance = DemonChaseDis;
-        // Demon_naviAgent.SetDestination(DataManager.Instance.PlayerPos);
-        // DemonAnim.SetBool("Walk Forward", true);
+        if (WalkingCounter >= 3) {
+            if (Dis() <= 15) {
+                DemonAnim.SetBool("Walk Forward", false);
+                float x = Random.Range(0, 3);
+                WalkingCounter = 0;
+                if (x < 1) {
+                    LastSkill = 4;
+                    ShootFireBall();
+                } else if (x < 2) {
+                    FlameBreathe();
+                } else {
+                    LastSkill = 3;
+                    DemonRush();
+                }
+            } else {
+                DemonAnim.SetBool("Walk Forward", false);
+                WalkingCounter = 0;
+                LastSkill = 3;
+                DemonRush();
+            }
+        } else {
+            WalkingCounter += Time.deltaTime;
+            Demon_naviAgent.stoppingDistance = DemonChaseDis;
+            Demon_naviAgent.SetDestination(DataManager.Instance.PlayerPos);
+            DemonAnim.SetBool("Walk Forward", true);
+        }
     }
 
     void DemonCloseSkill() {
@@ -591,35 +694,35 @@ public class FireDemon : MonoBehaviour
         bool ch = false;
         while (!ch) {
             SkillNum = Random.Range(1, 101);
-            if (SkillNum <= 100) { // 45
+            if (SkillNum <= 60) { // 60
                 ch = true;
                 SkillNum = 0;
-            } else if (SkillNum <= 65 && LastSkill != 1) { // 20
+            } else if (SkillNum <= 70 && LastSkill != 1) { // 10
                 ch = true;
                 SkillNum = 1;
-            } else if (SkillNum <= 70 && LastSkill != 2) { // 5
+            } else if (SkillNum <= 88 && LastSkill != 2) { // 18
                 ch = true;
                 SkillNum = 2;
-            } else if (SkillNum <= 85 && LastSkill != 3) { // 15
+            } else if (SkillNum <= 93 && LastSkill != 3) { // 5
                 ch = true;
                 SkillNum = 3;
-            } else if (LastSkill != 4) { // 15
+            } else if (LastSkill != 4) { // 7
                 ch = true;
                 SkillNum = 4;
             }
         }
         LastSkill = SkillNum;
         if (SkillNum == 0)
-            FlameBreathe();
-        // else if (SkillNum == 1) {
-        //     // HumanKick();
-        // }
-        // else if (SkillNum == 2) {
-        //     // HumanKick();
-        // } else if (SkillNum == 3) 
-        //     // Stab();
-        // else if (SkillNum == 4) 
-        //     // OneSwordCombo();
+            MeleeAttack();
+        else if (SkillNum == 1) {
+            ShockWave();
+        }
+        else if (SkillNum == 2) {
+            CrushAttack();
+        } else if (SkillNum == 3) 
+            DemonRush();
+        else if (SkillNum == 4) 
+            ShootFireBall();
     }
 
     void ShockWave() {
@@ -653,6 +756,7 @@ public class FireDemon : MonoBehaviour
         yield return new WaitForSeconds(ShockWavePrepare);
         DemonAnim.SetFloat("ShockWaveSpeed", 1);
         yield return new WaitForSeconds(ShockWaveStart);
+        AS.PlayOneShot(ShockWaveClip);
         ShockWaveVertical.SetActive(true);
         if (Dis() <= ShockWaveRange) {
             DataManager.Instance.KnockDownFrom = Demon;
@@ -772,6 +876,7 @@ public class FireDemon : MonoBehaviour
     IEnumerator IFlameBreathe() {
         FacingTarget = PlayerPos() - Demon.transform.position;
         FacingTarget.y = 0;
+        Demon_naviAgent.ResetPath();
         yield return new WaitForSeconds(FlameBreatheBefore);
         DoNotTurn = true;
         DemonAnim.SetFloat("FireBreathSpeed", 1);
@@ -800,6 +905,80 @@ public class FireDemon : MonoBehaviour
                 }
             }
             yield return new WaitForSeconds(FlameHitFreq);
+        }
+    }
+
+    void DemonRush() {
+        Casting = true;
+        StartCoroutine(IRush());
+        StartCoroutine(CoolDownCal(RushBefore+StartRush+RushEnd+RushAnimWait, (returnVal1) => {
+            Casting = returnVal1;
+        }));
+        StartCoroutine(CoolDownCal(RushBefore+StartRush+RushEnd+RushAnimWait, (returnVal1) => {
+            DoNotTurn = returnVal1;
+        }));
+    }
+
+    IEnumerator IRush() {
+        FacingTarget = PlayerPos() - Demon.transform.position;
+        FacingTarget.y = 0;
+        yield return new WaitForSeconds(RushBefore);
+        DoNotTurn = true;
+        yield return new WaitForSeconds(StartRush);
+        DemonAnim.SetBool("Run Forward", true);
+        Demon_naviAgent.speed = RushSpeed;
+        Demon_naviAgent.SetDestination(PlayerPos());
+        Coroutine X = StartCoroutine(CheckRushHit());
+        yield return new WaitForSeconds(RushEnd);
+        Demon_naviAgent.ResetPath();
+        Demon_naviAgent.speed = DemonSpeed;
+        DemonAnim.SetBool("Run Forward", false);
+        StopCoroutine(X);
+    }
+
+    IEnumerator CheckRushHit() {
+        bool ch = false;
+        while (!ch) {
+            if (Dis() <= RushHitRange) {
+                DataManager.Instance.KnockDownFrom = Demon;
+                DataManager.Instance.PlayerOnHit(RushDamage);
+                DataManager.Instance.PlayerKnockDown = true;
+                ch = true;
+            }
+            yield return null;
+        }
+    }
+
+    void MeleeAttack() {
+        Casting = true;
+        StartCoroutine(IMeleeAttack());
+        StartCoroutine(CoolDownCal(MeleeAttackBefore+MeleeAttackHandUp+MeleeAttackStart+MeleeAttackDmgTrigger+MeleeAttackAnimWait, (returnVal1) => {
+            Casting = returnVal1;
+        }));
+        StartCoroutine(CoolDownCal(MeleeAttackBefore+MeleeAttackHandUp+MeleeAttackStart+MeleeAttackDmgTrigger+MeleeAttackAnimWait, (returnVal1) => {
+            DoNotTurn = returnVal1;
+        }));
+    }
+
+    IEnumerator IMeleeAttack() {
+        FacingTarget = PlayerPos() - Demon.transform.position;
+        FacingTarget.y = 0;
+        yield return new WaitForSeconds(MeleeAttackBefore);
+        DemonAnim.SetFloat("MeleeAttackSpeed", 1);
+        float r = Random.Range(-1, 1);
+        if (r < 0)
+            DemonAnim.SetTrigger("Melee Attack 01");
+        else
+            DemonAnim.SetTrigger("Melee Attack 02");
+        yield return new WaitForSeconds(MeleeAttackHandUp);
+        DemonAnim.SetFloat("MeleeAttackSpeed", 0.01f);
+        yield return new WaitForSeconds(MeleeAttackStart);
+        DemonAnim.SetFloat("MeleeAttackSpeed", 1);
+        yield return new WaitForSeconds(MeleeAttackDmgTrigger);
+        if (Dis() <= MeleeAttackRange && Vector3.Dot(MeToPlayer(), Demon.transform.forward) >= MeleeAttackAng) {
+            DataManager.Instance.PlayerOnHit(MeleeAttackDamage);
+            BurnStack++;
+            CheckBurn();
         }
     }
 }
