@@ -177,6 +177,8 @@ public class PlayerControl : MonoBehaviour
     [Header("Running")]
     public float HumanWalkingSpeed;
     public float HumanRunningSpeed;
+    public float HumanLightningSpeed;
+    public float HumanLightningRunningSpeed;
     public float BearWalkingSpeed;
     public float BearRunningSpeed;
     public float StaminaResTime;
@@ -686,15 +688,32 @@ public class PlayerControl : MonoBehaviour
         float ShortestDis = LightningAARange;
         GameObject ClosetEnemy = null;
         foreach (var obj in Enemies) {
+            GameObject FDobj = null;
             Vector3 a = obj.transform.root.position;
+            int specialcase = 0;
+            if (obj.transform.root.GetComponent<FireDemon>() != null) {
+                for (int j = obj.transform.root.childCount - 1; j >= 0; j--) {
+                    if (obj.transform.root.GetChild(j).gameObject.activeSelf) {
+                        a = obj.transform.root.GetChild(j).position;
+                        FDobj = obj.transform.root.GetChild(j).gameObject;
+                        specialcase = 1;
+                    }
+                }
+            }
             Vector3 b = Human.transform.position;
             a.y = 0;
             b.y = 0;
             float dis = Vector3.Distance(a, b);
             if (dis <= LightningAARange && ClosetEnemy == null) {
-                ClosetEnemy = obj.transform.root.gameObject;
+                if (specialcase == 0)
+                    ClosetEnemy = obj.transform.root.gameObject;
+                else
+                    ClosetEnemy = FDobj;
             } else if (dis < ShortestDis) {
-                ClosetEnemy = obj.transform.root.gameObject;
+                if (specialcase == 0)
+                    ClosetEnemy = obj.transform.root.gameObject;
+                else
+                    ClosetEnemy = FDobj;
                 ShortestDis = dis;
             }
         }
@@ -715,9 +734,9 @@ public class PlayerControl : MonoBehaviour
     }
 
     GameObject ChangeToEnemy(GameObject Enemy) {
-        if (Enemy.CompareTag("Enemy")) return Enemy;
+        if (Enemy.CompareTag("Enemy") && Enemy.GetComponent<FireDemon>() == null) return Enemy;
         for (int j = Enemy.transform.childCount - 1; j >= 0; j--) {
-            if (Enemy.transform.GetChild(j).CompareTag("Enemy")) {
+            if (Enemy.transform.GetChild(j).gameObject.activeSelf && Enemy.transform.GetChild(j).CompareTag("Enemy")) {
                 return Enemy.transform.GetChild(j).gameObject;
             }
         }
@@ -725,9 +744,9 @@ public class PlayerControl : MonoBehaviour
     }
 
     Transform ChangeToEnemyTrans(Transform Enemy) {
-        if (Enemy.CompareTag("Enemy")) return Enemy;
+        if (Enemy.CompareTag("Enemy") && Enemy.gameObject.GetComponent<FireDemon>() == null) return Enemy;
         for (int j = Enemy.childCount - 1; j >= 0; j--) {
-            if (Enemy.GetChild(j).CompareTag("Enemy")) {
+            if (Enemy.GetChild(j).gameObject.activeSelf && Enemy.GetChild(j).CompareTag("Enemy")) {
                 return Enemy.GetChild(j);
             }
         }
@@ -1689,11 +1708,12 @@ public class PlayerControl : MonoBehaviour
             int ClosetHash = -1;
             GameObject[] Objects = GameObject.FindGameObjectsWithTag("Enemy");
             foreach (var obj in Objects) {
-                int hash = obj.transform.root.GetHashCode();
+                Transform ene = ChangeToEnemyTrans(obj.transform.root);
+                int hash = ene.GetHashCode();
                 if (!Chained.ContainsKey(hash)) {
-                    if (Vector3.Distance(TotemPrefab.transform.position, obj.transform.root.position) < ShortestDis) {
-                        ShortestDis = Vector3.Distance(TotemPrefab.transform.position, obj.transform.root.position);
-                        Closet = obj.transform.root.gameObject;
+                    if (Vector3.Distance(TotemPrefab.transform.position, ene.position) < ShortestDis) {
+                        ShortestDis = Vector3.Distance(TotemPrefab.transform.position, ene.position);
+                        Closet = ene.gameObject;
                         ClosetHash = hash;
                     }
                 }
@@ -1764,15 +1784,22 @@ public class PlayerControl : MonoBehaviour
                 Stamina -= StaminaDrop;
             running = true;
             stm_counter = 0;
-            if (!BearMode) 
-                Human_naviAgent.speed = HumanRunningSpeed;
+            if (!BearMode) {
+                if (!LightningCast)
+                    Human_naviAgent.speed = HumanRunningSpeed;
+                else
+                    Human_naviAgent.speed = HumanLightningRunningSpeed;
+            }
             else
                 Bear_naviAgent.speed = BearRunningSpeed;
             if (Stamina < 0)
                 Stamina = 0;
         } else if (!BearMode) {
             running = false;
-            Human_naviAgent.speed = HumanWalkingSpeed;
+            if (!LightningCast)
+                Human_naviAgent.speed = HumanWalkingSpeed;
+            else
+                Human_naviAgent.speed = HumanLightningSpeed;
         } else {
             running = false;
             Bear_naviAgent.speed = BearWalkingSpeed;

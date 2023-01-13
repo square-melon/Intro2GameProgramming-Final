@@ -19070,7 +19070,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ExistTime: 1
-  Damage: 20
+  Damage: 60
   Radius: 3.6
   Dis: 0
 --- !u!1 &4675135448239560814
