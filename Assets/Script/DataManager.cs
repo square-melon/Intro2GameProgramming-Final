@@ -230,21 +230,22 @@ public class DataManager : MonoBehaviour
             e5.Damage(damage);
         else if (e6)
             e6.Damage(damage);
-        else if (FD) {
+        else if (FD) 
             FD.Damage(damage);
         else if (em)
             em.Damage(damage);
-            for (int j = enemy.childCount - 1; j >= 0; j--) {
-                if (enemy.GetChild(j).gameObject.activeSelf) {
-                    ShowDamage(enemy.GetChild(j), damage);
-                }
+
+        for (int j = enemy.childCount - 1; j >= 0; j--) {
+            if (enemy.GetChild(j).gameObject.activeSelf) {
+                ShowDamage(enemy.GetChild(j), damage);
             }
-            return;
         }
 
         if(damagetext) {
             ShowDamage(enemy, damage);
         }
+
+        return;
     }
 
     public void ShakeCamera() {
