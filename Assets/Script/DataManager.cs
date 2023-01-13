@@ -214,7 +214,7 @@ public class DataManager : MonoBehaviour
         if (e1)
             e1.Damage(damage);
         else if (e2)
-            e2.Damage(damage);
+            e2.Damage();
         else if (e3)
             e3.Damage(damage);
         else if (ee)
