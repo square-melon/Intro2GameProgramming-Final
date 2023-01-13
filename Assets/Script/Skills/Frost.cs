@@ -39,6 +39,7 @@ public class Frost : MonoBehaviour
                 if (HitEnemy.ContainsKey(hash) == false) {
                     HitEnemy.Add(hash, true);
                     Transform objTrans = ChangeToEnemyTrans(obj.transform.root);
+                    Debug.Log(objTrans.position);
                     GameObject Hit = Instantiate(HitEffect, objTrans.position, Quaternion.identity);
                     Destroy(Hit, FrozenTime+0.2f);
                     DataManager.Instance.takedamage(objTrans, Damage);
@@ -49,7 +50,9 @@ public class Frost : MonoBehaviour
     }
 
     IEnumerator Frozen(GameObject Enemy) {
-        if (Enemy.TryGetComponent(out UnityEngine.AI.NavMeshAgent nav)) {
+        FireDemon FD = Enemy.GetComponent<FireDemon>();
+        if (FD != null) FD.Frozen();
+        else if (Enemy.TryGetComponent(out UnityEngine.AI.NavMeshAgent nav)) {
             float Ori = nav.speed;
             nav.speed = Ori * (1 - FrozenRate * 0.01f);
             yield return new WaitForSeconds(FrozenTime);
@@ -60,7 +63,7 @@ public class Frost : MonoBehaviour
     Transform ChangeToEnemyTrans(Transform Enemy) {
         if (Enemy.CompareTag("Enemy")) return Enemy;
         for (int j = Enemy.childCount - 1; j >= 0; j--) {
-            if (Enemy.GetChild(j).CompareTag("Enemy")) {
+            if (Enemy.GetChild(j).gameObject.activeSelf && Enemy.GetChild(j).CompareTag("Enemy")) {
                 return Enemy.GetChild(j);
             }
         }
