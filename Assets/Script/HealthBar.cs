@@ -14,6 +14,11 @@ public class HealthBar : MonoBehaviour
 
     void Start() {
         slider = GetComponent<Slider>();
+        if (BasedOn == 3) {
+            inactive = false;
+            for (int j = transform.childCount - 1; j >= 0; j--)
+                transform.GetChild(j).gameObject.SetActive(false);
+        }
     }
 
     void Update() {
@@ -40,7 +45,6 @@ public class HealthBar : MonoBehaviour
                 if (inactive) {
                     inactive = false;
                     for (int j = transform.childCount - 1; j >= 0; j--) {
-                        Debug.Log(transform.GetChild(j).name);
                         transform.GetChild(j).gameObject.SetActive(false);
                     }
                 }
