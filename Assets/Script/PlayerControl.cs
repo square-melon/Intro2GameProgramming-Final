@@ -1790,9 +1790,11 @@ public class PlayerControl : MonoBehaviour
                     }
                 }
             }
+            bool isTotem = false;
             if (Closet == null) {
                 Closet = Totem;
                 ClosetHash = Totem.transform.GetHashCode();
+                isTotem = true;
             }
             if (!Chained.ContainsKey(ClosetHash))
                 Chained.Add(ClosetHash, 1);
@@ -1800,7 +1802,7 @@ public class PlayerControl : MonoBehaviour
                 Chained[ClosetHash]++;
             else
                 break;
-            if (LightningManager.Instance != null)
+            if (LightningManager.Instance != null && isTotem == false)
                 LightningManager.Instance.HitOn(Closet.transform);
             StartCoroutine(LightningInstantiateFromA(Last, Closet));
             Last = Closet;
