@@ -49,6 +49,10 @@ public class DataManager : MonoBehaviour
     public GameObject KnockDownFrom;
     public bool BossStage;
     public bool Burner;
+    public float BossMAXHP;
+    public float BossHP;
+    public string BossName;
+    public bool ShowBossHP;
     private void Awake()
     {   
         if (Instance != null && Instance != this) {
@@ -226,10 +230,17 @@ public class DataManager : MonoBehaviour
             e5.Damage(damage);
         else if (e6)
             e6.Damage(damage);
-        else if (FD)
+        else if (FD) {
             FD.Damage(damage);
         else if (em)
             em.Damage(damage);
+            for (int j = enemy.childCount - 1; j >= 0; j--) {
+                if (enemy.GetChild(j).gameObject.activeSelf) {
+                    ShowDamage(enemy.GetChild(j), damage);
+                }
+            }
+            return;
+        }
 
         if(damagetext) {
             ShowDamage(enemy, damage);
@@ -246,6 +257,8 @@ public class DataManager : MonoBehaviour
         // go.transform.LookAt(go.transform.position + cam.transform.forward);
     }
     private Transform ChangeToEnemyTrans(Transform Enemy) {
+        Enemy = Enemy.root;
+        if (Enemy.gameObject.GetComponent<FireDemon>() != null) return Enemy;
         if (Enemy.CompareTag("Enemy")) return Enemy;
         if (Enemy.CompareTag("Player")) return Enemy;
         for (int j = Enemy.childCount - 1; j >= 0; j--) {

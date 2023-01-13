@@ -61,7 +61,7 @@ public class Frost : MonoBehaviour
     }
 
     Transform ChangeToEnemyTrans(Transform Enemy) {
-        if (Enemy.CompareTag("Enemy")) return Enemy;
+        if (Enemy.CompareTag("Enemy") && Enemy.gameObject.GetComponent<FireDemon>() == null) return Enemy;
         for (int j = Enemy.childCount - 1; j >= 0; j--) {
             if (Enemy.GetChild(j).gameObject.activeSelf && Enemy.GetChild(j).CompareTag("Enemy")) {
                 return Enemy.GetChild(j);
