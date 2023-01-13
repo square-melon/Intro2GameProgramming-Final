@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/09 - Dungeon/BossBridge.prefab.meta
 guid: 80d1d0e0e52e3e347a0be1a1de624282
 PrefabImporter:
+========
+guid: fee9f9b2d86e47f4a91d517651420f34
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> main:Assets/minfanPrefab/Zombie 1/FBXs.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

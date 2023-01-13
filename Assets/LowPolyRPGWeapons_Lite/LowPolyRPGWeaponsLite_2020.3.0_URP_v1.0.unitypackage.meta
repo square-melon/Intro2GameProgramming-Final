@@ -1,5 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/LowPolyRPGWeapons_Lite/LowPolyRPGWeaponsLite_2020.3.0_URP_v1.0.unitypackage.meta
 guid: 2c299b1162740664ba55a2fd6c2a8aee
+========
+guid: ae657b9c376ad8446ad1b6b93a2cc70f
+folderAsset: yes
+>>>>>>>> main:Assets/minfanPrefab/Zombie 1/Animations/Prefabs.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
