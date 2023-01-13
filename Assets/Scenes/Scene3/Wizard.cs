@@ -112,11 +112,11 @@ public class Wizard : MonoBehaviour
         {
             if(hp > 0) DataManager.Instance.PlayerOnHit(40.0f);
         }
-        if(other.gameObject.layer == 6)
-        {
-            animator.SetBool("HitWall", true);
-            animator.SetBool("Attack", false);
-        }
+        // if(other.gameObject.layer == 6)
+        // {
+        //     animator.SetBool("HitWall", true);
+        //     animator.SetBool("Attack", false);
+        // }
     }
 
     public void Damage(float damage) {
