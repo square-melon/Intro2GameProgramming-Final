@@ -217,7 +217,7 @@ MonoBehaviour:
   WaitCallback: 1
   EventValue: []
   IsMax: 1
-  IsWaiting: 1
+  IsWaiting: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,7 +246,7 @@ MonoBehaviour:
   eventNode: {fileID: 0}
   commentNode: {fileID: 0}
   profileNode: {fileID: 1478070830680820895}
-  current: {fileID: -6236034183975786599}
+  current: {fileID: 0}
 --- !u!114 &1478070830680820895
 MonoBehaviour:
   m_ObjectHideFlags: 0

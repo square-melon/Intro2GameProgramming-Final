@@ -15,7 +15,7 @@ public class magicZombieScript : MonoBehaviour
     private UnityEngine.AI.NavMeshAgent naviAgent;
     private Animator ZombieAnim;
     //private UnityEngine.AI.NavMeshAgent nav;
-    private float hp=50;
+    private float hp=300;
     private bool first=true;
     public GameObject damagetext;
     public Vector3 walkPoint;
@@ -50,10 +50,10 @@ public class magicZombieScript : MonoBehaviour
             // naviAgent.SetDestination(DataManager.Instance.PlayerPos);
         }
         Patroling();
-        // if(hp<=0){
-        //     ZombieAnim.SetBool("Dead",true);
+        if(hp <= 0){
+            ZombieAnim.SetBool("Dead",true);
 
-        // }
+        }
         if(ZombieAnim.GetCurrentAnimatorStateInfo(0).IsName("Dissapear")){ //dissapear after dead
             gameObject.SetActive(false);
         }
@@ -66,7 +66,6 @@ public class magicZombieScript : MonoBehaviour
     }
     public void Damage(float damage) {
         hp -= damage;
-        // hp--;
     }   
     
     public float getHp() {
