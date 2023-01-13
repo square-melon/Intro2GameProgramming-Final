@@ -41,6 +41,11 @@ public class FireBall : MonoBehaviour
             if (d <= ExplodeDis)
                 DataManager.Instance.BurnPlayer();
             Destroy(gameObject);
+        } else if (other.collider.CompareTag("Player")) {
+            Vector3 P = transform.position;
+            Instantiate(FirePlace, P + AdjustInsPlace, Quaternion.identity);
+            DataManager.Instance.BurnPlayer();
+            Destroy(gameObject);
         }
     }
 }
