@@ -248,9 +248,9 @@ public class DataManager : MonoBehaviour
             }
         }
 
-        if(damagetextauto || damagetextelse ) {
-            ShowDamage(enemy, damage);
-        }
+        // if(damagetextauto || damagetextelse ) {
+        //     ShowDamage(enemy, damage);
+        // }
 
         return;
     }
