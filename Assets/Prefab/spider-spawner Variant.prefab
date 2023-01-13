@@ -4988,7 +4988,7 @@ PrefabInstance:
     - target: {fileID: 6778645623459000787, guid: 54e5a830714478c44a3e9384a0759561,
         type: 3}
       propertyPath: m_Name
-      value: spider-spawner
+      value: spider-spawner Variant
       objectReference: {fileID: 0}
     - target: {fileID: 6778645623459000787, guid: 54e5a830714478c44a3e9384a0759561,
         type: 3}
@@ -5021,6 +5021,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a6ea1a3d75848c4c9b534816e4f2340, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spider: {fileID: 8264512007561809382, guid: db4cf965e8e56459d9ea0baae57c2bfd, type: 3}
-  timetospawn: 10
-  spark: {fileID: 0}
+  spider: {fileID: 8355537733776478016, guid: f6d4fad076d9845229f7992842ea97b4, type: 3}
+  timetospawn: 100
+  spark: {fileID: 808286808262885353, guid: 397e491b0846d234cafbd67cef1426c6, type: 3}

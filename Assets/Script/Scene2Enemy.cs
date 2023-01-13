@@ -82,6 +82,9 @@ public class Scene2Enemy : MonoBehaviour
         }
             
     }
+    public float getHp() {
+        return hp;
+    }
     public void CreateArrow() {
         Face = DataManager.Instance.PlayerPos - enemy.transform.position;
         //Face = new Vector3(Face.x, 0f, Face.z).normalized;
