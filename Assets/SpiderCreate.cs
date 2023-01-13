@@ -21,11 +21,13 @@ public class SpiderCreate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(flag == 0) {
+        Death();
+        print(dead);
+        if((flag == 0) && (dead == 0)) {
             Invoke("Create",timetospawn);
             flag = 1;
         }
-        Death();
+        
         
     }
     void Create() {

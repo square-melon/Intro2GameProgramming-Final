@@ -796,7 +796,7 @@ Transform:
   m_GameObject: {fileID: 8355537733776478016}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -9.709501, y: 0.71980286, z: 63.161003}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 2, y: 5, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8358347577973973108}
@@ -853,7 +853,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkPoint: {x: 0, y: 0, z: 0}
-  walkPointRange: 6
+  walkPointRange: 15
   audiosource: {fileID: 0}
   aclip: {fileID: 8300000, guid: 29a90aa179901b748a24eb2b1da6eabc, type: 3}
   timeBetweenAttacks: 3
@@ -865,6 +865,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   animator: {fileID: 8260282173754095052}
+  ExplodeEffect: {fileID: 8420350629562768551, guid: b7cda52f057c21d45a51e288191cbaa1,
+    type: 3}
 --- !u!195 &8358620838286080326
 NavMeshAgent:
   m_ObjectHideFlags: 0
