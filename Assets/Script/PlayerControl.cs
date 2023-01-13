@@ -87,6 +87,7 @@ public class PlayerControl : MonoBehaviour
     public AudioClip BearThirdAttackClip;
     public AudioClip EarthQuakeClip;
     public AudioClip ShieldBreakClip;
+    public AudioClip BearDeadClip;
 
     [Header("Settings")]
     public float Scaling;
@@ -310,6 +311,8 @@ public class PlayerControl : MonoBehaviour
         LightningMode.SetActive(false);
         DataManager.Instance.PlayerDead(false);
         OriHP = DataManager.Instance.HP();
+        BearAnim.SetBool("IsDead", false);
+        PlayerAnim.SetBool("IsDead", false);
         ResetAnimDoing();
     }
 
@@ -1025,13 +1028,26 @@ public class PlayerControl : MonoBehaviour
         if (DataManager.Instance.IsPlayerDead == false) {
             float CurHP = DataManager.Instance._HP;
             if (CurHP <= 0) {
-                audioPlayer.PlayOneShot(deadSE);
-                DataManager.Instance.PlayerDead(true);
-                PlayerAnim.SetInteger("Doing", 3);
-                PlayerPrefs.SetInt("SavedScene", SceneManager.GetActiveScene().buildIndex);
-                Doing = true;
-                ToggleNavi();
-                Invoke("LoadLoseScene", 4f);
+                if (!BearMode) {
+                    audioPlayer.PlayOneShot(deadSE);
+                    DataManager.Instance.PlayerDead(true);
+                    PlayerAnim.SetTrigger("Die");
+                    PlayerAnim.SetBool("IsDead", true);
+                    PlayerPrefs.SetInt("SavedScene", SceneManager.GetActiveScene().buildIndex);
+                    Doing = true;
+                    ToggleNavi();
+                    Invoke("ReloadScene", 4f);
+                } else {
+                    BearOnCast = true;
+                    audioPlayer.PlayOneShot(BearDeadClip);
+                    DataManager.Instance.PlayerDead(true);
+                    BearAnim.SetBool("Death", true);
+                    BearAnim.SetBool("IsDead", true);
+                    PlayerPrefs.SetInt("SavedScene", SceneManager.GetActiveScene().buildIndex);
+                    Doing = true;
+                    ToggleNavi();
+                    Invoke("ReloadScene", 4f);
+                }
             } else {
                 if (CurHP < OriHP) {
                     if (OriHP - CurHP >= DataManager.Instance.MAXHP * HitBackPercent * 0.01f)
@@ -1075,7 +1091,7 @@ public class PlayerControl : MonoBehaviour
         HitBack = false;
     }
 
-    void LoadLoseScene() {
+    void ReloadScene() {
         if (OnDebug)
             Init();
         else
@@ -1674,7 +1690,7 @@ public class PlayerControl : MonoBehaviour
     IEnumerator CreateHealingPlace() {
         float dur = 0;
         Vector3 pos = TotemPrefab.transform.position;
-        pos.y = 0.02f;
+        pos.y = Human.transform.position.y + 0.1f;
         audioPlayer.PlayOneShot(HealingPlaceCreatedClip);
         yield return new WaitForSeconds(0.3f);
         HealingPlacePrefab = Instantiate(HealingPlace, pos, Quaternion.Euler(-90, 0, 0));

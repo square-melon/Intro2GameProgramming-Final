@@ -2797,8 +2797,11 @@ MonoBehaviour:
   ShieldUp: 0
   Scaling: 0
   ShootOnSB: 0
-  damagetext: {fileID: 2043656377152561074, guid: ecf95b3d39e3aa445811bb3eecdbb59f,
-    type: 3}
+  damagetextauto: {fileID: 0}
+  damagetextenemy: {fileID: 0}
+  damagetextelse: {fileID: 0}
+  damagetextfrozen: {fileID: 0}
+  damagebear: {fileID: 0}
   cam: {fileID: 390378352}
   TotemCharged: 0
   HealingPlaceCreated: 0
@@ -2814,6 +2817,7 @@ MonoBehaviour:
   BossHP: 0
   BossName: 
   ShowBossHP: 0
+  ChapterLevel: 0
 --- !u!4 &1703814320
 Transform:
   m_ObjectHideFlags: 0
@@ -3120,7 +3124,7 @@ MonoBehaviour:
   HumanCollider: {fileID: 1048858124241480475}
   RotationSlerp: 7
   DemonRotationSlerp: 7
-  HumanMAXHP: 1200
+  HumanMAXHP: 30
   DemonMAXHP: 1600
   HP: 0
   HumanSpeed: 5
@@ -44887,6 +44891,7 @@ MonoBehaviour:
   BorderLeft: 0.05
   BorderRight: 0.95
   ShakingTime: 0
+  t: {fileID: 0}
 --- !u!114 &4689140361307078451
 MonoBehaviour:
   m_ObjectHideFlags: 0
