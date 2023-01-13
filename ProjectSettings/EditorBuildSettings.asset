@@ -5,12 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/06 - Castle.unity
     guid: 6b5559adca910d540a4fe673a1727602
@@ -21,12 +15,15 @@ EditorBuildSettings:
     path: Assets/Scenes/bossDebug.unity
     guid: 58ceb76c660007047bc842674a8d0737
   - enabled: 1
-    path: Assets/Scenes/09 - Dungeon 2.unity
-    guid: 6f1ecb73848ba1240944a1ed0ea2f958
+    path: Assets/Scenes/Rookie.unity
+    guid: 8bda34d1b5b4ac541b38a19835939ef1
   - enabled: 1
     path: Assets/Scenes/Lose.unity
     guid: a260819d7b8ce4d23a87dfe87e687648
   - enabled: 1
     path: Assets/Scenes/Win.unity
     guid: 3dac23ed193be4149a2161c5c30c4148
+  - enabled: 1
+    path: Assets/Scenes/Selection.unity
+    guid: 720224f0a600a40fb8d4a48b9d98e095
   m_configObjects: {}
