@@ -39,13 +39,14 @@ public class peopleScript1 : MonoBehaviour
     // Update is called once per frame
     private float timer=0;
     bool run = false;
-
+    bool flag = false;
     void Update()
     {
         float dstToPlayer = Vector3.Distance(transform.position, DataManager.Instance.PlayerPos);
         if(run==true){
             Run();
             run = false;
+            flag = false;
         }
         //觸發追逐的條件
         else if(dstToPlayer<10.0f && IsInFace()){
@@ -59,11 +60,14 @@ public class peopleScript1 : MonoBehaviour
                 InstantiateR();     
             }
             Track();
+            flag = false;
         }
         else if(dstToPlayer<10.0f && IsInFront()){
             if(discoveredY==false){
-                //if(flag == false){
-                audiosource.PlayOneShot(hmmclip);
+                if(flag == false){
+                    audiosource.PlayOneShot(hmmclip);
+                    flag = true;
+                }
                 Destroy(ExclamationPrefabR,0.0f);
                 discoveredR = false;
                 InstantiateY();
@@ -78,11 +82,13 @@ public class peopleScript1 : MonoBehaviour
                 InstantiateR();     
             }
             Track();
+            flag = false;
         }
         else{
             //idle();
             Patroling();
             timer=0;
+            flag = false;
         }
         //Timer
         // Debug.Log(timer);
