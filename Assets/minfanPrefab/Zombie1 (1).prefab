@@ -28743,7 +28743,13 @@ Animator:
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'Base HumanPelvis'\n\tTransform 'Base HumanLArmForearm'\n\tTransform
+    'Base HumanLArmDigit52'\n\tTransform 'Base HumanLArmDigit31'\n\tTransform 'Base
+    HumanRArmCollarbone'\n\tTransform 'Base HumanSpine1'\n\tTransform 'Base HumanLArmDigit21'\n\tTransform
+    'Base HumanLArmUpperarm'\n\tTransform 'Base HumanLLegCalf'\n\tTransform 'Base
+    HumanPelvis'\n\tand more ...\n\tFrom animation clip 'Z_Sleep'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -28769,19 +28775,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 8663884394067139941}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52646abec0374e54f943f4097ab56475, type: 3}
+  m_Script: {fileID: 11500000, guid: e742704adb7bd3b4092cd1a419430a5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   audioPlayer: {fileID: 0}
-  ZombieAttack: {fileID: 8300000, guid: 5e718aeaea72d564ebdfe87f29d9de78, type: 3}
-  ZombieMoan: {fileID: 8300000, guid: f035887894cc14c4d96bce8debfd494f, type: 3}
-  ZombieDead: {fileID: 8300000, guid: 023e6911fd90d1a4cb8eff25f3ee5ed8, type: 3}
-  damagetext: {fileID: 2043656377152561074, guid: ecf95b3d39e3aa445811bb3eecdbb59f,
-    type: 3}
+  ZombieAttack: {fileID: 0}
+  ZombieMoan: {fileID: 0}
+  ZombieDead: {fileID: 0}
+  damagetext: {fileID: 0}
   walkPoint: {x: 0, y: 0, z: 0}
-  walkPointRange: 3
-  SlashEffect: {fileID: 2208057372571881584}
-  SlashEffect1: {fileID: 6610276495810856062}
+  walkPointRange: 0
+  SlashEffect: {fileID: 0}
+  SlashEffect1: {fileID: 0}
   attack: 0
 --- !u!195 &8663884394067139940
 NavMeshAgent:
