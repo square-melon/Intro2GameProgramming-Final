@@ -17,7 +17,9 @@ public class peopleScript : MonoBehaviour
     public Vector3 walkPoint;
     bool walkPointSet;
     public float walkPointRange;
-    
+    public AudioSource audiosource;
+    public AudioClip hmmclip;
+    public AudioClip bclip;
     
     
     //Time
@@ -44,7 +46,7 @@ public class peopleScript : MonoBehaviour
         //觸發追逐的條件
         else if(dstToPlayer<10.0f && IsInFace()){
             timer += Time.deltaTime;
-            if(timer>=3.0f){
+            if(timer>=2.0f){
                 run = true;
             }
             if(discoveredR==false){
@@ -56,6 +58,7 @@ public class peopleScript : MonoBehaviour
         }
         else if(dstToPlayer<10.0f && IsInFront()){
             if(discoveredY==false){
+                audiosource.PlayOneShot(hmmclip);
                 Destroy(ExclamationPrefabR,0.0f);
                 discoveredR = false;
                 InstantiateY();
@@ -119,11 +122,13 @@ public class peopleScript : MonoBehaviour
         naviAgent.SetDestination(DataManager.Instance.PlayerPos);
     }
     void Run(){
-        Vector3 target = new Vector3(9.867254f,-8.000162f,42.30503f);
-        peopleAnim.SetBool("scared",true);
-        naviAgent.SetDestination(target);
+        // Vector3 target = new Vector3(9.867254f,-8.000162f,42.30503f);
+        // peopleAnim.SetBool("scared",true);
+        // naviAgent.SetDestination(target);
+        SpikeTrapDemo.trapped = true;
+        audiosource.PlayOneShot(bclip);
         Invoke("RunSpeed",1.0f);
-        Invoke("loadScene",3.0f);
+        Invoke("loadScene",2.0f);
     }
     void RunSpeed(){
         naviAgent.speed = 5.0f;

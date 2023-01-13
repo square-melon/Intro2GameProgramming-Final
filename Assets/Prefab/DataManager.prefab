@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8890882817839096697
+--- !u!1 &4357214698437984588
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8890882817839096679}
-  - component: {fileID: 8890882817839096696}
+  - component: {fileID: 4357214698437984594}
+  - component: {fileID: 4357214698437984589}
   m_Layer: 0
   m_Name: DataManager
   m_TagString: Untagged
@@ -17,13 +17,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8890882817839096679
+--- !u!4 &4357214698437984594
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8890882817839096697}
+  m_GameObject: {fileID: 4357214698437984588}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.31445336, y: 0.14869452, z: -0.058036804}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -32,19 +32,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8890882817839096696
+--- !u!114 &4357214698437984589
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8890882817839096697}
+  m_GameObject: {fileID: 4357214698437984588}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d47469631b959645bc73782c76366f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IncreaseBioValRate: 70
+  IncreaseBioValRate: 40
+  IncBioValRateBoss: 20
   IsPausing: 0
   BearTime: 0
   InBearMode: 0
@@ -55,10 +56,29 @@ MonoBehaviour:
   ShieldUp: 0
   Scaling: 0
   ShootOnSB: 0
-  damagetext: {fileID: 2043656377152561074, guid: ecf95b3d39e3aa445811bb3eecdbb59f,
+  damagetextauto: {fileID: 2043656377152561074, guid: b590841bf289a944381180f6b9916332,
+    type: 3}
+  damagetextenemy: {fileID: 2043656377152561074, guid: ecf95b3d39e3aa445811bb3eecdbb59f,
+    type: 3}
+  damagetextelse: {fileID: 2043656377152561074, guid: ed60f7f2502f26142ab67a5fffbc29ad,
+    type: 3}
+  damagetextfrozen: {fileID: 2043656377152561074, guid: 5e6bafdada0d14a408dde595312ab550,
+    type: 3}
+  damagebear: {fileID: 2043656377152561074, guid: 7aa7d77d76894ac439484bf4d9337a60,
     type: 3}
   cam: {fileID: 0}
   TotemCharged: 0
   HealingPlaceCreated: 0
   ChainLightning: 0
   ShakeCam: 0
+  stamina: 0
+  EmitGhost: 0
+  PlayerKnockDown: 0
+  KnockDownFrom: {fileID: 0}
+  BossStage: 0
+  Burner: 0
+  BossMAXHP: 0
+  BossHP: 0
+  BossName: 
+  ShowBossHP: 0
+  ChapterLevel: 0

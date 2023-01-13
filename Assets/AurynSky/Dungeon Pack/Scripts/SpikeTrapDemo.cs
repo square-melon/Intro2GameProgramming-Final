@@ -9,8 +9,6 @@ public class SpikeTrapDemo : MonoBehaviour {
     public Animator spikeTrapAnim; //Animator for the SpikeTrap;
     public float radius;
 
-    public GameObject Player;
-    private UnityEngine.AI.NavMeshAgent playerNaviAgent;
     public float originSpeed;
 
     // Use this for initialization
@@ -22,9 +20,7 @@ public class SpikeTrapDemo : MonoBehaviour {
         StartCoroutine(OpenCloseTrap());
     }
     void Start(){
-        Player = GameObject.Find("Human");
-        playerNaviAgent = Player.GetComponent<UnityEngine.AI.NavMeshAgent>();
-        originSpeed = playerNaviAgent.speed;
+
     }
     private bool opened = false;
     public static bool trapped = false;
@@ -33,12 +29,12 @@ public class SpikeTrapDemo : MonoBehaviour {
             RaycastHit[] hit = Physics.SphereCastAll(transform.position,radius,transform.forward,0);
             foreach(var obj in hit){
                 if(obj.collider.CompareTag("Player")){
-                    playerNaviAgent.speed = 0f;
+                    DataManager.Instance.KnockDownFrom = gameObject;
+                    DataManager.Instance.PlayerKnockDown = true;
                     trapped = true;
                 }
             }
         }else{
-            playerNaviAgent.speed = originSpeed;
             trapped = false;
         }
     }

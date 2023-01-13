@@ -38,7 +38,11 @@ public class DataManager : MonoBehaviour
     public bool ShieldUp;
     public float Scaling;
     public int ShootOnSB;
-    public GameObject damagetext;
+    public GameObject damagetextauto;
+    public GameObject damagetextenemy;
+    public GameObject damagetextelse;
+    public GameObject damagetextfrozen;
+    public GameObject damagebear;
     public GameObject cam;
     public float TotemCharged;
     public bool HealingPlaceCreated;
@@ -54,6 +58,7 @@ public class DataManager : MonoBehaviour
     public float BossHP;
     public string BossName;
     public bool ShowBossHP;
+    public int ChapterLevel;
     
     private void Awake()
     {   
@@ -89,13 +94,13 @@ public class DataManager : MonoBehaviour
             ShieldStored += ShieldBlockPer * damage * 0.01f;
             if (ShieldStored > MaxShieldStored)
                 ShieldStored = MaxShieldStored;
-            var go = Instantiate(damagetext, PlayerPos, Quaternion.identity);
+            var go = Instantiate(damagetextenemy, PlayerPos, Quaternion.identity);
             go.GetComponent<TextMesh>().text = (ShieldBlockDamagePer * damage * 0.01f).ToString("N1");
             go.transform.LookAt(go.transform.position + cam.transform.forward);
         }
         else {
             _HP -= damage;
-            var go = Instantiate(damagetext, PlayerPos, Quaternion.identity);
+            var go = Instantiate(damagetextenemy, PlayerPos, Quaternion.identity);
             go.GetComponent<TextMesh>().text = damage.ToString("N1");
             Debug.Log(_HP);
             // go.transform.LookAt(go.transform.position + cam.transform.forward);
@@ -232,31 +237,101 @@ public class DataManager : MonoBehaviour
             e5.Damage(damage);
         else if (e6)
             e6.Damage(damage);
-        else if (FD) 
+        else if (FD) {
             FD.Damage(damage);
+            for (int j = enemy.childCount - 1; j >= 0; j--) {
+                if (enemy.GetChild(j).gameObject.activeSelf) {
+                    if (damagetextauto || damagetextelse ) {
+                        ShowDamage(enemy.GetChild(j), damage);
+                    }
+                }
+            }
+            return;
+        }
         else if (em)
             em.Damage(damage);
 
-        for (int j = enemy.childCount - 1; j >= 0; j--) {
-            if (enemy.GetChild(j).gameObject.activeSelf) {
-                ShowDamage(enemy.GetChild(j), damage);
-            }
-        }
-
-        if(damagetext) {
+        if(damagetextauto || damagetextelse ) {
             ShowDamage(enemy, damage);
         }
 
         return;
     }
+    public void takedamage2(Transform enemy, float damage) {
+        enemy = ChangeToEnemyTrans(enemy);
+        Debug.Log(enemy.name);
+        if (enemy.CompareTag("Player")) {
+            PlayerOnHit(damage);
+            return;
+        }
+        if (!enemy.CompareTag("Enemy")) {
+            for (int i = enemy.childCount - 1; i >= 0; i--) {
+                if (enemy.GetChild(i).CompareTag("Enemy")) {
+                    enemy = enemy.GetChild(i);
+                    break;
+                }
+            }
+        }
+        ShootOnSB++;
+        Scene2Enemy e1 = enemy.GetComponent<Scene2Enemy>();
+        enemyScript e2 = enemy.GetComponent<enemyScript>();
+        Zombie3script ee2 = enemy.GetComponent<Zombie3script>();
+        Wizard e3 = enemy.GetComponent<Wizard>();
+        Scene2Boss ee = enemy.GetComponent<Scene2Boss>();
+        EnemySpider e4 = enemy.GetComponent<EnemySpider>();
+        BossScript e5 = enemy.GetComponent<BossScript>();
+        SpiderCreate e6 = enemy.GetComponent<SpiderCreate>();
+        FireDemon FD = enemy.GetComponent<FireDemon>();
+        if(e4) {
+            e4.DamageA();
+            print("joikokij");
+        }
+        if (e1)
+            e1.Damage(damage);
+        else if (e2)
+            e2.Damage(damage);
+        else if (e3)
+            e3.Damage(damage);
+        else if (ee)
+            ee.Damage();
+        else if (ee2)
+            ee2.Damage();
+        else if (e5)
+            e5.Damage(damage);
+        else if (e6)
+            e6.Damage(damage);
+        else if (FD) {
+            FD.Damage(damage);
+            for (int j = enemy.childCount - 1; j >= 0; j--) {
+                if (enemy.GetChild(j).gameObject.activeSelf) {
+                    var go = Instantiate(damagetextfrozen, enemy.GetChild(j).transform.position, Quaternion.identity);
+                    go.GetComponent<TextMesh>().text = damage.ToString("N1");
+                }
+            }
+            return;
+        }
 
+        if(damagetextfrozen) {
+            var go = Instantiate(damagetextfrozen, enemy.transform.position, Quaternion.identity);
+            go.GetComponent<TextMesh>().text = damage.ToString("N1");
+        }
+    }
     public void ShakeCamera() {
         ShakeCam = true;
     }
 
     void ShowDamage(Transform enemy, float damage) {
-        var go = Instantiate(damagetext, enemy.transform.position, Quaternion.identity);
-        go.GetComponent<TextMesh>().text = damage.ToString("N1");
+        if(damage == 30) {
+            var go = Instantiate(damagetextauto, enemy.transform.position, Quaternion.identity);
+            go.GetComponent<TextMesh>().text = damage.ToString("N1");
+        } else if(InBearMode){
+            var go = Instantiate(damagebear, enemy.transform.position, Quaternion.identity);
+            go.GetComponent<TextMesh>().text = damage.ToString("N1");
+        } else {
+            var go = Instantiate(damagetextelse, enemy.transform.position, Quaternion.identity);
+            go.GetComponent<TextMesh>().text = damage.ToString("N1");
+        }
+        
         // go.transform.LookAt(go.transform.position + cam.transform.forward);
     }
     private Transform ChangeToEnemyTrans(Transform Enemy) {

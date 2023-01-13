@@ -28,7 +28,10 @@ public class InvisibleDoor : MonoBehaviour
     private Animator Door5Anim; 
     private Animator Door6Anim;
     private Animator Door7Anim;
-    private Animator Door8Anim;            
+    private Animator Door8Anim;
+    public AudioSource audiosource;
+    public AudioClip CountDownclip;
+    public AudioClip Alarmclip;            
     private bool Opened = false;
     void Start()
     {
@@ -57,6 +60,7 @@ public class InvisibleDoor : MonoBehaviour
         print("aa");
         if(Opened==false){
             if(other.gameObject.tag=="Player"){
+                audiosource.PlayOneShot(CountDownclip);
                 Invoke("Opendoor",4.0f);
                 Invoke("RemoveObstacle",5.0f);
                 Opened = true;
@@ -72,6 +76,7 @@ public class InvisibleDoor : MonoBehaviour
         Door6Anim.SetTrigger("Open");
         Door7Anim.SetTrigger("Open");
         Door8Anim.SetTrigger("Open");
+        audiosource.PlayOneShot(Alarmclip);
     }
     void RemoveObstacle(){
         Obstacle1.SetActive(false);

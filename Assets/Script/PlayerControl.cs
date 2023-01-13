@@ -87,6 +87,7 @@ public class PlayerControl : MonoBehaviour
     public AudioClip BearThirdAttackClip;
     public AudioClip EarthQuakeClip;
     public AudioClip ShieldBreakClip;
+    public AudioClip BearDeadClip;
 
     [Header("Settings")]
     public float Scaling;
@@ -310,6 +311,8 @@ public class PlayerControl : MonoBehaviour
         LightningMode.SetActive(false);
         DataManager.Instance.PlayerDead(false);
         OriHP = DataManager.Instance.HP();
+        BearAnim.SetBool("IsDead", false);
+        PlayerAnim.SetBool("IsDead", false);
         ResetAnimDoing();
     }
 
@@ -1019,19 +1022,42 @@ public class PlayerControl : MonoBehaviour
     void ResetMedkitHealCD() {
         MedkitHealCD = true;
     }
-
+    
+    public Animator animator12;
+    private int b = 0;
     private bool HitBack;
     void DeadDetect() {
         if (DataManager.Instance.IsPlayerDead == false) {
             float CurHP = DataManager.Instance._HP;
-            if (CurHP <= 0) {
-                audioPlayer.PlayOneShot(deadSE);
-                DataManager.Instance.PlayerDead(true);
-                PlayerAnim.SetInteger("Doing", 3);
-                PlayerPrefs.SetInt("SavedScene", SceneManager.GetActiveScene().buildIndex);
-                Doing = true;
-                ToggleNavi();
-                Invoke("LoadLoseScene", 4f);
+            if (CurHP <= -1) {
+                if (!BearMode) {
+                    audioPlayer.PlayOneShot(deadSE);
+                    DataManager.Instance.PlayerDead(true);
+                    PlayerAnim.SetTrigger("Die");
+                    PlayerAnim.SetBool("IsDead", true);
+                    PlayerPrefs.SetInt("SavedScene", SceneManager.GetActiveScene().buildIndex);
+                    Doing = true;
+                    ToggleNavi();
+                    Invoke("ReloadScene", 4f);
+                } else {
+                    BearOnCast = true;
+                    audioPlayer.PlayOneShot(BearDeadClip);
+                    DataManager.Instance.PlayerDead(true);
+                    BearAnim.SetBool("Death", true);
+                    BearAnim.SetBool("IsDead", true);
+                    PlayerPrefs.SetInt("SavedScene", SceneManager.GetActiveScene().buildIndex);
+                    Doing = true;
+                    ToggleNavi();
+                    Invoke("ReloadScene", 4f);
+                }
+                if(b == 0) {
+                    //a.loadscene();
+                    print(123);
+                    animator12.SetTrigger("out");
+                    b = 1;
+                }
+                
+                
             } else {
                 if (CurHP < OriHP) {
                     if (OriHP - CurHP >= DataManager.Instance.MAXHP * HitBackPercent * 0.01f)
@@ -1044,6 +1070,7 @@ public class PlayerControl : MonoBehaviour
                     // Invoke("ResetAnimDoing", 0.1f);
                     InCombat = true;
                     ReCalCombat = true;
+                    b = 0;
                 }
                 OriHP = CurHP;
             }
@@ -1075,11 +1102,11 @@ public class PlayerControl : MonoBehaviour
         HitBack = false;
     }
 
-    void LoadLoseScene() {
+    void ReloadScene() {
         if (OnDebug)
             Init();
-        else
-            SceneManager.LoadScene("Lose");
+        // else
+        //     SceneManager.LoadScene("Lose");
     }
 
     public void Reset() {
@@ -1674,7 +1701,7 @@ public class PlayerControl : MonoBehaviour
     IEnumerator CreateHealingPlace() {
         float dur = 0;
         Vector3 pos = TotemPrefab.transform.position;
-        pos.y = 0.02f;
+        pos.y = Human.transform.position.y + 0.1f;
         audioPlayer.PlayOneShot(HealingPlaceCreatedClip);
         yield return new WaitForSeconds(0.3f);
         HealingPlacePrefab = Instantiate(HealingPlace, pos, Quaternion.Euler(-90, 0, 0));
@@ -1790,9 +1817,11 @@ public class PlayerControl : MonoBehaviour
                     }
                 }
             }
+            bool isTotem = false;
             if (Closet == null) {
                 Closet = Totem;
                 ClosetHash = Totem.transform.GetHashCode();
+                isTotem = true;
             }
             if (!Chained.ContainsKey(ClosetHash))
                 Chained.Add(ClosetHash, 1);
@@ -1800,7 +1829,7 @@ public class PlayerControl : MonoBehaviour
                 Chained[ClosetHash]++;
             else
                 break;
-            if (LightningManager.Instance != null)
+            if (LightningManager.Instance != null && isTotem == false)
                 LightningManager.Instance.HitOn(Closet.transform);
             StartCoroutine(LightningInstantiateFromA(Last, Closet));
             Last = Closet;

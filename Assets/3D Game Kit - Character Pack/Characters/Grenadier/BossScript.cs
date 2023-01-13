@@ -38,7 +38,7 @@ public class BossScript : MonoBehaviour
     private UnityEngine.AI.NavMeshAgent playerNaviAgent;
     private UnityEngine.AI.NavMeshAgent bearNaviAgent;
     private Vector3 FacingTarget;
-    
+    public GameObject te;
     
     private bool Dead ;
 
@@ -54,6 +54,7 @@ public class BossScript : MonoBehaviour
         BossAnim = GetComponent<Animator>();
         HitPlayer = false;
         bar.SetMaxHealth(hp); 
+        te.SetActive(false);
     }
 
     // Update is called once per frame
@@ -108,10 +109,16 @@ public class BossScript : MonoBehaviour
             if(hp<=0 ){
                 Dead = true;
                 BossAnim.SetBool("Dead", true);
+                Invoke("disappear",5.0f);
+                
                 // Destroy(gameObject,5.0f);
             }
         }
-        
+    }
+
+    void disappear() {
+        gameObject.SetActive(false);
+        te.SetActive(true);
     }
     private bool skill1CD;
     private bool skill2CD;

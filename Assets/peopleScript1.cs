@@ -19,7 +19,9 @@ public class peopleScript1 : MonoBehaviour
     public Vector3 walkPoint;
     bool walkPointSet;
     public float walkPointRange;
-    
+    public AudioSource audiosource;
+    public AudioClip hmmclip;
+    public AudioClip bclip;
     
     
     //Time
@@ -37,16 +39,19 @@ public class peopleScript1 : MonoBehaviour
     // Update is called once per frame
     private float timer=0;
     bool run = false;
+    bool flag = false;
     void Update()
     {
         float dstToPlayer = Vector3.Distance(transform.position, DataManager.Instance.PlayerPos);
         if(run==true){
             Run();
+            run = false;
+            flag = false;
         }
         //觸發追逐的條件
         else if(dstToPlayer<10.0f && IsInFace()){
             timer += Time.deltaTime;
-            if(timer>=3.0f){
+            if(timer>=2.0f){
                 run = true;
             }
             if(discoveredR==false){
@@ -55,9 +60,14 @@ public class peopleScript1 : MonoBehaviour
                 InstantiateR();     
             }
             Track();
+            flag = false;
         }
         else if(dstToPlayer<10.0f && IsInFront()){
             if(discoveredY==false){
+                if(flag == false){
+                    audiosource.PlayOneShot(hmmclip);
+                    flag = true;
+                }
                 Destroy(ExclamationPrefabR,0.0f);
                 discoveredR = false;
                 InstantiateY();
@@ -72,11 +82,13 @@ public class peopleScript1 : MonoBehaviour
                 InstantiateR();     
             }
             Track();
+            flag = false;
         }
         else{
             //idle();
             Patroling();
             timer=0;
+            flag = false;
         }
         //Timer
         // Debug.Log(timer);
@@ -152,11 +164,10 @@ public class peopleScript1 : MonoBehaviour
         naviAgent.SetDestination(DataManager.Instance.PlayerPos);
     }
     void Run(){
-        Vector3 target = new Vector3(9.867254f,-8.000162f,42.30503f);
-        peopleAnim.SetBool("scared",true);
-        naviAgent.SetDestination(target);
+        SpikeTrapDemo.trapped = true;
+        audiosource.PlayOneShot(bclip);
         Invoke("RunSpeed",1.0f);
-        Invoke("loadScene",3.0f);
+        Invoke("loadScene",2.0f);
     }
     void RunSpeed(){
         naviAgent.speed = 5.0f;

@@ -42,7 +42,7 @@ public class Frost : MonoBehaviour
                     Debug.Log(objTrans.position);
                     GameObject Hit = Instantiate(HitEffect, objTrans.position, Quaternion.identity);
                     Destroy(Hit, FrozenTime+0.2f);
-                    DataManager.Instance.takedamage(objTrans, Damage);
+                    DataManager.Instance.takedamage2(objTrans, Damage * hit.Length);
                     StartCoroutine(Frozen(obj.transform.root.gameObject));
                 }
             }

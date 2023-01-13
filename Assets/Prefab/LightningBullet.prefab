@@ -9635,6 +9635,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ExistTime: 0.5
-  RayLength: 30
-  RayRadius: 4
-  Angle: 9.5
+  RayLength: 22
+  RayRadius: 6
+  Angle: 15

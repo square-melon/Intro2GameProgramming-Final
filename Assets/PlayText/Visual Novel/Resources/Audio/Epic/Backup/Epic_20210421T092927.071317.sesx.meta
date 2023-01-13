@@ -1,6 +1,11 @@
 fileFormatVersion: 2
-guid: 646b4909297e5f84f85cb0cc379e8fcf
+<<<<<<<< HEAD:Assets/PlayText/Visual Novel/Resources/Audio/Epic/Backup/Epic_20210421T092927.071317.sesx.meta
+guid: 9d80a0ae3b74d14429774612ef69e7ab
 DefaultImporter:
+========
+guid: dd7c4686eb5bffd49b53caec502f1e4f
+PrefabImporter:
+>>>>>>>> josh_final:Assets/Prefab/FloatingText 1.prefab.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
