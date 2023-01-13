@@ -1425,7 +1425,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1047967233
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1957,6 +1957,8 @@ MonoBehaviour:
     type: 3}
   Lightning: {fileID: 2652387005256592484, guid: 0f14a61d3219ea6409ecfa106b0afc42,
     type: 3}
+  Lightning2: {fileID: 2652387005256592484, guid: fcb3cbaa76231f442a6d4cfe97c95cb4,
+    type: 3}
   HealingPlace: {fileID: 5348793350635300611, guid: 976d38d570a6db849a1b7abcebcd8d78,
     type: 3}
   FlameThrowingEffect: {fileID: 6213541799210647219, guid: d9fcb515e7c914f4380f3609516a2c38,
@@ -1967,8 +1969,17 @@ MonoBehaviour:
   healSE: {fileID: 8300000, guid: d3631271d9479f64c804a99a2f2b86ba, type: 3}
   dashSE: {fileID: 8300000, guid: ac0bd361f4c7bd0449c84f45bc815aef, type: 3}
   deadSE: {fileID: 8300000, guid: 0498ad96395514e4a8017aac5d17fb67, type: 3}
-  hurtSE: {fileID: 8300000, guid: aad4338833a3bc646ba6824e8d809cbd, type: 3}
+  hurtSE: {fileID: 8300000, guid: 6f95e10f86768e943a67d2018b629e04, type: 3}
   frostSE: {fileID: 8300000, guid: cf64e25e41f797045bd7371f8e125191, type: 3}
+  ZapClip: {fileID: 8300000, guid: d48292ce2fe7fa34aa8d03844f48f581, type: 3}
+  RandomThunderClip: {fileID: 8300000, guid: 552df20c23f68714db70e8f5a0800b16, type: 3}
+  CastLightningClip: {fileID: 8300000, guid: cdc501618b1c38b45be9c7cc83d99dc3, type: 3}
+  HealingPlaceCreatedClip: {fileID: 8300000, guid: 510f76f550d36ba458a98734d148865f,
+    type: 3}
+  BearBasicAttackClip: {fileID: 0}
+  BearThirdAttackClip: {fileID: 8300000, guid: a2563b1b16174f74f925d7af56d208f2, type: 3}
+  EarthQuakeClip: {fileID: 8300000, guid: acfc68d8984e53e489a3857e36eed87a, type: 3}
+  ShieldBreakClip: {fileID: 8300000, guid: 552df20c23f68714db70e8f5a0800b16, type: 3}
   Scaling: 2
   SpawnPoint: {x: 0, y: 0, z: 0}
   RotationSlerp: 7
@@ -1982,7 +1993,7 @@ MonoBehaviour:
   DashDistance: 5
   DashSpeed: 20
   MedkitHealHP: 50
-  MAXHP: 500
+  MAXHP: 600
   FireEffectStop: 0.1
   IceBallShootForce: 400
   FrostCoolDown: 7
@@ -1991,7 +2002,7 @@ MonoBehaviour:
   MaxSparkyChargingTime: 2
   SparkyShootForce: 500
   SparkyTransScale: 16
-  LightningCoolDown: 30
+  LightningCoolDown: 12
   ExploCoolDown: 15
   BugCircularChoosingTime: 0.75
   SwitchingParallelTime: 3.8
@@ -1999,7 +2010,7 @@ MonoBehaviour:
   DisableLightningTime: 1
   LightningAAWait: 0.4
   LightningAARange: 13
-  LightningAAReload: 1
+  LightningAAReload: 2.2
   LightningAAIncAS: 0
   LightningAAWaitB: 0.3
   LightningCurvePts: 10
@@ -2007,13 +2018,13 @@ MonoBehaviour:
   LightningGlowingTimes: 15
   LightningGlowingWait: 0.02
   BecomeBearTime: 30
-  MaxInBearMode: 5
+  MaxInBearMode: 100
   BearAttackSpeed: 1.2
   BearAttackRadius: 1.8
   BearAttackDis: 0.5
-  BearAttackBasicDamage: 40
-  BearThirdAttackDamage: 80
-  BearRegenRate: 40
+  BearAttackBasicDamage: 35
+  BearThirdAttackDamage: 70
+  BearRegenRate: 30
   FlamingCoolDown: 8
   PreFlamingAnimWait: 0.4
   AftFlamingAnimWait: 1
@@ -2034,7 +2045,7 @@ MonoBehaviour:
   ShieldDarkerScaler: 0.95
   ShieldBlockDamagePercent: 70
   CastLightningWaitingTime: 0.4
-  ThunderCastCoolDown: 8
+  ThunderCastCoolDown: 4
   ThunderCastAddCD: 0
   PlacingTotemCoolDown: 8
   ChargedTotemAmount: 10
@@ -2050,11 +2061,13 @@ MonoBehaviour:
   RandomThunderDis: 10
   RandomThunderTime: 15
   ThunderInterval: 0.2
-  ChainLightningCharge: 1.5
-  ChainDis: 8
+  ChainLightningCharge: 0.7
+  ChainDis: 13
   ChainingWaiting: 0.2
-  ChainLightningTime: 4
+  ChainLightningTime: 12
   MaxCombatTime: 4
+  TotemIncreasedAA: 1
+  TotemIncreasedTime: 8
   LightningRangeToScale: 14
   HealingPlaceRangeScaling: 1.5
   SPRenderer: {fileID: 0}
@@ -2063,16 +2076,16 @@ MonoBehaviour:
     type: 3}
   HumanWalkingSpeed: 7
   HumanRunningSpeed: 10
-  HumanLightningSpeed: 8.5
-  HumanLightningRunningSpeed: 11.5
-  BearWalkingSpeed: 3
-  BearRunningSpeed: 5
+  HumanLightningSpeed: 7
+  HumanLightningRunningSpeed: 11
+  BearWalkingSpeed: 6
+  BearRunningSpeed: 9
   StaminaResTime: 1.5
   StaminaResQuantity: 0.3
   StaminaDrop: 0.15
   HitBackDis: 2.5
   GettingUpTime: 1
-  HitBackTime: 6
+  HitBackTime: 4.5
   HitBackPercent: 15
   Skill1: 0
   Skill2: 1
@@ -3104,17 +3117,18 @@ MonoBehaviour:
   BioFlame: {fileID: 4335157839076824711}
   RevivingFire: {fileID: 290366414770850988, guid: c286c757d14d6e2429c70eafa71c56c0,
     type: 3}
+  HumanCollider: {fileID: 1048858124241480475}
   RotationSlerp: 7
   DemonRotationSlerp: 7
   HumanMAXHP: 1200
   DemonMAXHP: 1600
   HP: 0
   HumanSpeed: 5
-  DemonSpeed: 4
+  DemonSpeed: 6.5
   HumanScale: 3
   DemonScale: 4.5
-  ChaseDis: 4
-  StoppingDis: 4
+  ChaseDis: 5
+  StoppingDis: 5
   HumanFarSlashDis: 8
   HumanAttack1CoolDown: 4
   HumanAttack1Before: 0.1
@@ -3124,7 +3138,7 @@ MonoBehaviour:
   Attack1Damage: 50
   Attack1DmgTrigger: 0.15
   Attack1HandUp: 0.2
-  Attack1Slash: 0.2
+  Attack1Slash: 0
   KickCoolDown: 10
   KickBefore: 0.1
   KickAnimWait: 1.5
@@ -3135,7 +3149,7 @@ MonoBehaviour:
   WalkCounterToSpeedUp: 5
   SpeedUpBefore: 0.1
   SpeedUpAnimWait: 2
-  HumanBraverySpeed: 6.7
+  HumanBraverySpeed: 7
   SpeedUpCoolDown: 30
   SpeedUpRemain: 12
   StabSwordStartCreate: 0.1
@@ -3143,9 +3157,9 @@ MonoBehaviour:
   StabAnimWait: 1.2
   StabCoolDown: 15
   StabDamage: 80
-  StabDmgTrigger: 0.5
+  StabDmgTrigger: 0.6
   StabRange: 11
-  StabAng: 0.9
+  StabAng: 0.85
   StabSwordDestroy: 1.5
   OneSwordComboBefore: 0.5
   OneSwordComboDmgTri1: 0.7
@@ -3163,7 +3177,7 @@ MonoBehaviour:
   SemiCircleSlashEnd: 0.7
   SemiCircleSlashAnimWait: 2
   SemiCirlceSlashCoolDown: 12
-  SemiCircleSlashRange: 20
+  SemiCircleSlashRange: 19
   SemiCircleSlashDamage: 80
   WalkingCounterToSemiCircle: 3
   OriSwordLen: 1
@@ -3173,7 +3187,7 @@ MonoBehaviour:
   RX: -30
   RY: 100
   RZ: 50
-  ReviveDis: 6
+  ReviveDis: 8
   DemonChaseDis: 6
   ShockWaveBefore: 0.1
   ShockWaveOnFloor: 0.75
@@ -3233,13 +3247,22 @@ MonoBehaviour:
   MeleeAttackDamage: 30
   AS: {fileID: 390378357}
   Attack1Clip: {fileID: 8300000, guid: 8550bc378c84f1243843ccd9f0646555, type: 3}
-  Attack1ClipWait: 0.1
+  Attack2Clip: {fileID: 8300000, guid: 168f76bec9801224fab53c1e454eae79, type: 3}
+  Attack1ClipWait: 0.15
   KickClip: {fileID: 8300000, guid: 59d9b125da688d34ea09c70db03b8f50, type: 3}
   StabClip: {fileID: 8300000, guid: 9fd44ce070a57464faee8ce1b1a1f441, type: 3}
   StabSoundWait: 0.15
   SemiCircleSlashClip: {fileID: 8300000, guid: 040f15554c63c4a428d5e043a72964ec, type: 3}
-  ShockWaveClip: {fileID: 8300000, guid: e0139fc850185244082cd764fe6af826, type: 3}
   SpeedUpClip: {fileID: 8300000, guid: 07934fc70fe3ce743bd28e05626365e2, type: 3}
+  Combo1Clip: {fileID: 8300000, guid: 1aa360ec45db4514ba25f649c9d37d39, type: 3}
+  Combo2Clip: {fileID: 8300000, guid: 3c6f466b20e012240a9904876b5ef395, type: 3}
+  Combo3Clip: {fileID: 8300000, guid: 37e605045110ea147b924215203b9549, type: 3}
+  ShockWaveClip: {fileID: 8300000, guid: 03a1648e4c6be1142877d0e6a6bb7a96, type: 3}
+  FlameBreathClip: {fileID: 8300000, guid: 1f293ab6af82f4b48bccd640457a4146, type: 3}
+  ShootFireBallClip: {fileID: 8300000, guid: 24482133a0316d44d96509a830e7cbcf, type: 3}
+  MeleeAttackClip: {fileID: 8300000, guid: 8550bc378c84f1243843ccd9f0646555, type: 3}
+  CrushAttackClip: {fileID: 8300000, guid: 02a3722729d81f548977d5005f5972c1, type: 3}
+  CrushAttackSFXWait: 0.3
   IsSpeedUp: 0
 --- !u!224 &2013764097 stripped
 RectTransform:
@@ -49861,9 +49884,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5458540510260418881}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 4.901698e-10, z: 0}
+  m_LocalScale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5458540510260121947}
@@ -49876,9 +49899,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5458540510260399941}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 4.901698e-10, z: 0}
+  m_LocalScale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5458540510260121947}
@@ -49892,8 +49915,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5458540510260420797}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.02, z: 0}
-  m_LocalScale: {x: 3.8, y: 3.8, z: 3.8}
+  m_LocalPosition: {x: 0, y: 0.020000001, z: 0}
+  m_LocalScale: {x: 4.4, y: 4.4, z: 4.4}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5458540510260213875}
@@ -49911,9 +49934,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5458540510260417011}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 4.901698e-10, z: 0}
+  m_LocalScale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5458540510260121947}
@@ -49926,9 +49949,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5458540510260408013}
-  m_LocalRotation: {x: -0.0000011324883, y: 0, z: 0, w: -1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.0000011324884, y: -0, z: -0, w: -1}
+  m_LocalPosition: {x: 0, y: 4.901698e-10, z: 0}
+  m_LocalScale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5458540510260121947}
@@ -49941,9 +49964,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5458540510260377827}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 4.901698e-10, z: 0}
+  m_LocalScale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5458540510260121947}
@@ -50056,7 +50079,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!198 &5458540510275332425
 ParticleSystem:
   m_ObjectHideFlags: 0

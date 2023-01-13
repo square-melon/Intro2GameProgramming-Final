@@ -66,6 +66,7 @@ public class PlayerControl : MonoBehaviour
     public GameObject Shield;
     public GameObject ShieldBreakCircle;
     public GameObject Lightning;
+    public GameObject Lightning2;
     public GameObject HealingPlace;
     public GameObject FlameThrowingEffect;
 
@@ -78,6 +79,14 @@ public class PlayerControl : MonoBehaviour
     public AudioClip deadSE;
     public AudioClip hurtSE;
     public AudioClip frostSE;
+    public AudioClip ZapClip;
+    public AudioClip RandomThunderClip;
+    public AudioClip CastLightningClip;
+    public AudioClip HealingPlaceCreatedClip;
+    public AudioClip BearBasicAttackClip;
+    public AudioClip BearThirdAttackClip;
+    public AudioClip EarthQuakeClip;
+    public AudioClip ShieldBreakClip;
 
     [Header("Settings")]
     public float Scaling;
@@ -166,6 +175,8 @@ public class PlayerControl : MonoBehaviour
     public float ChainingWaiting;
     public float ChainLightningTime;
     public float MaxCombatTime;
+    public float TotemIncreasedAA;
+    public float TotemIncreasedTime;
 
     [Header("EffectSettings")]
     public float LightningRangeToScale;
@@ -270,6 +281,14 @@ public class PlayerControl : MonoBehaviour
             DataManager.Instance.SetSkillLevel(1, SkillLevel2);
             DataManager.Instance.SetSkillLevel(2, SkillLevel3);
             DataManager.Instance.SetSkillLevel(3, SkillLevel4);
+        } else {
+            DataManager.Instance.SetPlayerHP(MAXHP);
+            DataManager.Instance.SetMAXHP(MAXHP);
+            DataManager.Instance.SetBiolanceValue(0);
+            DataManager.Instance.SetSkillEvent(0, 0);
+            DataManager.Instance.SetSkillEvent(1, 1);
+            DataManager.Instance.SetSkillEvent(2, 5);
+            DataManager.Instance.SetSkillEvent(3, 3);
         }
         DataManager.Instance.SetMAXHP(MAXHP);
         Firing = false;
@@ -353,7 +372,8 @@ public class PlayerControl : MonoBehaviour
     void KnockDownDetect() {
         if (DataManager.Instance.PlayerKnockDown) {
             DataManager.Instance.PlayerKnockDown = false;
-            KnockBack();
+            if (!HitBack)
+                KnockBack();
         }
     }
 
@@ -616,6 +636,7 @@ public class PlayerControl : MonoBehaviour
     private bool LightningFiring;
     private float CurLightningAttackSpeed;
     private int BearAttackCnt;
+    private int LightningAttackCnt;
     void Attack() {
         if (Doing || HitBack)
             return;
@@ -646,7 +667,13 @@ public class PlayerControl : MonoBehaviour
                 FacingTarget.y = 0;
                 LightningFiring = true;
                 ToggleNavi();
-                StartCoroutine(LightningAA(Ene));
+                LightningAttackCnt++;
+                if (LightningAttackCnt == 3) {
+                    StartCoroutine(ChainLightning(Ene));
+                    LightningAttackCnt = 0;
+                }
+                else
+                    StartCoroutine(LightningAA(Ene, 0));
                 Invoke("ResetLightningFiring", CurLightningAttackSpeed);
                 CurLightningAttackSpeed += LightningAAIncAS;
             }
@@ -662,6 +689,7 @@ public class PlayerControl : MonoBehaviour
                 } else if (BearAttackCnt == 1) {
                     BearAnim.SetTrigger("Attack2");
                 } else {
+                    audioPlayer.PlayOneShot(BearThirdAttackClip);
                     BearAnim.SetTrigger("Attack3");
                 }
                 BearAttackCnt++;
@@ -779,21 +807,22 @@ public class PlayerControl : MonoBehaviour
         ResetLE = false;
     }
 
-    IEnumerator LightningAA(GameObject Enemy) {
+    IEnumerator LightningAA(GameObject Enemy, int x) {
         PlayerAnim.SetInteger("Doing", 8);
         Invoke("ResetAnimDoing", 0.2f);
+        audioPlayer.PlayOneShot(ZapClip);
         yield return new WaitForSeconds(LightningAAWait);
         for (var i = LightningEmt.transform.childCount - 1; i >= 0; i--) {
             Destroy(LightningEmt.transform.GetChild(i).gameObject);
         }
-        StartCoroutine(LightningInstantiate(Enemy));
+        StartCoroutine(LightningInstantiate(Enemy, x));
         if (LightningManager.Instance != null)
             LightningManager.Instance.HitOn(Enemy.transform);
         Invoke("ToggleNavi", LightningAAWaitB);
         AvoidCasting = false;
     }
 
-    IEnumerator LightningInstantiate(GameObject Target) {
+    IEnumerator LightningInstantiate(GameObject Target, int x) {
         var curvept = new Vector3[LightningCurvePts+2];
         var v2 = new float[LightningCurvePts+2];
         float[] lenV = new float[LightningCurvePts+2];
@@ -804,7 +833,12 @@ public class PlayerControl : MonoBehaviour
         Array.Sort(lenV);
         for (var i = 1; i < LightningCurvePts+1; i++)
             v2[i] = UnityEngine.Random.Range(0, 360);
-        GameObject LightningPrefab = Instantiate(Lightning, rightHand.position, Quaternion.identity);
+        GameObject LightningPrefab = null;
+        if (x == 0) {
+            LightningPrefab = Instantiate(Lightning, rightHand.position, Quaternion.identity);
+        } else {
+            LightningPrefab = Instantiate(Lightning2, rightHand.position, Quaternion.identity);
+        }
         LineRenderer LR = LightningPrefab.GetComponent<LineRenderer>();
         int glowtimes = 0;
         int StopGlow = 5;
@@ -1006,7 +1040,6 @@ public class PlayerControl : MonoBehaviour
                         Instantiate(DamagedEffect, Human.transform.position, Quaternion.Euler(-90, 0, 0));
                     else
                         Instantiate(DamagedEffect, Bear.transform.position, Quaternion.Euler(-90, 0, 0));
-                    // audioPlayer.PlayOneShot(hurtSE);
                     // PlayerAnim.SetInteger("Doing", 4);
                     // Invoke("ResetAnimDoing", 0.1f);
                     InCombat = true;
@@ -1020,6 +1053,7 @@ public class PlayerControl : MonoBehaviour
     void KnockBack() {
         if (!BearMode && !HitBack) {
             HitBack = true;
+            audioPlayer.PlayOneShot(hurtSE);
             if (DataManager.Instance.KnockDownFrom != null) {
                 FacingTarget = DataManager.Instance.KnockDownFrom.transform.position - Human.transform.position;
                 FacingTarget.y = 0;
@@ -1152,6 +1186,7 @@ public class PlayerControl : MonoBehaviour
         ActiveNavi();
         BearOnCast = false;
         Turning = false;
+        HitBack = false;
         DataManager.Instance.SetSkillEvent(0, 201);
         DataManager.Instance.SetSkillEvent(1, 202);
         DataManager.Instance.SetSkillEvent(2, 203);
@@ -1472,6 +1507,7 @@ public class PlayerControl : MonoBehaviour
         Vector3 InsPos = Bear.transform.position + Bear.transform.forward * KnockForwardScaler;
         InsPos.y = Bear.transform.position.y + 0.1f;
         Knock = Instantiate(EarthQuakeEffect, InsPos, Quaternion.Euler(90, 0, 0));
+        audioPlayer.PlayOneShot(EarthQuakeClip);
         yield return new WaitForSeconds(FirstKnockWait);
         BearAnim.SetFloat("Attack5Speed", 1f);
         BearAnim.SetBool("Attack5", true);
@@ -1481,6 +1517,7 @@ public class PlayerControl : MonoBehaviour
         InsPos = Bear.transform.position + Bear.transform.forward * KnockForwardScaler;
         InsPos.y = Bear.transform.position.y + 0.1f;
         Knock = Instantiate(EarthQuakeEffect, InsPos, Quaternion.Euler(90, 0, 0));
+        audioPlayer.PlayOneShot(EarthQuakeClip);
         yield return new WaitForSeconds(SecondKnockWait);
         BearAnim.SetFloat("Attack5Speed", Attack5AnimSpeed);
         BearAnim.SetBool("Attack5", true);
@@ -1489,6 +1526,7 @@ public class PlayerControl : MonoBehaviour
         InsPos = Bear.transform.position + Bear.transform.forward * KnockForwardScaler;
         InsPos.y = Bear.transform.position.y + 0.1f;
         Knock = Instantiate(EarthQuakeEffect, InsPos, Quaternion.Euler(90, 0, 0));
+        audioPlayer.PlayOneShot(EarthQuakeClip);
         BearAnim.SetFloat("Attack5Speed", 1f);
         yield return new WaitForSeconds(ThirdKnockWait);
         Doing = false;
@@ -1532,6 +1570,7 @@ public class PlayerControl : MonoBehaviour
         for (var i = BearShieldUp.transform.childCount - 1; i >= 0; i--) {
             Destroy(BearShieldUp.transform.GetChild(i).gameObject);
         }
+        audioPlayer.PlayOneShot(ShieldBreakClip);
         GameObject Break = Instantiate(ShieldBreakCircle, Bear.transform.position, Quaternion.identity);
         Break.transform.localScale *= Scaling;
         DataManager.Instance.ShieldUp = false;
@@ -1561,12 +1600,13 @@ public class PlayerControl : MonoBehaviour
     IEnumerator CastLightning(Vector3 Target) {
         PlayerAnim.SetInteger("Doing", 8);
         Invoke("ResetAnimDoing", 0.3f);
+        audioPlayer.PlayOneShot(CastLightningClip);
         yield return new WaitForSeconds(CastLightningWaitingTime);
         Vector3 ShootDir = Target - (rightHand.position + leftHand.position) / 2;
         ShootDir.y = 0;
         ShootDir = ShootDir.normalized;
         GameObject LightningB = Instantiate(LightningBullet, (rightHand.position + leftHand.position) / 2, Quaternion.LookRotation(ShootDir));
-        Invoke("ToggleNavi", 0.7f);
+        Invoke("ToggleNavi", 0.3f);
         Doing = false;
         AvoidCasting = false;
     }
@@ -1604,7 +1644,7 @@ public class PlayerControl : MonoBehaviour
             if (TotemCharged >= 100f) {
                 TotemNotChanged = true;
                 ChLightning = true;
-                StartCoroutine(ChainLightning());
+                StartCoroutine(IncreaseLightningReload());
                 TotemCharged = 0;
             }
         } else {
@@ -1620,11 +1660,23 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
+    IEnumerator IncreaseLightningReload() {
+        float dur = 0;
+        while (LightningCast && dur < TotemIncreasedTime && TotemNotChanged) {
+            CurLightningAttackSpeed = TotemIncreasedAA;
+            yield return null;
+        }
+        CurLightningAttackSpeed = LightningAAReload;
+        ChLightning = false;
+    }
+
     private GameObject HealingPlacePrefab;
     IEnumerator CreateHealingPlace() {
         float dur = 0;
         Vector3 pos = TotemPrefab.transform.position;
         pos.y = 0.02f;
+        audioPlayer.PlayOneShot(HealingPlaceCreatedClip);
+        yield return new WaitForSeconds(0.3f);
         HealingPlacePrefab = Instantiate(HealingPlace, pos, Quaternion.Euler(-90, 0, 0));
         yield return new WaitForSeconds(0.2f);
         for (int j = HealingPlacePrefab.transform.childCount - 1; j >= 0; j--) {
@@ -1694,39 +1746,68 @@ public class PlayerControl : MonoBehaviour
         float sign = UnityEngine.Random.value;
         if (sign < 0.5)
             RandomZ = -RandomZ;
+        audioPlayer.PlayOneShot(RandomThunderClip);
         GameObject ThunderPrefab = Instantiate(FallingThunder, TotemPrefab.transform.position + new Vector3(RandomX, 0.2f, RandomZ), Quaternion.Euler(-90, 0, 0));
     }
 
-    IEnumerator ChainLightning() {
+    IEnumerator ChainLightning(GameObject Ene) {
+        StartCoroutine(LightningAA(Ene, 1));
         int ChainedTime = 0;
-        GameObject Last = TotemPrefab;
-        Dictionary<int, bool> Chained = new Dictionary<int, bool>();
+        GameObject Last = Ene;
+        int LastHash = Ene.transform.GetHashCode();
+        Dictionary<int, int> Chained = new Dictionary<int, int>();
+        Chained.Add(LastHash, 1);
         yield return new WaitForSeconds(ChainLightningCharge);
-        while (ChainedTime < ChainLightningTime && TotemNotChanged && LightningCast) {
-            float ShortestDis = ChainDis;
+        while (ChainedTime < ChainLightningTime && LightningCast) {
+            float ShortestDis = LightningAARange;
             GameObject Closet = null;
             int ClosetHash = -1;
             GameObject[] Objects = GameObject.FindGameObjectsWithTag("Enemy");
             foreach (var obj in Objects) {
                 Transform ene = ChangeToEnemyTrans(obj.transform.root);
                 int hash = ene.GetHashCode();
+                if (hash == ClosetHash) continue;
+                if (hash == LastHash) continue;
                 if (!Chained.ContainsKey(hash)) {
-                    if (Vector3.Distance(TotemPrefab.transform.position, ene.position) < ShortestDis) {
-                        ShortestDis = Vector3.Distance(TotemPrefab.transform.position, ene.position);
+                    Vector3 a = Last.transform.position;
+                    Vector3 b = ene.position;
+                    a.y = 0;
+                    b.y = 0;
+                    if (Vector3.Distance(a, b) < ShortestDis) {
+                        ShortestDis = Vector3.Distance(a, b);
+                        Closet = ene.gameObject;
+                        ClosetHash = hash;
+                    }
+                } else if (Chained[hash] < 3) {
+                    Vector3 a = Last.transform.position;
+                    Vector3 b = ene.position;
+                    a.y = 0;
+                    b.y = 0;
+                    if (Vector3.Distance(a, b) < ShortestDis) {
+                        ShortestDis = Vector3.Distance(a, b);
                         Closet = ene.gameObject;
                         ClosetHash = hash;
                     }
                 }
             }
-            if (Closet == null)
+            if (Closet == null) {
+                Closet = Totem;
+                ClosetHash = Totem.transform.GetHashCode();
+            }
+            if (!Chained.ContainsKey(ClosetHash))
+                Chained.Add(ClosetHash, 1);
+            else if (Chained[ClosetHash] < 3)
+                Chained[ClosetHash]++;
+            else
                 break;
-            Chained.Add(ClosetHash, true);
+            if (LightningManager.Instance != null)
+                LightningManager.Instance.HitOn(Closet.transform);
             StartCoroutine(LightningInstantiateFromA(Last, Closet));
             Last = Closet;
+            LastHash = ClosetHash;
             ChainedTime++;
             yield return new WaitForSeconds(ChainingWaiting);
         }
-        ChLightning = false;
     }
 
     IEnumerator LightningInstantiateFromA(GameObject A, GameObject B) {
@@ -1740,7 +1821,7 @@ public class PlayerControl : MonoBehaviour
         Array.Sort(lenV);
         for (var i = 1; i < LightningCurvePts+1; i++)
             v2[i] = UnityEngine.Random.Range(0, 360);
-        GameObject LightningPrefab = Instantiate(Lightning, rightHand.position, Quaternion.identity);
+        GameObject LightningPrefab = Instantiate(Lightning2, rightHand.position, Quaternion.identity);
         LineRenderer LR = LightningPrefab.GetComponent<LineRenderer>();
         int glowtimes = 0;
         int StopGlow = 5;
