@@ -60,9 +60,13 @@ public class PanAndZoom : MonoBehaviour
         }
         Switching = DataManager.Instance.InParallel;
     }
-
+    public Transform t;
     void MoveCamera() {
-        if (Lock) {
+        if(DataManager.Instance.EnterGrave == true) {
+            Invoke("change",4.8f);
+            Panzombie(t.position);
+        } else {
+            if (Lock) {
             CheckShake();
             if (!isShaking)
                 Center();
@@ -73,8 +77,14 @@ public class PanAndZoom : MonoBehaviour
                 PanScreen();
             }
         }
+        }
+        
     }
-
+    
+    void change() {
+        DataManager.Instance.EnterGrave = false;
+        Invoke("Center",3.5f);
+    }
     IEnumerator CenterAfterHalfSec() {
         yield return new WaitForSeconds(0.5f);
         Center();
@@ -85,6 +95,13 @@ public class PanAndZoom : MonoBehaviour
         CameraTransform.position = new Vector3(playerPos.x, playerPos.y + CameraYAxisCrtl, playerPos.z - CameraZAxisCtrl);
     }
 
+    void Panzombie(Vector3 a) {
+        //Vector3 dir = PanDir();
+        a.y = CameraTransform.position.y;
+        a /= 100;
+        CameraTransform.position = Vector3.Lerp(CameraTransform.position, CameraTransform.position + a * PanSpeed, Time.deltaTime);
+        //DataManager.Instance.EnterGrave = false;
+    }
     void PanScreen() {
         Vector3 dir = PanDir();
         CameraTransform.position = Vector3.Lerp(CameraTransform.position, CameraTransform.position + dir * PanSpeed, Time.deltaTime);

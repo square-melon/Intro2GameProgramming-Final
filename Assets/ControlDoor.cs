@@ -10,6 +10,8 @@ public class ControlDoor : MonoBehaviour
     public GameObject door1;
     public GameObject door2;
     public Wizard Wizard1;
+    public Wizard Wizard2;
+    public Wizard Wizard3;
     public AudioSource audiosource;
     public AudioClip aclip;
     public Animator animator;
@@ -33,7 +35,7 @@ public class ControlDoor : MonoBehaviour
         door1.SetActive(false);
         door2.SetActive(false);
         agent1 = Human.GetComponent<NavMeshAgent>();
-        agent2 = Bear.GetComponent<NavMeshAgent>();
+        //agent2 = Bear.GetComponent<NavMeshAgent>();
        
     }
 
@@ -44,7 +46,7 @@ public class ControlDoor : MonoBehaviour
         
     }
     void Unlockdoor() {
-        if(Wizard1.GetHp() <= 0) {
+        if(Wizard1.GetHp() <= 0 && Wizard2.GetHp() <= 0 && Wizard3.GetHp() <= 0) {
             change1();
         }
     }

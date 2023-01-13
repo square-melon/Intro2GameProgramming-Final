@@ -28,6 +28,7 @@ public class DataManager : MonoBehaviour
     public bool PlayerIsRooted { get; private set; }
     public float RootedTime { get; private set; }
     public int[] BearSkill { get; private set; }
+    public bool EnterGrave {get; set;}
     public int BearTime;
     public bool InBearMode;
     public float ShieldStored;
@@ -53,6 +54,7 @@ public class DataManager : MonoBehaviour
     public float BossHP;
     public string BossName;
     public bool ShowBossHP;
+    
     private void Awake()
     {   
         if (Instance != null && Instance != this) {
