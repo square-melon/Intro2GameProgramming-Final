@@ -57,7 +57,7 @@ MonoBehaviour:
   - '<b>Hephaestus</b>
 
     Congradulations! it seems that you are ready for the
-    rest of the journey. Here, I''ll take you to see the Dungoen.  Be careful.'
+    rest of the journey. Here, I''ll take you to the Dungeon .  Be careful.'
   IsMax: 1
   curIndex: 0
 --- !u!114 &-7179765610984740669
@@ -163,7 +163,7 @@ MonoBehaviour:
   eventNode: {fileID: 0}
   commentNode: {fileID: 0}
   profileNode: {fileID: 253149509444908075}
-  current: {fileID: -7179765610984740669}
+  current: {fileID: 0}
 --- !u!114 &253149509444908075
 MonoBehaviour:
   m_ObjectHideFlags: 0

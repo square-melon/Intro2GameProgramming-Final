@@ -1,5 +1,65 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8440188055852931964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc54790c38d56d240bbd83cf672713a4, type: 3}
+  m_Name: "Mentor: <b>Hephaestus<\u2026"
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 396, y: 184.5}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: -8440188055852931964}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Output
+        node: {fileID: 1878034710950481228}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: -8440188055852931964}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: 3537106969947681138}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  TalkingPerson: Mentor
+  Expression: none
+  Facing: 0
+  FacingPerson: 
+  Width: 0
+  ShowBubble: 1
+  CameraFollow: 1
+  Audio: {fileID: 0}
+  PlayPerChar: 0
+  PlayTyping: 0
+  Dialogue:
+  - '<b>Hephaestus</b>
+
+    And now I am going to teach you some skills to become
+    stronger and defeat him in the future.'
+  IsMax: 1
+  curIndex: 0
 --- !u!114 &-6615528333919897313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13,7 +73,7 @@ MonoBehaviour:
   m_Name: "Mentor: <b>Hephaestus<\u2026"
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -264, y: -72}
+  position: {x: -344, y: -104}
   ports:
     keys:
     - Input
@@ -24,8 +84,8 @@ MonoBehaviour:
       _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: Ouput
-        node: {fileID: -4530802627035662291}
+      - fieldName: Output
+        node: {fileID: 4267442499545431268}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -56,7 +116,7 @@ MonoBehaviour:
   Dialogue:
   - '<b>Hephaestus</b>
 
-    Today is the day, Melon...'
+    I save your live. '
   IsMax: 1
   curIndex: 0
 --- !u!114 &-4543930858193790450
@@ -72,7 +132,7 @@ MonoBehaviour:
   m_Name: Profile
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -504, y: -136}
+  position: {x: -632, y: -264}
   ports:
     keys: []
     values: []
@@ -87,10 +147,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 857b2783297fa724aa9cb35db8c314c7, type: 3}
-  m_Name: Start
+  m_Name: 'Start: chinese'
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -504, y: -72}
+  position: {x: -904, y: -120}
   ports:
     keys:
     - Ouput
@@ -101,7 +161,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: Input
-        node: {fileID: -6615528333919897313}
+        node: {fileID: 4267442499545431268}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -130,13 +190,15 @@ MonoBehaviour:
   - {fileID: 7686452401673749607}
   - {fileID: 6180451366325664120}
   - {fileID: 3652209693891016031}
+  - {fileID: 4267442499545431268}
+  - {fileID: -8440188055852931964}
   startNode: {fileID: -4530802627035662291}
   dialogueNode: {fileID: 0}
   optionNode: {fileID: 0}
   eventNode: {fileID: 0}
   commentNode: {fileID: 0}
   profileNode: {fileID: -4543930858193790450}
-  current: {fileID: -4530802627035662291}
+  current: {fileID: -6615528333919897313}
 --- !u!114 &1878034710950481228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,7 +212,7 @@ MonoBehaviour:
   m_Name: "Mentor: <b>Hephaestus<\u2026"
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 456, y: -72}
+  position: {x: -8, y: 232}
   ports:
     keys:
     - Input
@@ -174,7 +236,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: Input
-        node: {fileID: 3537106969947681138}
+        node: {fileID: -8440188055852931964}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -193,8 +255,8 @@ MonoBehaviour:
   Dialogue:
   - '<b>Hephaestus</b>
 
-    It''s glad to see you are ready. Remember what we have
-    learned?'
+    I am the survivor of last catastrophe. The monster Grenadier
+    is now destroying the whole world. '
   IsMax: 1
   curIndex: 0
 --- !u!114 &3537106969947681138
@@ -210,7 +272,7 @@ MonoBehaviour:
   m_Name: 'Player: <b>Melon</b>'
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 808, y: -72}
+  position: {x: 488, y: -296}
   ports:
     keys:
     - Input
@@ -222,7 +284,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: Output
-        node: {fileID: 1878034710950481228}
+        node: {fileID: -8440188055852931964}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -251,9 +313,8 @@ MonoBehaviour:
   PlayPerChar: 0
   PlayTyping: 0
   Dialogue:
-  - '<b>Melon</b>
-
-    Ah! I forget >< <sub>melon melon</sub>'
+  - "<b>Melon</b>\n but..... Why me? I just got here and  figure out what happened.
+    <sub>melon melon</sub>"
   IsMax: 1
   curIndex: 0
 --- !u!114 &3652209693891016031
@@ -307,6 +368,66 @@ MonoBehaviour:
     guid: 
   IsMax: 1
   IsWaiting: 0
+--- !u!114 &4267442499545431268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc54790c38d56d240bbd83cf672713a4, type: 3}
+  m_Name: 'Player: <b>Melon</b>'
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -696, y: -104}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: 4267442499545431268}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Ouput
+        node: {fileID: -4530802627035662291}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: 4267442499545431268}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: -6615528333919897313}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  TalkingPerson: Player
+  Expression: none
+  Facing: 0
+  FacingPerson: 
+  Width: 0
+  ShowBubble: 1
+  CameraFollow: 1
+  Audio: {fileID: 0}
+  PlayPerChar: 0
+  PlayTyping: 0
+  Dialogue:
+  - '<b>Melon</b>
+
+    Who am I ? Where am I ? What happened ? What'' wrong with
+    me? I feel terrible.'
+  IsMax: 1
+  curIndex: 0
 --- !u!114 &5193828476513748844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,7 +441,7 @@ MonoBehaviour:
   m_Name: 'Player: <b>Melon</b>'
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 104, y: -72}
+  position: {x: -8, y: -392}
   ports:
     keys:
     - Input
@@ -363,8 +484,7 @@ MonoBehaviour:
   Dialogue:
   - '<b>Melon</b>
 
-    Yes, after years of training, i have become stronger and more
-    powerful. I will definitely defeat the boss and save the world. <sub>melon melon</sub>'
+    Who are you?  <sub>melon melon</sub>'
   IsMax: 1
   curIndex: 0
 --- !u!114 &6180451366325664120
@@ -380,7 +500,7 @@ MonoBehaviour:
   m_Name: 'Player: <b>Melon</b>'
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1512, y: -72}
+  position: {x: 1208, y: -152}
   ports:
     keys:
     - Input
@@ -423,7 +543,7 @@ MonoBehaviour:
   Dialogue:
   - '<b>Melon</b>
 
-    Okay! Let''s try it.<sub>melon melon</sub>'
+    ..............<sub>melon melon</sub>'
   IsMax: 1
   curIndex: 0
 --- !u!114 &7686452401673749607
@@ -439,7 +559,7 @@ MonoBehaviour:
   m_Name: "Mentor: <b>Hephaestus<\u2026"
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1160, y: -72}
+  position: {x: 808, y: 40}
   ports:
     keys:
     - Input
@@ -482,7 +602,8 @@ MonoBehaviour:
   Dialogue:
   - '<b>Hephaestus</b>
 
-    Haha, it''s ok. using right click on the floor can  move
-    your body, just try it!'
+    It''s okay young man. I can see the potential in you.
+    You have to do it. I believe you. You can click the ground to move. Follow the
+    rocks'
   IsMax: 1
   curIndex: 0
