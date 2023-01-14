@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 857b2783297fa724aa9cb35db8c314c7, type: 3}
-  m_Name: 'Start: chinese'
+  m_Name: Start
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: -504, y: -72}
@@ -161,7 +161,6 @@ MonoBehaviour:
   m_Name: Go
   m_EditorClassIdentifier: 
   nodes:
-  - {fileID: 0}
   - {fileID: -623848648621040485}
   - {fileID: -1739373912717936324}
   - {fileID: -1828762424847131686}
