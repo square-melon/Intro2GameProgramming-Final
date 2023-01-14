@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/MagicArsenal/Upgrades/Magic Arsenal Standard (Legacy Shaders).unitypackage.meta
+guid: d5c3be49ff939534987886ba879e7954
+========
 guid: 9517068fe9da401409ea5a86db7bede1
 folderAsset: yes
+>>>>>>>> main:Assets/Scenes/09 - Dungeon 2.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

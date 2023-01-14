@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/MagicArsenal/Upgrades/Magic Arsenal URP Upgrade (Legacy Shaders).unitypackage.meta
+guid: 4f7be15ba433d8c4696bfe02f838c312
+DefaultImporter:
+========
 guid: d6b61adf6e51942049b689eb82ac30fe
 PrefabImporter:
+>>>>>>>> main:Assets/Scenes/Rookie/Hephaestus.prefab.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

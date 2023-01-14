@@ -46,6 +46,7 @@ public class ControlGrave : MonoBehaviour
     public Zombie_wake a6;
     void Start()
     {
+        DataManager.Instance.ShowBossHP = false;
         animator1 = zombie1.GetComponent<Animator>();
         animator2 = zombie2.GetComponent<Animator>();
         animator3 = zombie3.GetComponent<Animator>();
@@ -59,7 +60,7 @@ public class ControlGrave : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        Pass();
     }
     private int flagdetect = 0;
 
@@ -119,7 +120,8 @@ public class ControlGrave : MonoBehaviour
             Destroy(dustprefab6);
     }
     void Pass() {
-        if(a1.Gethp() == 0 && a2.Gethp() == 0 && a3.Gethp() == 0 && a4.Gethp() == 0 && a5.Gethp() == 0 && a6.Gethp() == 0 ) {
+        Debug.Log(!zombie1.activeSelf && !zombie2.activeSelf && !zombie3.activeSelf && !zombie4.activeSelf && !zombie5.activeSelf && !zombie6.activeSelf);
+        if(!zombie1.activeSelf && !zombie2.activeSelf && !zombie3.activeSelf && !zombie4.activeSelf && !zombie5.activeSelf && !zombie6.activeSelf ) {
             door1.SetActive(false);
         }
     }

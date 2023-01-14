@@ -290,6 +290,8 @@ public class PlayerControl : MonoBehaviour
             DataManager.Instance.SetSkillEvent(1, 1);
             DataManager.Instance.SetSkillEvent(2, 5);
             DataManager.Instance.SetSkillEvent(3, 3);
+            transform.position = SpawnPoint;
+            Human.transform.position = SpawnPoint;
         }
         DataManager.Instance.SetMAXHP(MAXHP);
         Firing = false;
@@ -301,8 +303,6 @@ public class PlayerControl : MonoBehaviour
         DataManager.Instance.Scaling = Scaling;
         Human.transform.localScale = new Vector3(HumanScale * Scaling, HumanScale * Scaling, HumanScale * Scaling);
         Bear.transform.localScale = new Vector3(BearScale * Scaling, BearScale * Scaling, BearScale * Scaling);
-        transform.position = SpawnPoint;
-        Human.transform.position = SpawnPoint;
         Human_naviAgent.isStopped = false;
         DashEffect.SetActive(false);
         MedkitHealCD = true;
@@ -652,9 +652,9 @@ public class PlayerControl : MonoBehaviour
                     Target = hit.point;
                 }
                 Firing = true;
-                FacingTarget = Target - Human.transform.position;
+                FacingTarget = GetMousePos() - Human.transform.position;
                 ToggleNavi();
-                IEnumerator shoot = ShootBullet(Target);
+                IEnumerator shoot = ShootBullet(GetMousePos());
                 StartCoroutine(shoot);
                 Invoke("ResetFiring", ReloadSpeed);
             } else if (Input.GetKey(KeyCode.A) && !LightningFiring && LightningCast) {
@@ -1798,8 +1798,6 @@ public class PlayerControl : MonoBehaviour
                 if (!Chained.ContainsKey(hash)) {
                     Vector3 a = Last.transform.position;
                     Vector3 b = ene.position;
-                    a.y = 0;
-                    b.y = 0;
                     if (Vector3.Distance(a, b) < ShortestDis) {
                         ShortestDis = Vector3.Distance(a, b);
                         Closet = ene.gameObject;
@@ -1820,8 +1818,10 @@ public class PlayerControl : MonoBehaviour
             bool isTotem = false;
             if (Closet == null) {
                 Closet = Totem;
-                ClosetHash = Totem.transform.GetHashCode();
-                isTotem = true;
+                if (Vector3.Distance(Totem.transform.position, Last.transform.position) < ShortestDis) {
+                    ClosetHash = Totem.transform.GetHashCode();
+                    isTotem = true;
+                }
             }
             if (!Chained.ContainsKey(ClosetHash))
                 Chained.Add(ClosetHash, 1);
@@ -1894,25 +1894,30 @@ public class PlayerControl : MonoBehaviour
                 Stamina -= StaminaDrop;
             running = true;
             stm_counter = 0;
-            if (!BearMode) {
-                if (!LightningCast)
-                    Human_naviAgent.speed = HumanRunningSpeed;
+            if (!DataManager.Instance.SlowDown) {
+                if (!BearMode) {
+                    if (!LightningCast)
+                        Human_naviAgent.speed = HumanRunningSpeed;
+                    else
+                        Human_naviAgent.speed = HumanLightningRunningSpeed;
+                }
                 else
-                    Human_naviAgent.speed = HumanLightningRunningSpeed;
+                    Bear_naviAgent.speed = BearRunningSpeed;
             }
-            else
-                Bear_naviAgent.speed = BearRunningSpeed;
             if (Stamina < 0)
                 Stamina = 0;
         } else if (!BearMode) {
             running = false;
-            if (!LightningCast)
-                Human_naviAgent.speed = HumanWalkingSpeed;
-            else
-                Human_naviAgent.speed = HumanLightningSpeed;
+            if (!DataManager.Instance.SlowDown) {
+                if (!LightningCast)
+                    Human_naviAgent.speed = HumanWalkingSpeed;
+                else
+                    Human_naviAgent.speed = HumanLightningSpeed;
+            }
         } else {
             running = false;
-            Bear_naviAgent.speed = BearWalkingSpeed;
+            if (!DataManager.Instance.SlowDown)
+                Bear_naviAgent.speed = BearWalkingSpeed;
         }
     }
 

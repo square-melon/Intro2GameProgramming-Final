@@ -59,6 +59,7 @@ public class DataManager : MonoBehaviour
     public string BossName;
     public bool ShowBossHP;
     public int ChapterLevel;
+    public bool SlowDown;
     
     private void Awake()
     {   
@@ -219,6 +220,7 @@ public class DataManager : MonoBehaviour
         BossScript e5 = enemy.GetComponent<BossScript>();
         SpiderCreate e6 = enemy.GetComponent<SpiderCreate>();
         FireDemon FD = enemy.GetComponent<FireDemon>();
+        Zombie_wake ZW = enemy.GetComponent<Zombie_wake>();
         if(e4) {
             e4.DamageA();
             print("joikokij");
@@ -250,6 +252,8 @@ public class DataManager : MonoBehaviour
         }
         else if (em)
             em.Damage(damage);
+        else if (ZW)
+            ZW.Damage(damage);
 
         if(damagetextauto || damagetextelse ) {
             ShowDamage(enemy, damage);
@@ -282,6 +286,8 @@ public class DataManager : MonoBehaviour
         BossScript e5 = enemy.GetComponent<BossScript>();
         SpiderCreate e6 = enemy.GetComponent<SpiderCreate>();
         FireDemon FD = enemy.GetComponent<FireDemon>();
+        Zombie_wake ZW = enemy.GetComponent<Zombie_wake>();
+        magicZombieScript em = enemy.GetComponent<magicZombieScript>();
         if(e4) {
             e4.DamageA();
             print("joikokij");
@@ -309,7 +315,11 @@ public class DataManager : MonoBehaviour
                 }
             }
             return;
-        }
+        } 
+        else if (em)
+            em.Damage(damage); 
+        else if (ZW)
+            ZW.Damage(damage);
 
         if(damagetextfrozen) {
             var go = Instantiate(damagetextfrozen, enemy.transform.position, Quaternion.identity);
