@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.029894523, g: 0.052629635, b: 0.10071688, a: 1}
+  m_IndirectSpecularColor: {r: 0.029894419, g: 0.052629422, b: 0.10071652, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -886,7 +886,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 45, y: 45, z: 0}
 --- !u!82 &756392204
 AudioSource:
@@ -1997,7 +1997,7 @@ Transform:
   - {fileID: 1009454989}
   - {fileID: 662457357}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1961574770 stripped
 Transform:
@@ -2631,7 +2631,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &866921238960641917
 GameObject:
@@ -38387,7 +38387,7 @@ RectTransform:
   - {fileID: 52246192245535354}
   - {fileID: 4675398141807649411}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -39816,7 +39816,7 @@ Transform:
   m_Children:
   - {fileID: 4000828696468361379}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 50, y: 0, z: 0}
 --- !u!114 &4000828696762576298
 MonoBehaviour:
@@ -47006,7 +47006,7 @@ Transform:
   - {fileID: 6494411632907398856}
   - {fileID: 6494411633976667863}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: -176.902, z: 0}
 --- !u!1 &6494411633976667862
 GameObject:
@@ -62712,7 +62712,7 @@ MonoBehaviour:
     type: 3}
   FlameThrowingEffect: {fileID: 6213541799210647219, guid: d9fcb515e7c914f4380f3609516a2c38,
     type: 3}
-  audioPlayer: {fileID: 0}
+  audioPlayer: {fileID: 756392204}
   shootSE: {fileID: 8300000, guid: 7575dc366f03a8046850f97855376936, type: 3}
   walkSE: {fileID: 8300000, guid: 450f20958c8db4541a8a2c24d89b58cd, type: 3}
   healSE: {fileID: 8300000, guid: d3631271d9479f64c804a99a2f2b86ba, type: 3}
@@ -62728,6 +62728,7 @@ MonoBehaviour:
   BearThirdAttackClip: {fileID: 0}
   EarthQuakeClip: {fileID: 0}
   ShieldBreakClip: {fileID: 0}
+  BearDeadClip: {fileID: 0}
   Scaling: 2
   SpawnPoint: {x: -0.11562204, y: 0.021811485, z: -11.890632}
   RotationSlerp: 7
@@ -62845,6 +62846,7 @@ MonoBehaviour:
   SkillLevel4: 0
   ReCalCombat: 0
   CombatCounter: 0
+  animator12: {fileID: 0}
 --- !u!4 &8790831393096590879
 Transform:
   m_ObjectHideFlags: 0
@@ -62860,7 +62862,7 @@ Transform:
   - {fileID: 4266886720473525015}
   - {fileID: 8509483027189075229}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8790831393286378850
 GameObject:
