@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.029894419, g: 0.052629422, b: 0.10071652, a: 1}
+  m_IndirectSpecularColor: {r: 0.029894523, g: 0.052629635, b: 0.10071688, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -541,7 +541,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -3711,6 +3711,7 @@ MonoBehaviour:
   Timer: {fileID: 787248865257367235}
   Icon: {fileID: 8614976632313184829}
   Disable: {fileID: 787248865441402376}
+  Des: {fileID: 0}
 --- !u!1 &787248865734395212
 GameObject:
   m_ObjectHideFlags: 0
@@ -4426,6 +4427,7 @@ MonoBehaviour:
   Timer: {fileID: 787248865734395214}
   Icon: {fileID: 5825010898098187907}
   Disable: {fileID: 787248866304918593}
+  Des: {fileID: 0}
 --- !u!1 &787248866797039481
 GameObject:
   m_ObjectHideFlags: 0
@@ -4484,6 +4486,7 @@ MonoBehaviour:
   Timer: {fileID: 787248865953571806}
   Icon: {fileID: 2019957935993370986}
   Disable: {fileID: 787248866431079969}
+  Des: {fileID: 0}
 --- !u!114 &787248866828467888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45664,7 +45667,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 1.02e-43, y: 0, z: 0, w: -1.0158464e-26}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
