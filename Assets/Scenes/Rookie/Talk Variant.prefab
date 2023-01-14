@@ -266,7 +266,7 @@ PrefabInstance:
     - target: {fileID: 2122017960611469705, guid: ab17ea96e5456a84d8009cc8d24c1ca5,
         type: 3}
       propertyPath: m_Name
-      value: Talk
+      value: Talk Variant
       objectReference: {fileID: 0}
     - target: {fileID: 2122017960611469706, guid: ab17ea96e5456a84d8009cc8d24c1ca5,
         type: 3}
@@ -332,7 +332,7 @@ PrefabInstance:
     - target: {fileID: 5832133003099336719, guid: ab17ea96e5456a84d8009cc8d24c1ca5,
         type: 3}
       propertyPath: NextList.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5832133003099336719, guid: ab17ea96e5456a84d8009cc8d24c1ca5,
         type: 3}
@@ -351,6 +351,24 @@ PrefabInstance:
       propertyPath: NextList.Array.data[2]
       value: 
       objectReference: {fileID: 11400000, guid: 07d2e40a816574c3a8e6ae8a94aa2bf6,
+        type: 2}
+    - target: {fileID: 5832133003099336719, guid: ab17ea96e5456a84d8009cc8d24c1ca5,
+        type: 3}
+      propertyPath: NextList.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: a7136c5be63ea4719a8a0746e2d221f8,
+        type: 2}
+    - target: {fileID: 5832133003099336719, guid: ab17ea96e5456a84d8009cc8d24c1ca5,
+        type: 3}
+      propertyPath: NextList.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: f94de5036366e4e28a2f70cbfab1a23e,
+        type: 2}
+    - target: {fileID: 5832133003099336719, guid: ab17ea96e5456a84d8009cc8d24c1ca5,
+        type: 3}
+      propertyPath: NextList.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 5a059cbc81ecd4c2b994897b554c146c,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab17ea96e5456a84d8009cc8d24c1ca5, type: 3}

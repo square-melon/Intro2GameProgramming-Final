@@ -115,9 +115,12 @@ MonoBehaviour:
   Dialogue:
   - '<b>Hephaestus</b>
 
-    Just come!!!!!!!!
+    I bet you want!!!!!!!!
 
     HAHAHAHAHA'
+  - '<b>Hephaestus</b>
+
+    Let''s fight on my island!!!!!!!'
   IsMax: 1
   curIndex: 0
 --- !u!114 &-3933525786084315432
@@ -270,7 +273,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 857b2783297fa724aa9cb35db8c314c7, type: 3}
-  m_Name: 'Start: chinese'
+  m_Name: Start
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: -712, y: -72}
