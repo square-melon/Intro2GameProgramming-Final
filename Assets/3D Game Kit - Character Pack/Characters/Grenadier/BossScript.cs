@@ -23,6 +23,7 @@ public class BossScript : MonoBehaviour
     private bool Spraying = false;
     private bool Rainning = false;
     public Transform shootspot;
+    public Animator ab123;
     private Coroutine ResetCasting;
 
     public CameraShake cameraShake;
@@ -69,6 +70,7 @@ public class BossScript : MonoBehaviour
     IEnumerator StartAnim() {
         phase = 1;
         hp = 1;
+        yield return new WaitForSeconds(1.5f);
         while (hp < MAXHP) {
             hp += MAXHP * 0.0033f;
             yield return null;
@@ -150,9 +152,9 @@ public class BossScript : MonoBehaviour
     }
 
     void disappear() {
-        gameObject.SetActive(false);
         te.SetActive(true);
         DataManager.Instance.ShowBossHP = false;
+        gameObject.SetActive(false);
     }
     private bool skill1CD;
     private bool skill2CD;
@@ -255,6 +257,6 @@ public class BossScript : MonoBehaviour
     public void Damage(float damage) {
         if (immune) return;
         hp -= damage;
-        bar.SetHealth(hp);  
+        // bar.SetHealth(hp);  
     }
 }
