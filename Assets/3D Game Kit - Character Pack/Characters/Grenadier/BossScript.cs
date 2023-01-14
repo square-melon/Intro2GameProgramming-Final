@@ -25,6 +25,7 @@ public class BossScript : MonoBehaviour
     public Transform shootspot;
     public Animator ab123;
     private Coroutine ResetCasting;
+    public GameObject Talk;
 
     public CameraShake cameraShake;
 
@@ -63,6 +64,7 @@ public class BossScript : MonoBehaviour
         HitPlayer = false;
         // bar.SetMaxHealth(hp); 
         te.SetActive(false);
+        Talk.SetActive(false);
         immune = true;
         phase = 0;
     }
@@ -144,7 +146,7 @@ public class BossScript : MonoBehaviour
                     DataManager.Instance.SlowDown = false;
                     BossAnim.SetBool("Dead", true);
                     Invoke("disappear",5.0f);
-                    
+                    Talk.SetActive(true);
                     // Destroy(gameObject,5.0f);
                 }
             }
