@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-1828762424847131686
+--- !u!114 &-4081153607788297627
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc54790c38d56d240bbd83cf672713a4, type: 3}
-  m_Name: "Player: Alright, wish \u2026"
+  m_Script: {fileID: 11500000, guid: 4a391752700ffb442a5ce5508f41175f, type: 3}
+  m_Name: Event
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: 88, y: -72}
@@ -20,19 +20,19 @@ MonoBehaviour:
     - Output
     values:
     - _fieldName: Input
-      _node: {fileID: -1828762424847131686}
+      _node: {fileID: -4081153607788297627}
       _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
       - fieldName: Output
-        node: {fileID: -1739373912717936324}
+        node: {fileID: 7650958193105145269}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: Output
-      _node: {fileID: -1828762424847131686}
+      _node: {fileID: -4081153607788297627}
       _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections: []
@@ -40,21 +40,12 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  TalkingPerson: Player
-  Expression: none
-  Facing: 0
-  FacingPerson: 
-  Width: 0
-  ShowBubble: 1
-  CameraFollow: 1
-  Audio: {fileID: 0}
-  PlayPerChar: 0
-  PlayTyping: 0
-  Dialogue:
-  - Alright, wish me luck!<sub>melon melon<sub>q
+  EventName: Close
+  WaitCallback: 0
+  EventValue: []
   IsMax: 1
-  curIndex: 0
---- !u!114 &-1739373912717936324
+  IsWaiting: 0
+--- !u!114 &-1680683314598057213
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -63,61 +54,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc54790c38d56d240bbd83cf672713a4, type: 3}
-  m_Name: "Mentor: <b>Hephaestus<\u2026"
+  m_Script: {fileID: 11500000, guid: 9a6a5d78950873f44a797d0c84c321bc, type: 3}
+  m_Name: Profile
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -264, y: -72}
+  position: {x: -504, y: -136}
   ports:
-    keys:
-    - Input
-    - Output
-    values:
-    - _fieldName: Input
-      _node: {fileID: -1739373912717936324}
-      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: Ouput
-        node: {fileID: -623848648621040485}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: Output
-      _node: {fileID: -1739373912717936324}
-      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: Input
-        node: {fileID: -1828762424847131686}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  TalkingPerson: Mentor
-  Expression: none
-  Facing: 0
-  FacingPerson: 
-  Width: 0
-  ShowBubble: 1
-  CameraFollow: 1
-  Audio: {fileID: 0}
-  PlayPerChar: 0
-  PlayTyping: 0
-  Dialogue:
-  - '<b>Hephaestus</b>
-
-    Hey! Over Here!'
-  - '<b>Hephaestus</b>
-
-    Remanber, If you want to find the boss, you have to walk
-    down to find the dungeon.'
-  IsMax: 1
-  curIndex: 0
---- !u!114 &-623848648621040485
+    keys: []
+    values: []
+  dialogueProfile: {fileID: 11400000, guid: 30361e6dfb0c9294fbb162f807c9c3fb, type: 2}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2784bac956dac04b9b62556f83545a0, type: 3}
+  m_Name: Go
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 5882802712285318262}
+  - {fileID: 7650958193105145269}
+  - {fileID: -4081153607788297627}
+  - {fileID: -1680683314598057213}
+  startNode: {fileID: 0}
+  dialogueNode: {fileID: 0}
+  optionNode: {fileID: 0}
+  eventNode: {fileID: 0}
+  commentNode: {fileID: 0}
+  profileNode: {fileID: -1680683314598057213}
+  current: {fileID: 5882802712285318262}
+--- !u!114 &5882802712285318262
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -136,19 +106,19 @@ MonoBehaviour:
     - Ouput
     values:
     - _fieldName: Ouput
-      _node: {fileID: -623848648621040485}
+      _node: {fileID: 5882802712285318262}
       _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
       - fieldName: Input
-        node: {fileID: -1739373912717936324}
+        node: {fileID: 7650958193105145269}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  Language: chinese
---- !u!114 &11400000
+  Language: English
+--- !u!114 &7650958193105145269
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -157,17 +127,57 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2784bac956dac04b9b62556f83545a0, type: 3}
-  m_Name: Go
+  m_Script: {fileID: 11500000, guid: bc54790c38d56d240bbd83cf672713a4, type: 3}
+  m_Name: "Player: <b>Mephaestus<\u2026"
   m_EditorClassIdentifier: 
-  nodes:
-  - {fileID: -623848648621040485}
-  - {fileID: -1739373912717936324}
-  - {fileID: -1828762424847131686}
-  startNode: {fileID: 0}
-  dialogueNode: {fileID: 0}
-  optionNode: {fileID: 0}
-  eventNode: {fileID: 0}
-  commentNode: {fileID: 0}
-  profileNode: {fileID: 0}
-  current: {fileID: -623848648621040485}
+  graph: {fileID: 11400000}
+  position: {x: -264, y: -72}
+  ports:
+    keys:
+    - Input
+    - Output
+    values:
+    - _fieldName: Input
+      _node: {fileID: 7650958193105145269}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Ouput
+        node: {fileID: 5882802712285318262}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Output
+      _node: {fileID: 7650958193105145269}
+      _typeQualifiedName: GraphSpace.Empty, PlayTextAssembly, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: Input
+        node: {fileID: -4081153607788297627}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  TalkingPerson: Player
+  Expression: NoneExpression
+  Facing: 0
+  FacingPerson: 
+  Width: 0
+  ShowBubble: 1
+  CameraFollow: 1
+  Audio: {fileID: 0}
+  PlayPerChar: 0
+  PlayTyping: 0
+  Dialogue:
+  - '<b>Mephaestus</b>
+
+    Are you ready? Grenadier is in the dangerous dungeon
+    below this church.'
+  - '<b>Mephaestus</b>
+
+    Go kill him and come back. I will wait for you.'
+  IsMax: 1
+  curIndex: 0
