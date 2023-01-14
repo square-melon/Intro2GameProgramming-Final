@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 857b2783297fa724aa9cb35db8c314c7, type: 3}
-  m_Name: 'Start: chinese'
+  m_Name: Start
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: -904, y: -120}
@@ -198,7 +198,7 @@ MonoBehaviour:
   eventNode: {fileID: 0}
   commentNode: {fileID: 0}
   profileNode: {fileID: -4543930858193790450}
-  current: {fileID: -6615528333919897313}
+  current: {fileID: -4530802627035662291}
 --- !u!114 &1878034710950481228
 MonoBehaviour:
   m_ObjectHideFlags: 0

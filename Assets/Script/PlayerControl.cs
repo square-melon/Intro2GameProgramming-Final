@@ -246,6 +246,7 @@ public class PlayerControl : MonoBehaviour
 
     void Update()
     {
+        HackLoad();
         if (!DataManager.Instance.IsPlayerDead) {
             UpdateSkill();
             if (!Switching && !Turning) {
@@ -1932,5 +1933,18 @@ public class PlayerControl : MonoBehaviour
         }
         else
             Stamina = 100;
+    }
+
+    private bool loading;
+    void HackLoad() {
+        if (Input.GetKey(KeyCode.I) && !loading) {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            loading = true;
+            Invoke("ResetLoading", 4f);
+        }
+    }
+
+    void ResetLoading() {
+        loading = false;
     }
 }

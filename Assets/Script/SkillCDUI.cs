@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SkillCDUI : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class SkillCDUI : MonoBehaviour
     Transform SkillUI;
     public GameObject Icon;
     public GameObject Disable;
+    public TextMeshProUGUI Des;
 
     void Start()
     {
@@ -32,24 +34,24 @@ public class SkillCDUI : MonoBehaviour
         bool IsRooted = DataManager.Instance.PlayerIsRooted;
         bool InParallel = DataManager.Instance.InParallel;
         switch (DataManager.Instance.SkillEvent[iam]) {
-            case 0: skname = "Dash"; lightning = false; rooted = false; parallel = true; break;
-            case 1: skname = "Frost"; lightning = false; rooted = true; break;
-            case 2: skname = "Sparky"; lightning = false; rooted = true; break;
-            case 3: skname = "LightningMode"; lightning = true; rooted = true; break;
+            case 0: skname = "Dash"; lightning = false; rooted = false; parallel = true; Des.text="Dash"; break;
+            case 1: skname = "Frost"; lightning = false; rooted = true; Des.text="Frost"; break;
+            case 2: skname = "Sparky"; lightning = false; rooted = true; Des.text="Sparky"; break;
+            case 3: skname = "LightningMode"; lightning = true; rooted = true; Des.text="Lightning"; break;
             case 4: skname = "ExploAll"; lightning = false; rooted = true; break;
-            case 5: skname = "Totem"; lightning = true; rooted = true; break;
+            case 5: skname = "Totem"; lightning = true; rooted = true; Des.text="Totem"; break;
 
             case 101: skname = "ExploR"; lightning = false; break;
             case 102: skname = "ExploG"; lightning = false; break;
             case 103: skname = "ExploB"; lightning = false; break;
 
-            case 301: skname = "RandomThunder"; lightning = true; rooted = true; break;
-            case 302: skname = "CastThunder"; lightning = true; rooted = true; break;
+            case 301: skname = "RandomThunder"; lightning = true; rooted = true; Des.text="FallThun"; break;
+            case 302: skname = "CastThunder"; lightning = true; rooted = true; Des.text="CastThun"; break;
 
-            case 201: skname = "BearJump"; lightning = false; rooted = false; break;
-            case 202: skname = "EarthQuake"; lightning = false; rooted = true; break;
-            case 203: skname = "Shield"; lightning = false; rooted = true; break;
-            default: skname = ""; break;
+            case 201: skname = "Flame"; lightning = false; rooted = false; Des.text="Flame"; break;
+            case 202: skname = "EarthQuake"; lightning = false; rooted = true; Des.text="Earthquake"; break;
+            case 203: skname = "Shield"; lightning = false; rooted = true; Des.text="Shield"; break;
+            default: skname = ""; Des.text=""; break;
         }
 
         for (var i = Icon.transform.childCount - 1; i >= 0; i--) {
@@ -67,7 +69,10 @@ public class SkillCDUI : MonoBehaviour
     }
 
     void Display() {
-        if (!SkillUI) return;
+        if (!SkillUI) {
+            Disable.SetActive(true);
+            return;
+        }
 
         float cntCD = 0;
         float CurCD = DataManager.Instance.CurSkillCD[iam];
