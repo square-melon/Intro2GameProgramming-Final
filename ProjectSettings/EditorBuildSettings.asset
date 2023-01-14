@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Selection.unity
     guid: 720224f0a600a40fb8d4a48b9d98e095
+  - enabled: 1
+    path: Assets/Scenes/03 - Island.unity
+    guid: 256fcf878b0564b97b654128c56d680f
   m_configObjects: {}
