@@ -15,7 +15,7 @@ public class magicZombieScript : MonoBehaviour
     private UnityEngine.AI.NavMeshAgent naviAgent;
     private Animator ZombieAnim;
     //private UnityEngine.AI.NavMeshAgent nav;
-    private float hp=300;
+    private float hp=150;
     private bool first=true;
     public GameObject damagetext;
     public Vector3 walkPoint;
